@@ -16,6 +16,14 @@ const requests = {
     type: 'group',
     children: [
         {
+            id: 'plans',
+            title: 'Plans',
+            type: 'item',
+            url: '/plans',
+            icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
             id: 'requests',
             title: 'firstPage',
             type: 'item',
