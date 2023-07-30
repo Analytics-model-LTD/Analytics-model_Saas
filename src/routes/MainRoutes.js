@@ -8,6 +8,7 @@ import AuthGuard from 'guard/AuthGuards';
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const Plans = Loadable(lazy(() => import('pages/plans')));
+const Billing = Loadable(lazy(() => import('pages/billing')));
 const Requests = Loadable(lazy(() => import('pages/requests')));
 const Templates = Loadable(lazy(() => import('pages/templates')));
 const TemplateForm = Loadable(lazy(() => import('pages/template-form/')));
@@ -64,6 +65,10 @@ const MainRoutes = {
         {
             path: 'plans',
             element: <AuthGuard component={<Plans />} />
+        },
+        {
+            path: 'billing',
+            element: <AuthGuard component={<Billing />} />
         },
         {
             path: 'requests',

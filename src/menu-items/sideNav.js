@@ -24,6 +24,14 @@ const requests = {
             breadcrumbs: false
         },
         {
+            id: 'billing',
+            title: 'Billing',
+            type: 'item',
+            url: '/billing',
+            icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
             id: 'requests',
             title: 'firstPage',
             type: 'item',

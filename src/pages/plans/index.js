@@ -17,7 +17,7 @@ const Plans = () => {
 
     return <Box>
 
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={4} justifyContent="center" alignItems="center">
                 <Card elevation={0} sx={{ textAlign: "center" }}>
                     <Box sx={{ p: 2, background: 'rgb(19, 194, 194)', color: 'white' }}>
