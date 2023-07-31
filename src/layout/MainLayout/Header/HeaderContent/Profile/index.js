@@ -85,6 +85,7 @@ const Profile = () => {
     };
 
     const iconBackColorOpen = 'grey.300';
+    const username=localStorage.getItem('user');
 
     return (
         <Box sx={{ flexShrink: 0, ml: 0.75 }}>
@@ -103,7 +104,7 @@ const Profile = () => {
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
                     <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-                    <Typography variant="subtitle1">John Doe</Typography>
+                    <Typography variant="subtitle1"> {username}</Typography>
                 </Stack>
             </ButtonBase>
             <Popper
@@ -146,7 +147,7 @@ const Profile = () => {
                                                     <Stack direction="row" spacing={1.25} alignItems="center">
                                                         <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                                                         <Stack>
-                                                            <Typography variant="h6">John Doe</Typography>
+                                                            <Typography variant="h6">{username}</Typography>
                                                             <Typography variant="body2" color="textSecondary">
                                                                 UI/UX Designer
                                                             </Typography>

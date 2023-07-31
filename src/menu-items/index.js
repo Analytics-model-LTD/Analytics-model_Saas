@@ -8,7 +8,7 @@ import requests from './sideNav';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-    items: [dashboard, requests, pages, utilities, support]
+    items: [dashboard, requests,  utilities, support]
     // items: [requests]
 };
 
