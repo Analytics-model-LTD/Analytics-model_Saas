@@ -30,23 +30,24 @@ const requests = {
             url: '/billing',
             icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
-        },
-        {
-            id: 'requests',
-            title: 'firstPage',
-            type: 'item',
-            url: '/requests',
-            icon: icons.ConfirmationNumberOutlinedIcon,
-            breadcrumbs: false
-        },
-        {
-            id: 'templates',
-            title: 'secondPage',
-            type: 'item',
-            url: '/templates',
-            icon: icons.EmailOutlinedIcon,
-            breadcrumbs: false
         }
+        // ,
+        // {
+        //     id: 'requests',
+        //     title: 'firstPage',
+        //     type: 'item',
+        //     url: '/requests',
+        //     icon: icons.ConfirmationNumberOutlinedIcon,
+        //     breadcrumbs: false
+        // },
+        // {
+        //     id: 'templates',
+        //     title: 'secondPage',
+        //     type: 'item',
+        //     url: '/templates',
+        //     icon: icons.EmailOutlinedIcon,
+        //     breadcrumbs: false
+        // }
     ]
 };
 

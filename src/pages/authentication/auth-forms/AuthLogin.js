@@ -30,7 +30,7 @@ import { useNavigate } from '../../../../node_modules/react-router-dom/dist/inde
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-
+import jwt from 'jwt-decode'
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
@@ -62,9 +62,13 @@ const AuthLogin = () => {
             )
             .then((res) => {
                 console.log('1111', res.data);
-
+                 
                 localStorage.setItem('TOKEN', res.data.access_token);
+                
+                const user=jwt(res.data.access_token);
+                localStorage.setItem('user', user.user.firstname);
                 const data = localStorage.getItem('TOKEN');
+                console.log(user.user.firstname);
                 res.data.access_token != null ? navigate('/') : <></>;
             })
 

@@ -30,10 +30,13 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import axios from 'axios';
-
+import { useNavigate } from '../../../../node_modules/react-router-dom/dist/index';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // ============================|| FIREBASE - REGISTER ||============================ //
 
 const AuthRegister = () => {
+    const navigate = useNavigate();
     const [level, setLevel] = useState();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => {
@@ -56,9 +59,9 @@ const AuthRegister = () => {
     const signUp = (val) => {
         const formdata = {
             email: val.email,
-            password: val.password
-            // firstname: val.firstname,
-            // lastname: val.lastname
+            password: val.password,
+            firstname: val.firstname,
+            lastname: val.lastname
         };
 
         axios
@@ -66,7 +69,9 @@ const AuthRegister = () => {
                 'http://localhost:8080/api/user/register',
                 {
                     email: val.email,
-                    password: val.password
+                    password: val.password,
+                    firstname: val.firstname,
+                    lastname: val.lastname
                 },
                 {
                     headers: {
@@ -76,6 +81,14 @@ const AuthRegister = () => {
             )
             .then((res) => {
                 console.log(res);
+                if (res.data.message === 'User registered successfully.') {
+                    toast.success('User registered successfully.', {
+                        position: 'top-center'
+                    });
+                }
+                setTimeout(function () {
+                    navigate('/login');
+                }, 2000);
             })
             .catch((err) => {
                 console.log(err);
@@ -94,13 +107,13 @@ const AuthRegister = () => {
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    firstname: Yup.string().max(10).required('First Name is required'),
-                    lastname: Yup.string().max(10).required('Last Name is required'),
+                    firstname: Yup.string(),
+                    lastname: Yup.string(),
                     email: Yup.string()
                         .matches(/\S+@\S+\.\S+/, 'Please Enter Valid Email')
                         .max(255)
                         .required('Email is required'),
-                    password: Yup.string().max(10, 'Phone Number can only contain 10 Digit').required('Phone Number is Required')
+                    password: Yup.string().required('Password is Required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -264,6 +277,7 @@ const AuthRegister = () => {
                                     >
                                         Create Account
                                     </Button>
+                                    <ToastContainer autoClose={1000} />
                                 </AnimateButton>
                             </Grid>
                             <Grid item xs={12}>
