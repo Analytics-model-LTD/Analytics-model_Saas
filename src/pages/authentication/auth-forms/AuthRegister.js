@@ -101,7 +101,7 @@ const AuthRegister = () => {
                     });
                 }
                 setTimeout(function () {
-                    navigate(`verification/${userId}/${token}`);
+                    navigate(`login`);
                 }, 2000);
             })
             .catch((err) => {
