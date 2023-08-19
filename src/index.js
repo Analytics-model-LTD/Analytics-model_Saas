@@ -15,19 +15,20 @@ import 'assets/third-party/apex-chart.css';
 import App from './App';
 import { store } from 'store';
 import reportWebVitals from './reportWebVitals';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(
-    <StrictMode>
+    <GoogleOAuthProvider clientId="1707393391-8qee74bq6137hdjb3qb0ntq9megb4cqf.apps.googleusercontent.com">
         <ReduxProvider store={store}>
             <BrowserRouter basename="/">
                 <App />
             </BrowserRouter>
         </ReduxProvider>
-    </StrictMode>
+    </GoogleOAuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

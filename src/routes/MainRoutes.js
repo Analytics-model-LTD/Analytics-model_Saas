@@ -9,10 +9,16 @@ import AuthGuard from 'guard/AuthGuards';
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const Plans = Loadable(lazy(() => import('pages/plans')));
 const Billing = Loadable(lazy(() => import('pages/billing')));
+const Integrationsources = Loadable(lazy(() => import('pages/integrationsource')));
+const Integrationsourcestable = Loadable(lazy(() => import('pages/integrationsourcetable')));
+const Addintegrationsource = Loadable(lazy(() => import('pages/Addintegrationsource')));
+const Verification = Loadable(lazy(() => import('pages/verfication')));
+
 const Requests = Loadable(lazy(() => import('pages/requests')));
 const Templates = Loadable(lazy(() => import('pages/templates')));
 const TemplateForm = Loadable(lazy(() => import('pages/template-form/')));
 const RequestDetail = Loadable(lazy(() => import('pages/request-detail')));
+const UserForm = Loadable(lazy(() => import('pages/user-detail/')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
@@ -71,6 +77,19 @@ const MainRoutes = {
             element: <AuthGuard component={<Billing />} />
         },
         {
+            path: 'integrationsources',
+            element: <AuthGuard component={<Integrationsources />} />
+        },
+        {
+            path: 'integrationsources/table',
+            element: <AuthGuard component={<Integrationsourcestable />} />
+        },
+
+        {
+            path: 'integrationsources/integrationsources/add-connection',
+            element: <AuthGuard component={<Addintegrationsource />} />
+        },
+        {
             path: 'requests',
             element: <AuthGuard component={<Requests />} />
         },
@@ -85,6 +104,10 @@ const MainRoutes = {
         {
             path: 'templates/add',
             element: <AuthGuard component={<TemplateForm />} />
+        },
+        {
+            path: 'users/user-detail/:id',
+            element: <AuthGuard component={<UserForm />} />
         }
     ]
 };
