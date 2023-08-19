@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
+import { Box } from '@mui/material'
 // material-ui
 import { ButtonBase } from '@mui/material';
 
@@ -12,7 +12,12 @@ import config from 'config';
 
 const LogoSection = ({ sx, to }) => (
     <ButtonBase disableRipple component={Link} to={!to ? config.defaultPath : to} sx={sx}>
-        <Logo />
+        {/* <Logo /> */}
+        <Box
+            component="img"
+            sx={{ height: "50px", ml: "50%" }}
+            src='logo.svg'
+        />
     </ButtonBase>
 );
 

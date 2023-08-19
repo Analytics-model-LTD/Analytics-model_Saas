@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import { Box } from '@mui/material'
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Stack, Chip, Typography } from '@mui/material';
@@ -7,7 +7,7 @@ import { Stack, Chip, Typography } from '@mui/material';
 // project import
 import DrawerHeaderStyled from './DrawerHeaderStyled';
 import Logo from 'components/Logo';
-
+import { createTheme } from '@mui/material/styles';
 // ==============================|| DRAWER HEADER ||============================== //
 
 const DrawerHeader = ({ open }) => {
@@ -15,9 +15,15 @@ const DrawerHeader = ({ open }) => {
 
     return (
         // only available in paid version
-        <DrawerHeaderStyled theme={theme} open={open}>
-            <Stack direction="row" spacing={1} alignItems="center">
-                <Typography variant="h3">DEMO</Typography>
+        <DrawerHeaderStyled theme={theme} open={open} sx={{ backgroundColor: "#1E87F0" }}>
+            <Stack direction="row" spacing={1} alignItems="center" >
+                <Box
+                    component="img"
+                    sx={{ height: "50px",ml:"50%"}}
+
+                    src='logo.svg'
+                />
+                {/* <Typography variant="h3">DEMO</Typography> */}
                 {/* <Logo /> */}
                 {/* <Chip
                     label={process.env.REACT_APP_VERSION}

@@ -66,7 +66,7 @@ const AuthRegister = () => {
 
         axios
             .post(
-                'http://localhost:8080/api/user/register',
+                'https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/register',
                 {
                     email: val.email,
                     password: val.password,
@@ -81,17 +81,38 @@ const AuthRegister = () => {
             )
             .then((res) => {
                 console.log(res);
+                const userId = res.data.data.userId;
+                const token = res.data.data.token;
+                // if (token) {
+                //     axios
+                //         .get(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/verify/${userId}/${token}`)
+                //         .then((res) => {
+                //             console.log(res);
+                //             res.data.message = 'email verified sucessfully' ? navigate('/verification') : <></>;
+                //         })
+                //         .catch((er) => {
+                //             consol.log(er);
+                //         });
+                // }
+
                 if (res.data.message === 'User registered successfully.') {
                     toast.success('User registered successfully.', {
                         position: 'top-center'
                     });
                 }
                 setTimeout(function () {
-                    navigate('/login');
-                }, 2000);
+                    navigate(`verification/${userId}/${token}`);
+                }, 2000);
             })
             .catch((err) => {
                 console.log(err);
+                err.response.data.message === 'Email already exists.' ? (
+                    toast.error('User Email Allready Registered .', {
+                        position: 'top-center'
+                    })
+                ) : (
+                    <></>
+                );
             });
     };
 
@@ -277,7 +298,7 @@ const AuthRegister = () => {
                                     >
                                         Create Account
                                     </Button>
-                                    <ToastContainer autoClose={1000} />
+                                    <ToastContainer autoClose={1000} />
                                 </AnimateButton>
                             </Grid>
                             <Grid item xs={12}>

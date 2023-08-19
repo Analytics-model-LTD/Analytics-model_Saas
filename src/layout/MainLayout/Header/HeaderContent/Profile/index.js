@@ -57,6 +57,7 @@ function a11yProps(index) {
 const Profile = () => {
     const navigate = useNavigate();
     const theme = useTheme();
+    const avatar1 = '/broken-image.jpg';
 
     //logout fuctionality
 
@@ -85,16 +86,14 @@ const Profile = () => {
     };
 
     const iconBackColorOpen = 'grey.300';
-    const username=localStorage.getItem('user');
+    const username = JSON.parse(localStorage.getItem('userInfo'));
 
     return (
-        <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-            <ButtonBase
+        <Box sx={{ flexShrink: 0, ml: 0.75, borderRadius: '20px', bgcolor: '#1E87F0', borderColor: 'text.primary', border: 1 }}>
+            <Box
                 sx={{
-                    p: 0.25,
-                    bgcolor: open ? iconBackColorOpen : 'transparent',
-                    borderRadius: 1,
-                    '&:hover': { bgcolor: 'secondary.lighter' }
+                    p: 0.25
+                    // bgcolor: open ? iconBackColorOpen : 'transparent',
                 }}
                 aria-label="open profile"
                 ref={anchorRef}
@@ -103,10 +102,10 @@ const Profile = () => {
                 onClick={handleToggle}
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-                    <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-                    <Typography variant="subtitle1"> {username}</Typography>
+                    <Typography variant="subtitle1"> {username?.firstname}</Typography>
+                    <Avatar alt="profile user" src={username?.picture} sx={{ width: 32, height: 32 }} />
                 </Stack>
-            </ButtonBase>
+            </Box>
             <Popper
                 placement="bottom-end"
                 open={open}
@@ -145,11 +144,11 @@ const Profile = () => {
                                             <Grid container justifyContent="space-between" alignItems="center">
                                                 <Grid item>
                                                     <Stack direction="row" spacing={1.25} alignItems="center">
-                                                        <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+                                                        <Avatar alt="profile user" src={username?.picture} sx={{ width: 32, height: 32 }} />
                                                         <Stack>
-                                                            <Typography variant="h6">{username}</Typography>
+                                                            <Typography variant="h6">{username?.firstname}</Typography>
                                                             <Typography variant="body2" color="textSecondary">
-                                                                UI/UX Designer
+                                                                {username?.name}
                                                             </Typography>
                                                         </Stack>
                                                     </Stack>

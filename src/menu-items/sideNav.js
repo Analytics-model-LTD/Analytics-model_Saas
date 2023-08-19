@@ -30,7 +30,31 @@ const requests = {
             url: '/billing',
             icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
-        }
+        },
+        {
+            id: 'integrationsources',
+            title: 'Integrationsources',
+            type: 'item',
+            url: '/integrationsources',
+            icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'integrationsourcestable',
+            title: 'Integrationsourcestable',
+            type: 'item',
+            url: '/integrationsources/table',
+            icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        // {
+        //     id: 'addconnection',
+        //     title: 'Addconnection',
+        //     type: 'item',
+        //     url: '/integrationsources/add-connection',
+        //     icon: icons.ConfirmationNumberOutlinedIcon,
+        //     breadcrumbs: false
+        // }
         // ,
         // {
         //     id: 'requests',

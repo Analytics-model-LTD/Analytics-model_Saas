@@ -6,8 +6,13 @@ const AuthGuard = ({ component }) => {
 
     useEffect(() => {
         const data = localStorage.getItem('TOKEN');
+        // const gdata = localStorage.getItem('gtoken');
         if (!data) {
             navigate('/login');
+            // } else if (!gdata) {
+
+            //     navigate('/login');
+            // }
         }
     }, [component]);
 

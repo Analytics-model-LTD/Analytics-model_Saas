@@ -4,13 +4,15 @@ import googleLoginReducer from '../Slice/googleLoginSlice';
 
 // project import
 import reducers from './reducers';
+import userProfileReducer from 'Slice/userProfileSlice';
 
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 
 const store = configureStore({
     reducer: {
         menu: reducers,
-        googleLogin: googleLoginReducer
+        googleLogin: googleLoginReducer,
+        userProfile: userProfileReducer
     }
 });
 
