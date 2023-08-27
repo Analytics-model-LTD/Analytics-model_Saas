@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -68,6 +68,7 @@ const Profile = () => {
 
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
+
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -80,13 +81,19 @@ const Profile = () => {
     };
 
     const [value, setValue] = useState(0);
+    const [userdata, setuserdata] = useState([]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const iconBackColorOpen = 'grey.300';
+    // useEffect(() => {
+    //     const username = JSON.parse(localStorage.getItem('userInfo'));
+    //     setuserdata(username || []);
+    // }, [userdata]);
+
     const username = JSON.parse(localStorage.getItem('userInfo'));
+    const iconBackColorOpen = 'grey.300';
 
     return (
         <Box sx={{ flexShrink: 0, ml: 0.75, borderRadius: '20px', bgcolor: '#1E87F0', borderColor: 'text.primary', border: 1 }}>
@@ -173,15 +180,15 @@ const Profile = () => {
                                                             sx={{
                                                                 display: 'flex',
                                                                 flexDirection: 'row',
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center',
+                                                                justifyContent: 'start',
+                                                                alignItems: 'startr',
                                                                 textTransform: 'capitalize'
                                                             }}
                                                             icon={<UserOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
                                                             label="Profile"
                                                             {...a11yProps(0)}
                                                         />
-                                                        <Tab
+                                                        {/* <Tab
                                                             sx={{
                                                                 display: 'flex',
                                                                 flexDirection: 'row',
@@ -191,16 +198,16 @@ const Profile = () => {
                                                             }}
                                                             icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
                                                             label="Setting"
-                                                            {...a11yProps(1)}
+                                                            {...a11yProps(1)} */}
                                                         />
                                                     </Tabs>
                                                 </Box>
                                                 <TabPanel value={value} index={0} dir={theme.direction}>
                                                     <ProfileTab handleLogout={handleLogout} />
                                                 </TabPanel>
-                                                <TabPanel value={value} index={1} dir={theme.direction}>
+                                                {/* <TabPanel value={value} index={1} dir={theme.direction}>
                                                     <SettingTab />
-                                                </TabPanel>
+                                                </TabPanel> */}
                                             </>
                                         )}
                                     </MainCard>

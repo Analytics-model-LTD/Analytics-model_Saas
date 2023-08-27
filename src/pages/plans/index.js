@@ -18,9 +18,16 @@ const Plans = () => {
     return <Box>
 
         <Grid container spacing={3}>
+        <Grid item xs={12}>
+        <Paper elevation={0} sx={{ p: 2 }}>
+          <Typography variant="h5" sx={{ color: '#17171B)' }}>
+          Choose your Premium plan 
+          </Typography>
+        </Paper>
+      </Grid>
             <Grid item xs={12} sm={6} md={4} justifyContent="center" alignItems="center">
                 <Card elevation={0} sx={{ textAlign: "center" }}>
-                    <Box sx={{ p: 2, background: 'rgb(19, 194, 194)', color: 'white' }}>
+                    <Box sx={{ p: 2, background: 'rgb(19, 194, 194)', color: '1E87F0' }}>
                         <Typography variant="h3">Beginner</Typography>
                     </Box>
                     <Box sx={{ p: 2 }}>
@@ -97,7 +104,7 @@ const Plans = () => {
                             </List>
                             <Divider className={classes.customDivider} />
                             <Box>
-                                <Typography variant="h2">$29</Typography>
+                                <Typography variant="h2">1,999$</Typography>
                                 <Typography variant="h6">per month</Typography>
                             </Box>
                             <Button
@@ -107,7 +114,7 @@ const Plans = () => {
                                 variant="outlined"
                                 color="primary"
                             >
-                                Buy
+                                Select
                             </Button>
                         </Stack>
                     </Box>
@@ -192,7 +199,7 @@ const Plans = () => {
                             </List>
                             <Divider className={classes.customDivider} />
                             <Box>
-                                <Typography variant="h2">$39</Typography>
+                                <Typography variant="h2">3,999$</Typography>
                                 <Typography variant="h6">per month</Typography>
                             </Box>
                             <Button
@@ -202,7 +209,7 @@ const Plans = () => {
                                 variant="outlined"
                                 color="primary"
                             >
-                                Buy
+                                Select
                             </Button>
                         </Stack>
                     </Box>
@@ -210,7 +217,7 @@ const Plans = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={4} >
                 <Card elevation={0} sx={{ textAlign: "center" }}>
-                    <Box sx={{ p: 2, background: 'rgb(255, 77, 79)', color: 'white' }}>
+                    <Box sx={{ p: 2, background: 'rgb(255, 77, 79)', color: '#CF2C70' }}>
                         <Typography variant="h3">Advanced</Typography>
                     </Box>
                     <Box sx={{ p: 2 }}>
@@ -287,7 +294,7 @@ const Plans = () => {
                             </List>
                             <Divider className={classes.customDivider} />
                             <Box>
-                                <Typography variant="h2">$29</Typography>
+                                <Typography variant="h2">5,999$ </Typography>
                                 <Typography variant="h6">per month</Typography>
                             </Box>
                             <Button
@@ -297,7 +304,7 @@ const Plans = () => {
                                 variant="outlined"
                                 color="primary"
                             >
-                                Buy
+                               Select
                             </Button>
                         </Stack>
                     </Box>

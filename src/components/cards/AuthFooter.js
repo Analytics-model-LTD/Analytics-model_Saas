@@ -37,7 +37,7 @@ const AuthFooter = () => {
                         variant="subtitle2"
                         color="secondary"
                         component={Link}
-                        href="Support@analytics-model.com"
+                        href="mailto:Support@analytics-model.com"
                         target="_blank"
                         underline="hover"
                     >

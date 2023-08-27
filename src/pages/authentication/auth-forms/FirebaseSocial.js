@@ -22,7 +22,6 @@ const FirebaseSocial = () => {
     const navigate = useNavigate();
 
     const onSuccess = (response) => {
-        console.log(response);
         localStorage.setItem('TOKEN', response.access_token);
         if (response) {
             axios
@@ -33,8 +32,6 @@ const FirebaseSocial = () => {
                     }
                 })
                 .then((res) => {
-                    debugger;
-                    console.log(res);
                     if (res) {
                         const gdata = localStorage.getItem('TOKEN');
                         gdata !== null ? navigate('/') : <></>;
@@ -87,7 +84,7 @@ const FirebaseSocial = () => {
             >
                 {!matchDownSM && 'Google'}
             </Button>
-{/* 
+            {/* 
             <Button
                 variant="outlined"
                 color="secondary"

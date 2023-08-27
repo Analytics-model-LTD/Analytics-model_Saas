@@ -106,7 +106,7 @@ const MainRoutes = {
             element: <AuthGuard component={<TemplateForm />} />
         },
         {
-            path: 'users/user-detail/:id',
+            path: 'users/user-detail/',
             element: <AuthGuard component={<UserForm />} />
         }
     ]
