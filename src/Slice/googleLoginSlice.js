@@ -5,24 +5,22 @@ export const googleSignIn = createAsyncThunk('googleLogin/signIn', async () => {
         // Load the Google SDK
         await new Promise((resolve) => {
             window.gapi.load('auth2', resolve);
-            console.log(resolve);
         });
 
         const auth2 = await window.gapi.auth2.init({
             client_id: '529194712210-st50mcevrkq97s51kpdf1lhse606tsep.apps.googleusercontent.com' // Replace with your actual Client ID
         });
+        //commit
 
         const googleUser = await auth2.signIn();
 
         const profile = googleUser.getBasicProfile();
-        console.log(profile);
         const user = {
             id: profile.getId(),
             name: profile.getName(),
             email: profile.getEmail(),
             imageUrl: profile.getImageUrl()
         };
-        console.log(user);
 
         return user;
     } catch (error) {
@@ -46,7 +44,6 @@ const googleLoginSlice = createSlice({
                 state.error = null;
             })
             .addCase(googleSignIn.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.loading = false;
                 state.error = null;
                 state.user = action.payload;

@@ -16,6 +16,10 @@ import { Formik } from 'formik';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getuserDetails, updateUserProfile } from 'Slice/userProfileSlice';
+import { result } from 'lodash';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Navigate, json, useNavigate } from '../../../node_modules/react-router-dom/dist/index';
 
 const ImgStyled = styled('img')(({ theme }) => ({
     width: 120,
@@ -44,24 +48,43 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 const User = () => {
     const formikRef = useRef();
     const [openAlert, setOpenAlert] = useState(true);
-    const [imgSrc, setImgSrc] = useState('/images/avatars/1.png');
+    const [imgSrc, setImgSrc] = useState(null);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const onChange = (file) => {
+    // const [bitmapSrc, setBitmapSrc] = useState(null);
+
+    const [selectedFile, setselectedFile] = useState();
+
+    const inputElement = useRef();
+
+    const onChange = (e) => {
         const reader = new FileReader();
-        const { files } = file.target;
-        if (files && files.length !== 0) {
-            reader.onload = () => setImgSrc(reader.result);
-            reader.readAsDataURL(files[0]);
+        const files = e.target.files[0];
+
+        if (files) {
+            reader.onload = () => {
+                setImgSrc(reader.result); // Update the image display
+                setselectedFile(files, () => {
+                    ('After setselectedFile:', selectedFile);console.log
+                }); // Update the selected file
+            };
+            reader.readAsDataURL(files);
         }
     };
+
+    useEffect(() => {
+        console.log('selectedFile has changed:', selectedFile);
+    }, [selectedFile]);
+
     const [initValues, setInitValues] = useState({
         firstname: '',
         lastname: '',
         email: '',
         phone: '',
         matrix_of_intrest: '',
-        querylimit: ''
+        querylimit: '',
+        profile_image: ''
     });
 
     let data = null;
@@ -72,8 +95,10 @@ const User = () => {
             dispatch(getuserDetails())
                 .unwrap()
                 .then((res) => {
-                    console.log(res);
                     data = res.data;
+                    let imgs = res.data.profile_image;
+                    setImgSrc(imgs);
+
                     formikRef.current.setValues(data);
                 })
                 .catch((error) => console.log(error));
@@ -81,13 +106,54 @@ const User = () => {
     }, []);
 
     const handlesubmit = (val) => {
-        debugger;
-        dispatch(updateUserProfile(val))
+        const formData = new FormData();
+        formData.append('profile_image', selectedFile);
+
+        const formDataToObject = (formData) => {
+            const object = {};
+            formData.forEach((value, key) => {
+                object[key] = value;
+            });
+            return object;
+        };
+
+        const formDataObject = formDataToObject(formData);
+
+        const Fileimg = formDataObject.profile_image;
+
+        const form = {
+            firstname: val.firstname,
+            lastname: val.lastname,
+
+            phone: val.phone,
+            matrix_of_intrest: val.matrix_of_intrest,
+            querylimit: val.querylimit,
+            profile_image: Fileimg,
+
+            birthdate: '2000-12-12'
+        };
+
+        dispatch(updateUserProfile(form))
             .unwrap()
             .then((res) => {
-                debugger;
-                console.log(res);
-            });
+                console.log(res.data);
+                res.message = 'updated successfully.' ? (
+                    toast.success('updated successfully .', {
+                        position: 'top-center'
+                    })
+                ) : (
+                    <></>
+                );
+
+                localStorage.setItem(
+                    'userInfo',
+                    JSON.stringify({
+                        picture: res?.data?.profile_image,
+                        firstname: res?.data?.firstname
+                    })
+                );
+            })
+            .catch((error) => console.log('error', error));
     };
 
     return (
@@ -103,8 +169,7 @@ const User = () => {
                 // })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        handlesubmit(values);
-                        console.log(values);
+                        await handlesubmit(values);
                         setStatus({ success: false });
                         setSubmitting(false);
                     } catch (err) {
@@ -120,13 +185,18 @@ const User = () => {
                             <Grid item xs={12} sx={{ mt: 4.8, mb: 3 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                     <ImgStyled src={imgSrc} alt="Profile Pic" />
+
                                     <Box>
                                         <ButtonStyled component="label" variant="contained" htmlFor="account-settings-upload-image">
                                             Upload New Photo
                                             <input
                                                 hidden
+                                                ref={inputElement}
                                                 type="file"
-                                                onChange={onChange}
+                                                name="profile_image"
+                                                onChange={(e) => {
+                                                    onChange(e);
+                                                }}
                                                 accept="image/png, image/jpeg"
                                                 id="account-settings-upload-image"
                                             />
@@ -166,6 +236,7 @@ const User = () => {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    disabled
                                     fullWidth
                                     type="email"
                                     label="Email"
@@ -215,23 +286,18 @@ const User = () => {
                             <Grid item xs={12}>
                                 <Button variant="contained" sx={{ mr: 3.5 }} type="submit">
                                     Save Changes
+                                    <ToastContainer autoClose={1000} />
                                 </Button>
+
                                 <Button
                                     type="reset"
                                     variant="outlined"
                                     color="secondary"
                                     onClick={() => {
-                                        formikRef.current.resetForm({
-                                            Firstname: '',
-                                            Lastname: '',
-                                            email: '',
-                                            number: '',
-                                            matrix: '',
-                                            Querylimit: ''
-                                        });
+                                        navigate('/dashboard/default');
                                     }}
                                 >
-                                    Reset
+                                    Cancle
                                 </Button>
                             </Grid>
                         </Grid>

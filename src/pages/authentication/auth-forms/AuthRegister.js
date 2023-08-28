@@ -80,7 +80,6 @@ const AuthRegister = () => {
                 }
             )
             .then((res) => {
-                console.log(res);
                 const userId = res.data.data.userId;
                 const token = res.data.data.token;
                 // if (token) {
@@ -105,7 +104,6 @@ const AuthRegister = () => {
                 }, 2000);
             })
             .catch((err) => {
-                console.log(err);
                 err.response.data.message === 'Email already exists.' ? (
                     toast.error('User Email Allready Registered .', {
                         position: 'top-center'
@@ -142,7 +140,6 @@ const AuthRegister = () => {
                         setStatus({ success: false });
                         setSubmitting(false);
                     } catch (err) {
-                        console.error(err);
                         setStatus({ success: false });
                         setErrors({ submit: err.message });
                         setSubmitting(false);
@@ -271,14 +268,15 @@ const AuthRegister = () => {
                             <Grid item xs={12}>
                                 <Typography variant="body2">
                                     By Signing up, you agree to our &nbsp;
-                                    <Link variant="subtitle2" component={RouterLink} to="#">
+                                    <Link variant="subtitle2" component={Link}  target="_blank"underline="hover" href="https://www.analytics-model.com/terms-and-conditions">
                                         Terms of Service
                                     </Link>
                                     &nbsp; and &nbsp;
-                                    <Link variant="subtitle2" component={RouterLink} to="#">
+                                    <Link variant="subtitle2" component={Link} target="_blank"underline="hover" href="https://www.analytics-model.com/privacypolicy">
                                         Privacy Policy
                                     </Link>
                                 </Typography>
+                  
                             </Grid>
                             {errors.submit && (
                                 <Grid item xs={12}>

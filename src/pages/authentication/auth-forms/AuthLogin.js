@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 
@@ -33,6 +33,9 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import jwt from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
+import { getuserDetails } from 'Slice/userProfileSlice';
+import { dispatch } from 'store/index';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
@@ -40,6 +43,7 @@ const AuthLogin = () => {
     const [checked, setChecked] = React.useState(false);
 
     const [showPassword, setShowPassword] = React.useState(false);
+
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -47,6 +51,10 @@ const AuthLogin = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    useEffect(() => {
+        dispatch(getuserDetails());
+    }, [dispatch]);
 
     const handleSubmit = (val) => {
         axios
@@ -63,25 +71,20 @@ const AuthLogin = () => {
                 }
             )
             .then((res) => {
-                console.log('1111', res.data);
-
                 localStorage.setItem('TOKEN', res.data.access_token);
-
                 const user = jwt(res.data.access_token);
-
                 localStorage.setItem(
                     'userInfo',
                     JSON.stringify({
-                        firstname: user?.user?.firstname
+                        firstname: user?.user?.firstname,
+                        picture: res?.data?.profile_image
                     })
                 );
                 const data = localStorage.getItem('TOKEN');
-                console.log(user);
                 res.data.access_token != null ? navigate('/') : <></>;
             })
 
             .catch((err) => {
-                console.log('111111', err);
                 if (err.response.data.message === 'Unauthorized.') {
                     toast.error('User password incorrect.', {
                         position: 'top-center'

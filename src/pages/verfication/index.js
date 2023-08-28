@@ -14,7 +14,6 @@ function Verification() {
         axios
             .get(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/verify/${userId}/${token}`)
             .then((res) => {
-                console.log(res);
 
                 res.data.message = 'email verified sucessfully' ? (
                     toast.success('User verified successfully.', {
@@ -29,7 +28,6 @@ function Verification() {
                 }, 2000);
             })
             .catch((er) => {
-                console.log(er);
                 er.response.data === 'Invalid link' ? (
                     toast.error(' allready verify..invalid link.', {
                         position: 'top-center'

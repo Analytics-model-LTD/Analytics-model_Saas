@@ -10,29 +10,30 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-
+import Addicon from 'assets/images/icons/icons8-add-48.png'
+import { Grid } from "@mui/material";
 const columns = [
-    { id: 'connectionname', label: 'ConnectionName', minWidth: 170 },
-    { id: 'status', label: 'Status', minWidth: 100 },
+    { id: 'connectionname', label: 'Connection name', minWidth: 170,   align: 'center', },
+    { id: 'status', label: 'Status', minWidth: 100,   align: 'center', },
     {
       id: 'plateform',
-      label: 'Plateform',
+      label: 'Platform',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
       format: value => value.toLocaleString('en-US')
     },
     {
       id: 'datapath',
       label: 'Data Path',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
       format: value => value.toLocaleString('en-US')
     },
     {
       id: 'scanallvertical',
       label: 'Scan All Vertical',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
       format: value => value.toFixed(2)
     }
   ]
@@ -74,6 +75,7 @@ function Integrationsourcestable() {
     }
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    
     <TableContainer sx={{ maxHeight: 440 }}>
       <Table stickyHeader aria-label='sticky table'>
         <TableHead>
@@ -101,10 +103,17 @@ function Integrationsourcestable() {
               </TableRow>
             )
           })}
+      
         </TableBody>
+       
       </Table>
+     
     </TableContainer>
+    <Grid sx={{ ml:"75%"}}>
+        <img src={Addicon} alt="Addicon" />
+   </Grid>
     <TablePagination
+    sx={{mt:"-2%"}}
       rowsPerPageOptions={[10, 25, 100]}
       component='div'
       count={rows.length}
@@ -113,6 +122,9 @@ function Integrationsourcestable() {
       onPageChange={handleChangePage}
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
+
+
+
   </Paper>
   )
 }

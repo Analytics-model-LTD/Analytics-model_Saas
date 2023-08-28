@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box } from '@mui/material'
+import { Box ,Grid} from '@mui/material'
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Stack, Chip, Typography } from '@mui/material';
@@ -8,6 +8,7 @@ import { Stack, Chip, Typography } from '@mui/material';
 import DrawerHeaderStyled from './DrawerHeaderStyled';
 import Logo from 'components/Logo';
 import { createTheme } from '@mui/material/styles';
+import logo from 'assets/images/icons/Analytics Model Playground (Copy)/1440px/Feed/download 1.png'
 // ==============================|| DRAWER HEADER ||============================== //
 
 const DrawerHeader = ({ open }) => {
@@ -17,12 +18,14 @@ const DrawerHeader = ({ open }) => {
         // only available in paid version
         <DrawerHeaderStyled theme={theme} open={open} sx={{ backgroundColor: "#1E87F0" }}>
             <Stack direction="row" spacing={1} alignItems="center" >
-                <Box
-                    component="img"
-                    sx={{ height: "50px",ml:"50%"}}
-
-                    src='logo.svg'
-                />
+             
+                <Grid sx={{display:"flex"}}>
+                 <img src={logo} alt="logo" />
+                 </Grid>
+                 <div>
+                 <Typography sx={{color:'#FFF'}}>Analytics</Typography>
+                 <Typography sx={{mt:'-6px  ',color:'#FFF'}}>Model</Typography>
+                 </div>
                 {/* <Typography variant="h3">DEMO</Typography> */}
                 {/* <Logo /> */}
                 {/* <Chip
