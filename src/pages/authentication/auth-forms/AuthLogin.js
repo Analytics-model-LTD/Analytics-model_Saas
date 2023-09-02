@@ -80,13 +80,19 @@ const AuthLogin = () => {
                         picture: res?.data?.profile_image
                     })
                 );
+
                 const data = localStorage.getItem('TOKEN');
                 res.data.access_token != null ? navigate('/') : <></>;
             })
 
             .catch((err) => {
-                if (err.response.data.message === 'Unauthorized.') {
-                    toast.error('User password incorrect.', {
+                console.log('111111', err.response.data.message);
+                if (err.response.data.message === 'Invalid email or password.') {
+                    toast.error(' Incorrect Email or Password ', {
+                        position: 'top-center'
+                    });
+                } else if (err.response.data.message === 'Invalid Password') {
+                    toast.error('  Incorrect Password', {
                         position: 'top-center'
                     });
                 }

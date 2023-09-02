@@ -48,7 +48,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 const User = () => {
     const formikRef = useRef();
     const [openAlert, setOpenAlert] = useState(true);
-    const [imgSrc, setImgSrc] = useState(null);
+    const [profile_image, setImgSrc] = useState();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -184,7 +184,7 @@ const User = () => {
                         <Grid container spacing={7}>
                             <Grid item xs={12} sx={{ mt: 4.8, mb: 3 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <ImgStyled src={imgSrc} alt="Profile Pic" />
+                                    <ImgStyled src={profile_image ? profile_image : setImgSrc('/images/avatars/1.png')} alt="Profile Pic" />
 
                                     <Box>
                                         <ButtonStyled component="label" variant="contained" htmlFor="account-settings-upload-image">

@@ -45,7 +45,6 @@ const userProfileSlice = createSlice({
         });
 
         builder.addCase(updateUserProfile.fulfilled, (state, action) => {
-            debugger;
             state.loading = 'idle';
             state.profileData = [];
         });
