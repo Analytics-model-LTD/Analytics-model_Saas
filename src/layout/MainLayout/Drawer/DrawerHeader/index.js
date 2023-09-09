@@ -16,7 +16,7 @@ const DrawerHeader = ({ open }) => {
 
     return (
         // only available in paid version
-        <DrawerHeaderStyled theme={theme} open={open} sx={{ backgroundColor: "#1E87F0" }}>
+        <DrawerHeaderStyled theme={theme} open={open} sx={{ backgroundColor: "#1E87F0" , minHeight: "61px",}}>
             <Stack direction="row" spacing={1} alignItems="center" >
              
                 <Grid sx={{display:"flex"}}>

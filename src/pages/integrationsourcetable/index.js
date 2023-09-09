@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 // ** MUI Imports
-import Paper from '@mui/material/Paper';
+// import {Paper  }from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
@@ -10,12 +10,14 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
-import Addicon from 'assets/images/icons/icons8-add-48.png';
-import { Grid } from '@mui/material';
+// import Addicon from 'assets/images/icons/icons8-add-48.png';
+import {  Typography,Paper } from '@mui/material';
+// import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllintegretionData, getAllintegretionData } from 'Slice/integrationsourcesSlice';
 import { dispatch } from 'store/index';
-
+import Grid from '@mui/material/Grid';
+import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -23,17 +25,17 @@ const columns = [
     { id: 'connectionName', label: 'Connection name', minWidth: 170, align: 'center' },
 
     { id: 'status', label: 'Status', minWidth: 100, align: 'center' },
-    { id: 'connectionSource', label: 'connectionSource ', minWidth: 170, align: 'center' },
+    { id: 'connectionSource', label: 'ConnectionSource ', minWidth: 170, align: 'center' },
     {
         id: 'projectId',
-        label: 'ProjectName',
+        label: 'ProjectId',
         minWidth: 170,
         align: 'center',
         format: (value) => value.toLocaleString('en-US')
     },
     {
         id: 'tableId',
-        label: 'TableName ',
+        label: 'TableId ',
         minWidth: 170,
         align: 'center',
         format: (value) => value.toLocaleString('en-US')
@@ -97,8 +99,13 @@ function Integrationsourcestable() {
     };
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
+        <Grid container spacing={2}>
+        <Grid item xs={12} sx={{display:'flex'}}>
+        <AddIcon/>
+        <Typography variant="h5">NEW METRIC</Typography>
+    </Grid>
+        <Paper sx={{ width: '100%', overflow: 'hidden',mt:'2%' }}>
+            <TableContainer sx={{ maxHeight: 440, }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -108,6 +115,8 @@ function Integrationsourcestable() {
                                 </TableCell>
                             ))}
                         </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {getdata.map((row) => (
                             <TableRow key={row.id} hover role="checkbox">
                                 <TableCell style={{ textAlign: 'center' }}>{row.connectionName}</TableCell>
@@ -117,18 +126,10 @@ function Integrationsourcestable() {
                                 <TableCell style={{ textAlign: 'center' }}>{row.tableId}</TableCell>
                             </TableRow>
                         ))}
-                    </TableHead>
-                    <TableBody>
-                        {getdata.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                            console.log(row);
-                            return <TableRow hover role="checkbox" key={row.id}></TableRow>;
-                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Grid sx={{ ml: '75%' }}>
-                <img src={Addicon} alt="Addicon" />
-            </Grid>
+        
             <TablePagination
                 sx={{ mt: '-2%' }}
                 rowsPerPageOptions={[10, 25, 100]}
@@ -140,6 +141,7 @@ function Integrationsourcestable() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </Paper>
+        </Grid>
     );
 }
 

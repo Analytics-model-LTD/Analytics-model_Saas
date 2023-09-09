@@ -198,7 +198,7 @@ function Addintegrationsource() {
                                                     value={value}
                                                     label="Connection Name"
                                                     onChange={onChange}
-                                                    placeholder="Leonard"
+                                                    // placeholder="Leonard"
                                                     error={Boolean(errors.connectionName)}
                                                     aria-describedby="validation-schema-first-name"
                                                 />
@@ -223,7 +223,7 @@ function Addintegrationsource() {
                                                     value={value}
                                                     label="Data Source"
                                                     onChange={onChange}
-                                                    placeholder="Carter"
+                                                    // placeholder="Carter"
                                                     error={Boolean(errors.dataSourceName)}
                                                     aria-describedby="validation-schema-dataSource"
                                                 />
@@ -232,40 +232,6 @@ function Addintegrationsource() {
                                         {errors.dataSourceName && (
                                             <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-dataSource">
                                                 {errors.dataSourceName.message}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <Stack spacing={2}>
-                                            {/* <InputLabel htmlFor="file">File</InputLabel> */}
-                                            <label htmlFor="upload-image">
-                                                <Button variant="contained" component="span">
-                                                    Upload
-                                                </Button>
-                                                <input
-                                                    // ref={inputElement}
-                                                    id="upload-image"
-                                                    hidden
-                                                    accept="image/*,.pdf,.json"
-                                                    type="file"
-                                                    name="file"
-                                                    onChange={(e) => handleResumeUpload(e)}
-                                                />
-                                            </label>
-                                        </Stack>
-
-                                        {/* {touched.file && errors.file && (
-                                            <FormHelperText error id="standard-weight-helper-text-file">
-                                                {errors.file}
-                                            </FormHelperText>
-                                        )} */}
-
-                                        {errors.credentialJson && (
-                                            <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-credentialJson">
-                                                {errors.credentialJson.message}
                                             </FormHelperText>
                                         )}
                                     </FormControl>
@@ -282,7 +248,7 @@ function Addintegrationsource() {
                                                     value={value}
                                                     label="Default Dataset ID"
                                                     onChange={onChange}
-                                                    placeholder="Carter"
+                                                    // placeholder="Carter"
                                                     error={Boolean(errors.defaultdatasetid)}
                                                     aria-describedby="validation-schema-defaultdatasetid"
                                                 />
@@ -306,7 +272,7 @@ function Addintegrationsource() {
                                                     value={value}
                                                     label="Project ID"
                                                     onChange={onChange}
-                                                    placeholder="Carter"
+                                                    // placeholder="Carter"
                                                     error={Boolean(errors.projectId)}
                                                     aria-describedby="validation-schema-projectid"
                                                 />
@@ -330,7 +296,7 @@ function Addintegrationsource() {
                                                     value={value}
                                                     label="Table ID"
                                                     onChange={onChange}
-                                                    placeholder="Carter"
+                                                    // placeholder="Carter"
                                                     error={Boolean(errors.tableid)}
                                                     aria-describedby="validation-schema-tableid"
                                                 />
@@ -343,6 +309,51 @@ function Addintegrationsource() {
                                         )}
                                     </FormControl>
                                 </Grid>
+
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth>
+                                        <Stack spacing={2}>
+                                            <label htmlFor="upload-image">
+                                                <input
+                                                    id="upload-image"
+                                                    hidden
+                                                    accept="image/*,.pdf,.json"
+                                                    type="file"
+                                                    name="file"
+                                                    onChange={(e) => handleResumeUpload(e)}
+                                                />
+                                                <Button
+                                                    variant="contained"
+                                                    component="span"
+                                                    // startIcon={<CloudUploadIcon />} // You can replace this with an appropriate icon
+                                                    sx={{
+                                                        backgroundColor: 'primary.main', // Customize the background color
+                                                        color: 'white', // Customize the text color
+                                                        '&:hover': {
+                                                            backgroundColor: 'primary.dark' // Customize hover color
+                                                        }
+                                                    }}
+                                                >
+                                                    Upload File
+                                                </Button>
+                                            </label>
+                                            {selectedFile && <Typography variant="body2">Selected File: {selectedFile.name}</Typography>}
+                                        </Stack>
+
+                                        {/* {touched.file && errors.file && (
+                                            <FormHelperText error id="standard-weight-helper-text-file">
+                                                {errors.file}
+                                            </FormHelperText>
+                                        )} */}
+
+                                        {errors.credentialJson && (
+                                            <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-credentialJson">
+                                                {errors.credentialJson.message}
+                                            </FormHelperText>
+                                        )}
+                                    </FormControl>
+                                </Grid>
+
                                 <Grid item xs={12}>
                                     <Button size="large" type="submit" variant="contained">
                                         Test Connection

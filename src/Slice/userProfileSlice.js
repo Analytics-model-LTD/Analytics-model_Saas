@@ -29,9 +29,15 @@ const userProfileSlice = createSlice({
     name: 'userProfile',
     initialState: {
         profileData: [],
-        loading: 'idle'
+        loading: 'idle',
+        userData: ''
     },
-    reducers: {},
+    reducers: {
+        updatedprofile: (state, action) => {
+            state.userData = action.payload;
+            console.log(action.payload);
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getuserDetails.pending, (state, action) => {
             state.loading = 'pending';
@@ -50,10 +56,12 @@ const userProfileSlice = createSlice({
         });
     }
 });
+
 export const getAlluserDetails = (state) => {
     return state.userProfile?.profileData?.data;
 
     console.log(state.userProfile?.profileData?.data);
 };
+export const { updatedprofile } = userProfileSlice.actions;
 
 export default userProfileSlice.reducer;

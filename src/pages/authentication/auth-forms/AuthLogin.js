@@ -86,12 +86,11 @@ const AuthLogin = () => {
             })
 
             .catch((err) => {
-                console.log('111111', err.response.data.message);
-                if (err.response.data.message === 'Invalid email or password.') {
+                if (err.response.data.message === 'Incorrect Email or Password.') {
                     toast.error(' Incorrect Email or Password ', {
                         position: 'top-center'
                     });
-                } else if (err.response.data.message === 'Invalid Password') {
+                } else if (err.response.data.message === 'Wrong Password') {
                     toast.error('  Incorrect Password', {
                         position: 'top-center'
                     });

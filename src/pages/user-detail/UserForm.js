@@ -9,13 +9,15 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 
 import CardContent from '@mui/material/CardContent';
-
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
+import Select from '@mui/material/Select';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getuserDetails, updateUserProfile } from 'Slice/userProfileSlice';
+import { getuserDetails, updateUserProfile, updatedprofile } from 'Slice/userProfileSlice';
 import { result } from 'lodash';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -57,6 +59,7 @@ const User = () => {
     const [selectedFile, setselectedFile] = useState();
 
     const inputElement = useRef();
+    const roles = ['GUEST', 'EMPLOYEE', 'USER', 'ADMIN', 'SUPER ADMIN'];
 
     const onChange = (e) => {
         const reader = new FileReader();
@@ -66,7 +69,8 @@ const User = () => {
             reader.onload = () => {
                 setImgSrc(reader.result); // Update the image display
                 setselectedFile(files, () => {
-                    ('After setselectedFile:', selectedFile);console.log
+                    'After setselectedFile:', selectedFile;
+                    console.log;
                 }); // Update the selected file
             };
             reader.readAsDataURL(files);
@@ -84,7 +88,9 @@ const User = () => {
         phone: '',
         matrix_of_intrest: '',
         querylimit: '',
-        profile_image: ''
+        profile_image: '',
+        company: '',
+        role: ''
     });
 
     let data = null;
@@ -98,6 +104,7 @@ const User = () => {
                     data = res.data;
                     let imgs = res.data.profile_image;
                     setImgSrc(imgs);
+                    // console.log(data);
 
                     formikRef.current.setValues(data);
                 })
@@ -129,9 +136,12 @@ const User = () => {
             matrix_of_intrest: val.matrix_of_intrest,
             querylimit: val.querylimit,
             profile_image: Fileimg,
+            company: val.company,
+            role: val.role,
 
             birthdate: '2000-12-12'
         };
+        // console.log(form);
 
         dispatch(updateUserProfile(form))
             .unwrap()
@@ -152,6 +162,13 @@ const User = () => {
                         firstname: res?.data?.firstname
                     })
                 );
+
+                let userdata = {
+                    picture: res?.data?.profile_image,
+                    firstname: res?.data?.firstname
+                };
+                // console.log([userdata]);
+                dispatch(updatedprofile(userdata));
             })
             .catch((error) => console.log('error', error));
     };
@@ -201,13 +218,6 @@ const User = () => {
                                                 id="account-settings-upload-image"
                                             />
                                         </ButtonStyled>
-                                        <ResetButtonStyled
-                                            color="error"
-                                            variant="outlined"
-                                            onClick={() => setImgSrc('/images/avatars/1.png')}
-                                        >
-                                            Reset
-                                        </ResetButtonStyled>
                                     </Box>
                                 </Box>
                             </Grid>
@@ -281,6 +291,37 @@ const User = () => {
                                     value={values.querylimit}
                                     name="querylimit"
                                 />
+                            </Grid>
+
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    fullWidth
+                                    label="company"
+                                    placeholder="company"
+                                    // defaultValue="ABC Pvt. Ltd."
+                                    onChange={handleChange}
+                                    value={values.company}
+                                    name="company"
+                                />
+                            </Grid>
+
+                            <Grid item xs={12} sm={6}>
+                                <Select
+                                    variant="outlined"
+                                    fullWidth
+                                    label="Role"
+                                    id="role"
+                                    name="role"
+                                    placeholder="role"
+                                    value={values.role}
+                                    onChange={handleChange}
+                                >
+                                    {roles.map((role) => (
+                                        <MenuItem key={role} value={role}>
+                                            {role}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                             </Grid>
 
                             <Grid item xs={12}>
