@@ -30,29 +30,39 @@ const requests = {
     type: 'group',
     children: [
         {
-            id: 'integrationsourcestable',
-            title: 'Integrationsources',
+            id: 'newInsight',
+            title: 'New Insight',
             type: 'item',
-            url: '/integrationsources',
-            icon: intigrationtable,
+            url: '/',
+            icon: newinsight,
             breadcrumbs: false
         },
         {
-            id: 'integrationsources',
-            title: 'My Connections',
+            id: 'myfeed',
+            title: 'My Feed',
             type: 'item',
-            url: '/integrationsources/table',
+            url: '/',
+            icon: myfeed,
+            breadcrumbs: false
+        },
+
+        {
+            id: 'integrationsourcestable',
+            title: 'Connections',
+            type: 'item',
+            url: '/integrationsources',
             icon: Myconnection,
             breadcrumbs: false
         },
         {
-            id: 'plans',
-            title: 'Plans',
+            id: 'integrationsources',
+            title: 'Tracking Metrics',
             type: 'item',
-            url: '/plans',
+            url: '/integrationsources/table',
             icon: intigrationtable,
             breadcrumbs: false
         },
+
         // {
         //     id: 'billing',
         //     title: 'Billing',
@@ -85,54 +95,7 @@ const requests = {
         //     // icon: icons.ConfirmationNumberOutlinedIcon,
         //     breadcrumbs: false
         // },
-        {
-            id: 'myinsight',
-            // title: 'My insight',
-            type: 'item',
-            url: '/myfeed',
-            // icon: icons.ConfirmationNumberOutlinedIcon,
-            breadcrumbs: false
-        },
-        {
-            id: 'myinsight',
-            // title: 'My insight',
-            type: 'item',
-            url: '/myfeed',
-            // icon: icons.ConfirmationNumberOutlinedIcon,
-            breadcrumbs: false
-        },
-        {
-            id: 'myinsight',
-            // title: 'My insight',
-            type: 'item',
-            url: '/myfeed',
-            // icon: icons.ConfirmationNumberOutlinedIcon,
-            breadcrumbs: false
-        },
-        {
-            id: 'myinsight',
-            // title: 'My insight',
-            type: 'item',
-            url: '/myfeed',
-            // icon: icons.ConfirmationNumberOutlinedIcon,
-            breadcrumbs: false
-        },
-        {
-            id: 'myinsight',
-            // title: 'My insight',
-            type: 'item',
-            url: '/myfeed',
-            // icon: icons.ConfirmationNumberOutlinedIcon,
-            breadcrumbs: false
-        },
-        {
-            id: 'myinsight',
-            // title: 'My insight',
-            type: 'item',
-            url: '/myfeed',
-            // icon: icons.ConfirmationNumberOutlinedIcon,
-            breadcrumbs: false
-        },
+          
         {
             id: 'myinsight',
             // title: 'My insight',
@@ -199,9 +162,9 @@ const requests = {
         },
         {
             id: 'setting',
-            title: 'Setting',
+            title: 'Settings',
             type: 'item',
-            url: '/myfeed',
+            url: '/users/user-detail',
             icon: setting,
             breadcrumbs: false
         },
@@ -212,7 +175,7 @@ const requests = {
             url: '/billing',
             icon: billing,
             breadcrumbs: false
-        },
+        },
         // {
         //     id: 'addconnection',
         //     title: 'Addconnection',
