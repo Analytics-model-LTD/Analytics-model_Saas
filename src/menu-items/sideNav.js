@@ -30,8 +30,8 @@ const requests = {
     type: 'group',
     children: [
         {
-            id: 'myinsight',
-            title: 'New insight',
+            id: 'newInsight',
+            title: 'New Insight',
             type: 'item',
             url: '/insight',
             icon: newinsight,
@@ -39,26 +39,27 @@ const requests = {
         },
         {
             id: 'myfeed',
-            title: 'My Feed',
+            title: 'Feed',
             type: 'item',
             url: '/myfeed',
             icon: myfeed,
             breadcrumbs: false
         },
+
         {
             id: 'integrationsourcestable',
-            title: 'Integrationsources',
+            title: 'Connections',
             type: 'item',
             url: '/integrationsources',
-            icon: intigrationtable,
+            icon: Myconnection,
             breadcrumbs: false
         },
         {
             id: 'integrationsources',
-            title: 'My Connections',
+            title: 'Tracking Metrics',
             type: 'item',
             url: '/integrationsources/table',
-            icon: Myconnection,
+            icon: intigrationtable,
             breadcrumbs: false
         },
         {
