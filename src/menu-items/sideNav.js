@@ -30,10 +30,10 @@ const requests = {
     type: 'group',
     children: [
         {
-            id: 'newInsight',
-            title: 'New Insight',
+            id: 'myinsight',
+            title: 'New insight',
             type: 'item',
-            url: '/',
+            url: '/insight',
             icon: newinsight,
             breadcrumbs: false
         },
@@ -41,28 +41,34 @@ const requests = {
             id: 'myfeed',
             title: 'My Feed',
             type: 'item',
-            url: '/',
+            url: '/myfeed',
             icon: myfeed,
             breadcrumbs: false
         },
-
         {
             id: 'integrationsourcestable',
-            title: 'Connections',
+            title: 'Integrationsources',
             type: 'item',
             url: '/integrationsources',
-            icon: Myconnection,
+            icon: intigrationtable,
             breadcrumbs: false
         },
         {
             id: 'integrationsources',
-            title: 'Tracking Metrics',
+            title: 'My Connections',
             type: 'item',
             url: '/integrationsources/table',
-            icon: intigrationtable,
+            icon: Myconnection,
             breadcrumbs: false
         },
-
+        {
+            id: 'plans',
+            // title: 'Plans',
+            type: 'item',
+            //url: '/plans',
+            // icon: intigrationtable,
+            breadcrumbs: false
+        },
         // {
         //     id: 'billing',
         //     title: 'Billing',
@@ -79,28 +85,11 @@ const requests = {
         //     icon: icons.ConfirmationNumberOutlinedIcon,
         //     breadcrumbs: false
         // },
-        // {
-        //     id: 'myinsight',
-        //     // title: 'My insight',
-        //     type: 'item',
-        //     url: '/myfeed',
-        //     // icon: icons.ConfirmationNumberOutlinedIcon,
-        //     breadcrumbs: false
-        // },
-        // {
-        //     id: 'myinsight',
-        //     // title: 'My insight',
-        //     type: 'item',
-        //     url: '/myfeed',
-        //     // icon: icons.ConfirmationNumberOutlinedIcon,
-        //     breadcrumbs: false
-        // },
-          
         {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+           // url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -108,7 +97,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+          //  url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -116,7 +105,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -124,7 +113,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -132,7 +121,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -140,7 +129,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -148,7 +137,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -156,15 +145,55 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
         {
             id: 'setting',
-            title: 'Settings',
+            title: 'Setting',
             type: 'item',
-            url: '/users/user-detail',
+            url: '/myfeed',
             icon: setting,
             breadcrumbs: false
         },
@@ -175,7 +204,7 @@ const requests = {
             url: '/billing',
             icon: billing,
             breadcrumbs: false
-        },
+        },
         // {
         //     id: 'addconnection',
         //     title: 'Addconnection',
