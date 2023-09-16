@@ -59,7 +59,43 @@ const User = () => {
     const [selectedFile, setselectedFile] = useState();
 
     const inputElement = useRef();
-    const roles = ['GUEST', 'EMPLOYEE', 'USER', 'ADMIN', 'SUPER ADMIN'];
+    const roles = [
+        'CEO',
+        ' COO',
+        ' CTO',
+        ' CMO',
+        'CFO',
+        'VP of Sales',
+        'Product Manager',
+        ' UX/UI Designer',
+        'Software Engineer/Developer',
+        'Data Analyst/Scientist',
+        'Customer Support Representative',
+        'Supply Chain Manager',
+        'Digital Marketing Specialist',
+        'Content Writer/Copywriter',
+        'QA Tester',
+        'Finance Analyst',
+        'Legal Counsel',
+        'HR Manager',
+        'Business Analyst',
+        'Community Manager',
+        'Marketing Manager',
+        'Monetization Manager',
+        'Localization Specialist',
+        'Server and Network Engineer',
+        'Legal Counsel',
+        'Finance Manager',
+        'IT Support',
+        'Store Manager',
+        'Assistant Store Manager',
+        'Inventory Manager',
+        'Retail Sales Associate',
+        'Customer Service Representative',
+        'District Manager',
+        'Regional Manager',
+        'Store Operations Manager'
+    ];
 
     const onChange = (e) => {
         const reader = new FileReader();
@@ -167,7 +203,7 @@ const User = () => {
                     picture: res?.data?.profile_image,
                     firstname: res?.data?.firstname
                 };
-                // console.log([userdata]);
+
                 dispatch(updatedprofile(userdata));
             })
             .catch((error) => console.log('error', error));

@@ -66,7 +66,7 @@ const AuthRegister = () => {
 
         axios
             .post(
-                'https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/register',
+                '/user/register',
                 {
                     email: val.email,
                     password: val.password,

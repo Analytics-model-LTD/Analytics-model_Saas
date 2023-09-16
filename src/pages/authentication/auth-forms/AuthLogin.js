@@ -59,7 +59,7 @@ const AuthLogin = () => {
     const handleSubmit = (val) => {
         axios
             .post(
-                'https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/login',
+                '/user/login',
                 {
                     email: val.email,
                     password: val.password
@@ -199,7 +199,7 @@ const AuthLogin = () => {
                                         }
                                         label={<Typography variant="h6">Keep me sign in</Typography>}
                                     />
-                                    <Link variant="h6" component={RouterLink} to="" color="text.primary">
+                                 <Link variant="h6" component={RouterLink} to="/forgot-password" color="text.primary">
                                         Forgot Password?
                                     </Link>
                                 </Stack>

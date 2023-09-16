@@ -64,8 +64,10 @@ const requests = {
         },
         {
             id: 'plans',
-            // title: 'Plans',
+            title: 'Plans',
             type: 'item',
+            url: '/plans',
+            icon: intigrationtable,
             //url: '/plans',
             // icon: intigrationtable,
             breadcrumbs: false
@@ -90,6 +92,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
            // url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -98,6 +101,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
           //  url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -106,6 +110,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -114,6 +119,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -122,6 +128,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -130,6 +137,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -138,6 +146,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -146,6 +155,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -154,6 +164,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -162,6 +173,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -170,6 +182,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -178,6 +191,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -186,6 +200,7 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
+            // url: '/myfeed',
             //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
@@ -194,7 +209,7 @@ const requests = {
             id: 'setting',
             title: 'Setting',
             type: 'item',
-            url: '/myfeed',
+            url: '/users/user-detail/',
             icon: setting,
             breadcrumbs: false
         },

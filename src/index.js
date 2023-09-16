@@ -16,9 +16,9 @@ import App from './App';
 import { store } from 'store';
 import reportWebVitals from './reportWebVitals';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
+import axios from 'axios'
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
-
+axios.defaults.baseURL = "https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api"
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(

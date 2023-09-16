@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-export const googleSignIn = createAsyncThunk('googleLogin/signIn', async () => {
+export const googleSignIn = createAsyncThunk('googleLogin/signIn', async () => {t 
     try {
         // Load the Google SDK
         await new Promise((resolve) => {

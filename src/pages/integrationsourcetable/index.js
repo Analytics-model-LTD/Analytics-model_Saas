@@ -21,11 +21,14 @@ import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Switch from '@mui/material/Switch';
+import { useNavigate } from 'react-router-dom';
+
 const columns = [
     { id: 'connectionName', label: 'Connection name', minWidth: 170, align: 'center' },
 
     { id: 'status', label: 'Status', minWidth: 100, align: 'center' },
-    { id: 'connectionSource', label: 'ConnectionSource ', minWidth: 170, align: 'center' },
+    { id: 'connectionSource', label: 'Connection Source ', minWidth: 170, align: 'center' },
     {
         id: 'projectId',
         label: 'ProjectId',
@@ -36,6 +39,13 @@ const columns = [
     {
         id: 'tableId',
         label: 'TableId ',
+        minWidth: 170,
+        align: 'center',
+        format: (value) => value.toLocaleString('en-US')
+    },
+    {
+        id: 'autoscan',
+        label: 'Auto Scan',
         minWidth: 170,
         align: 'center',
         format: (value) => value.toLocaleString('en-US')
@@ -70,7 +80,7 @@ function Integrationsourcestable() {
     const getdata = useSelector(getAllintegretionData);
     const dispatch = useDispatch();
     const [rows, setrows] = useState();
-
+    const navigate = useNavigate();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -97,10 +107,12 @@ function Integrationsourcestable() {
 
         setPage(0);
     };
-
+    const handleNavigation = () => {
+       navigate("/integrationsources")
+      };
     return (
         <Grid container spacing={2}>
-        <Grid item xs={12} sx={{display:'flex'}}>
+        <Grid item xs={12} sx={{display:'flex'}} onClick={handleNavigation}>
         <AddIcon/>
         <Typography variant="h5">NEW METRIC</Typography>
     </Grid>
@@ -124,6 +136,7 @@ function Integrationsourcestable() {
                                 <TableCell style={{ textAlign: 'center' }}>{row.connectionSource}</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>{row.projectId}</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>{row.tableId}</TableCell>
+                                <TableCell style={{ textAlign: 'center' }}>  <Switch defaultChecked color="primary" /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

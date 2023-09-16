@@ -12,7 +12,7 @@ function Verification() {
 
     const Verifications = () => {
         axios
-            .get(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/verify/${userId}/${token}`)
+            .get(`/user/verify/${userId}/${token}`)
             .then((res) => {
 
                 res.data.message = 'email verified sucessfully' ? (
