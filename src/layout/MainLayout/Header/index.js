@@ -22,7 +22,7 @@ const Header = ({ open, handleDrawerToggle }) => {
 
     // common header
     const mainHeader = (
-        <Toolbar>
+        <Toolbar >
             <IconButton
                 disableRipple
                 aria-label="open drawer"
@@ -40,7 +40,6 @@ const Header = ({ open, handleDrawerToggle }) => {
     // app-bar params
     const appBar = {
         position: 'fixed',
-        color: 'inherit',
         elevation: 0,
         sx: {
             borderBottom: `1px solid ${theme.palette.divider}`
@@ -51,11 +50,11 @@ const Header = ({ open, handleDrawerToggle }) => {
     return (
         <>
             {!matchDownMD ? (
-                <AppBarStyled open={open} {...appBar}>
+                <AppBarStyled open={open} {...appBar}sx={{ backgroundColor: "#1E87F0" }}>
                     {mainHeader}
                 </AppBarStyled>
             ) : (
-                <AppBar {...appBar}>{mainHeader}</AppBar>
+                <AppBar {...appBar}sx={{color:"#1E87F0"}}>{mainHeader}</AppBar>
             )}
         </>
     );

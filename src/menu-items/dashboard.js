@@ -1,9 +1,11 @@
 // assets
 import { DashboardOutlined } from '@ant-design/icons';
-
+import  Dashboard  from  'assets/images/icons/Dashboardicon.svg'
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 // icons
 const icons = {
-    DashboardOutlined
+    SpaceDashboardIcon,
+    
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -18,8 +20,10 @@ const dashboard = {
             title: 'Dashboard',
             type: 'item',
             url: '/dashboard/default',
-            icon: icons.DashboardOutlined,
-            breadcrumbs: false
+            // icon: icons.SpaceDashboardIcon,
+            icon: Dashboard,
+            breadcrumbs: false,
+            
         }
     ]
 };

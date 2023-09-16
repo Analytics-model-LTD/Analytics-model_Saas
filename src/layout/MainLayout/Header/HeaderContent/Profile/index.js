@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -29,6 +29,7 @@ import SettingTab from './SettingTab';
 import avatar1 from 'assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from '../../../../../../node_modules/react-router-dom/dist/index';
+import { useSelector } from 'react-redux';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -57,6 +58,10 @@ function a11yProps(index) {
 const Profile = () => {
     const navigate = useNavigate();
     const theme = useTheme();
+    const avatar1 = '/broken-image.jpg';
+    const userDeatils = useSelector((state) => {
+        return state.userProfile.userData;
+    });
 
     //logout fuctionality
 
@@ -67,6 +72,7 @@ const Profile = () => {
 
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
+
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -79,21 +85,25 @@ const Profile = () => {
     };
 
     const [value, setValue] = useState(0);
+    const [userdata, setuserdata] = useState([]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
+    useEffect(() => {
+        console.log(userDeatils);
+    }, []);
+
+    const username = JSON.parse(localStorage.getItem('userInfo'));
     const iconBackColorOpen = 'grey.300';
 
     return (
-        <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-            <ButtonBase
+        <Box sx={{ flexShrink: 0, ml: 0.75, borderRadius: '20px', bgcolor: '#1E87F0', borderColor: 'text.primary', border: 1 }}>
+            <Box
                 sx={{
-                    p: 0.25,
-                    bgcolor: open ? iconBackColorOpen : 'transparent',
-                    borderRadius: 1,
-                    '&:hover': { bgcolor: 'secondary.lighter' }
+                    p: 0.25
+                    // bgcolor: open ? iconBackColorOpen : 'transparent',
                 }}
                 aria-label="open profile"
                 ref={anchorRef}
@@ -102,10 +112,14 @@ const Profile = () => {
                 onClick={handleToggle}
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-                    <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-                    <Typography variant="subtitle1">John Doe</Typography>
+                    <Typography variant="subtitle1"> {userDeatils ? userDeatils?.firstname : username?.firstname}</Typography>
+                    <Avatar
+                        alt="profile user"
+                        src={userDeatils ? userDeatils?.picture : username?.picture}
+                        sx={{ width: 32, height: 32 }}
+                    />
                 </Stack>
-            </ButtonBase>
+            </Box>
             <Popper
                 placement="bottom-end"
                 open={open}
@@ -144,11 +158,11 @@ const Profile = () => {
                                             <Grid container justifyContent="space-between" alignItems="center">
                                                 <Grid item>
                                                     <Stack direction="row" spacing={1.25} alignItems="center">
-                                                        <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+                                                        <Avatar alt="profile user" src={username?.picture} sx={{ width: 32, height: 32 }} />
                                                         <Stack>
-                                                            <Typography variant="h6">John Doe</Typography>
+                                                            <Typography variant="h6">{username?.firstname}</Typography>
                                                             <Typography variant="body2" color="textSecondary">
-                                                                UI/UX Designer
+                                                                {username?.name}
                                                             </Typography>
                                                         </Stack>
                                                     </Stack>
@@ -173,15 +187,15 @@ const Profile = () => {
                                                             sx={{
                                                                 display: 'flex',
                                                                 flexDirection: 'row',
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center',
+                                                                justifyContent: 'start',
+                                                                alignItems: 'startr',
                                                                 textTransform: 'capitalize'
                                                             }}
                                                             icon={<UserOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
                                                             label="Profile"
                                                             {...a11yProps(0)}
                                                         />
-                                                        <Tab
+                                                        {/* <Tab
                                                             sx={{
                                                                 display: 'flex',
                                                                 flexDirection: 'row',
@@ -191,16 +205,15 @@ const Profile = () => {
                                                             }}
                                                             icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
                                                             label="Setting"
-                                                            {...a11yProps(1)}
-                                                        />
+                                                            {...a11yProps(1)} */}
                                                     </Tabs>
                                                 </Box>
                                                 <TabPanel value={value} index={0} dir={theme.direction}>
                                                     <ProfileTab handleLogout={handleLogout} />
                                                 </TabPanel>
-                                                <TabPanel value={value} index={1} dir={theme.direction}>
+                                                {/* <TabPanel value={value} index={1} dir={theme.direction}>
                                                     <SettingTab />
-                                                </TabPanel>
+                                                </TabPanel> */}
                                             </>
                                         )}
                                     </MainCard>

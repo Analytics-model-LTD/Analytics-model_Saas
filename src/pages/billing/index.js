@@ -87,7 +87,12 @@ const Billing = () => {
                                     <TableCell>{row.plan}</TableCell>
                                     <TableCell align="right">{row.totalCosts}</TableCell>
                                     <TableCell align="center">
-                                        <Chip label={row.status} color={row.status === "Open" ? "success" : "info"} />
+                                        <Chip
+                                            label={row.status}
+                                            color={row.status === "Open" ? "success" : "info"}
+                                            style={{ backgroundColor: row.status === "Open" ? "" : "#1E87F0" }}
+                                        />
+
                                     </TableCell>
                                 </TableRow>
                             ))

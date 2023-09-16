@@ -23,7 +23,7 @@ import {
 // project import
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
-
+import Bell from 'assets/images/icons/bell.svg'
 // assets
 import { BellOutlined, CloseOutlined, GiftOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
 
@@ -67,20 +67,21 @@ const Notification = () => {
     const iconBackColor = 'grey.100';
 
     return (
-        <Box sx={{ flexShrink: 0, ml: 0.75 }}>
+        <Box sx={{ flexShrink: 0, ml: 0.75, }}>
             <IconButton
                 disableRipple
                 color="secondary"
-                sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor }}
+                // sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor }}
                 aria-label="open profile"
                 ref={anchorRef}
                 aria-controls={open ? 'profile-grow' : undefined}
                 aria-haspopup="true"
                 onClick={handleToggle}
             >
-                <Badge badgeContent={4} color="primary">
-                    <BellOutlined />
-                </Badge>
+                {/* <Badge badgeContent={4} color="primary"> */}
+                    {/* <BellOutlined /> */}
+                {/* </Badge> */}
+                <img src={Bell} alt="Bell" />
             </IconButton>
             <Popper
                 placement={matchesXs ? 'bottom' : 'bottom-end'}

@@ -10,17 +10,66 @@ import { GoogleLogin, GoogleOAuthProvider } from '../../../../node_modules/@reac
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { googleSignIn } from 'Slice/googleLoginSlice';
+import { useNavigate } from '../../../../node_modules/react-router-dom/dist/index';
+import axios from 'axios';
 
 // ==============================|| FIREBASE - SOCIAL BUTTON ||============================== //
 
 const FirebaseSocial = () => {
     const theme = useTheme();
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
+    const navigate = useNavigate();
 
-    const googleHandler = () => {
-        dispatch(googleSignIn());
+    const onSuccess = (response) => {
+        const payload = {
+            "credential":response.access_token,
+        }
+        
+        localStorage.setItem('TOKEN', response.access_token);
+        axios
+        .post("/user/google_login", payload)
+        .then(async res => {
+          console.log("res.data = ",res.data)
+          window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.data.token)
+        }).then(() =>{
+            axios
+            .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${response.access_token}`, {
+                headers: {
+                    Authorization: `Bearer ${response.access_token}`,
+                    Accept: 'application/json'
+                }
+            })
+            .then((res) => {
+                if (res) {
+                    const gdata = localStorage.getItem('TOKEN');
+                    gdata !== null ? navigate('/') : <></>;
+                }
+
+                localStorage.setItem(
+                    'userInfo',
+                    JSON.stringify({
+                        firstname: res?.data?.family_name,
+                        picture: res?.data?.picture,
+                        name: res?.data?.name
+                    })
+                );
+
+                // res.status === 200 ? navigate('/') : <></>;
+                // res.data !== null ? navigate('/') : <></>;
+
+                // logOut();
+                // navigate("/RS_Store");
+            });
+    
+        })
+           
     };
+
+    const googleHandler = useGoogleLogin({
+        onSuccess: (codeResponse) => onSuccess(codeResponse),
+        onError: (error) => console.log('Login Failed:', error)
+    });
 
     const twitterHandler = async () => {
         // login || singup
@@ -46,7 +95,7 @@ const FirebaseSocial = () => {
             >
                 {!matchDownSM && 'Google'}
             </Button>
-
+            {/* 
             <Button
                 variant="outlined"
                 color="secondary"
@@ -64,7 +113,7 @@ const FirebaseSocial = () => {
                 onClick={facebookHandler}
             >
                 {!matchDownSM && 'Facebook'}
-            </Button>
+            </Button> */}
         </Stack>
     );
 };

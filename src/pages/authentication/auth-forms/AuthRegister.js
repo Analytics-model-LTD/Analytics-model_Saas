@@ -30,10 +30,13 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import axios from 'axios';
-
+import { useNavigate } from '../../../../node_modules/react-router-dom/dist/index';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // ============================|| FIREBASE - REGISTER ||============================ //
 
 const AuthRegister = () => {
+    const navigate = useNavigate();
     const [level, setLevel] = useState();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => {
@@ -56,17 +59,19 @@ const AuthRegister = () => {
     const signUp = (val) => {
         const formdata = {
             email: val.email,
-            password: val.password
-            // firstname: val.firstname,
-            // lastname: val.lastname
+            password: val.password,
+            firstname: val.firstname,
+            lastname: val.lastname
         };
 
         axios
             .post(
-                'http://localhost:8080/api/user/register',
+                '/user/register',
                 {
                     email: val.email,
-                    password: val.password
+                    password: val.password,
+                    firstname: val.firstname,
+                    lastname: val.lastname
                 },
                 {
                     headers: {
@@ -75,10 +80,45 @@ const AuthRegister = () => {
                 }
             )
             .then((res) => {
-                console.log(res);
+                const userId = res.data.data.userId;
+                const token = res.data.data.token;
+                // if (token) {
+                //     axios
+                //         .get(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/verify/${userId}/${token}`)
+                //         .then((res) => {
+                //             console.log(res);
+                //             res.data.message = 'email verified sucessfully' ? navigate('/verification') : <></>;
+                //         })
+                //         .catch((er) => {
+                //             consol.log(er);
+                //         });
+                // }
+
+                if (res.data.message === 'User registered successfully.') {
+                    toast.success('User registered successfully.', {
+                        position: 'top-center'
+                    });
+                }
+                setTimeout(function () {
+                    navigate(`/login`);
+                }, 2000);
             })
             .catch((err) => {
-                console.log(err);
+                err.response.data.message === 'Email already exists.' ? (
+                    toast.error('User Email Allready Registered .', {
+                        position: 'top-center'
+                    })
+                ) : (
+                    <></>
+                );
+
+                err.response.data.message === 'password length must be at least 4 characters long' ? (
+                    toast.error('password length must be at least 4 characters long .', {
+                        position: 'top-center'
+                    })
+                ) : (
+                    <></>
+                );
             });
     };
 
@@ -94,13 +134,13 @@ const AuthRegister = () => {
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    firstname: Yup.string().max(10).required('First Name is required'),
-                    lastname: Yup.string().max(10).required('Last Name is required'),
+                    firstname: Yup.string(),
+                    lastname: Yup.string(),
                     email: Yup.string()
                         .matches(/\S+@\S+\.\S+/, 'Please Enter Valid Email')
                         .max(255)
                         .required('Email is required'),
-                    password: Yup.string().max(10, 'Phone Number can only contain 10 Digit').required('Phone Number is Required')
+                    password: Yup.string().required('Password is Required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -108,7 +148,6 @@ const AuthRegister = () => {
                         setStatus({ success: false });
                         setSubmitting(false);
                     } catch (err) {
-                        console.error(err);
                         setStatus({ success: false });
                         setErrors({ submit: err.message });
                         setSubmitting(false);
@@ -237,11 +276,23 @@ const AuthRegister = () => {
                             <Grid item xs={12}>
                                 <Typography variant="body2">
                                     By Signing up, you agree to our &nbsp;
-                                    <Link variant="subtitle2" component={RouterLink} to="#">
+                                    <Link
+                                        variant="subtitle2"
+                                        component={Link}
+                                        target="_blank"
+                                        underline="hover"
+                                        href="https://www.analytics-model.com/terms-and-conditions"
+                                    >
                                         Terms of Service
                                     </Link>
                                     &nbsp; and &nbsp;
-                                    <Link variant="subtitle2" component={RouterLink} to="#">
+                                    <Link
+                                        variant="subtitle2"
+                                        component={Link}
+                                        target="_blank"
+                                        underline="hover"
+                                        href="https://www.analytics-model.com/privacypolicy"
+                                    >
                                         Privacy Policy
                                     </Link>
                                 </Typography>
@@ -264,6 +315,7 @@ const AuthRegister = () => {
                                     >
                                         Create Account
                                     </Button>
+                                    <ToastContainer autoClose={1000} />
                                 </AnimateButton>
                             </Grid>
                             <Grid item xs={12}>

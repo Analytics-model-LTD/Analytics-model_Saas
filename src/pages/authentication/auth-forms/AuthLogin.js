@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 
@@ -30,7 +30,12 @@ import { useNavigate } from '../../../../node_modules/react-router-dom/dist/inde
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-
+import jwt from 'jwt-decode';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
+import { getuserDetails } from 'Slice/userProfileSlice';
+import { dispatch } from 'store/index';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
@@ -38,6 +43,7 @@ const AuthLogin = () => {
     const [checked, setChecked] = React.useState(false);
 
     const [showPassword, setShowPassword] = React.useState(false);
+
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -46,10 +52,14 @@ const AuthLogin = () => {
         event.preventDefault();
     };
 
+    useEffect(() => {
+        dispatch(getuserDetails());
+    }, [dispatch]);
+
     const handleSubmit = (val) => {
         axios
             .post(
-                'http://localhost:8080/api/user/login',
+                '/user/login',
                 {
                     email: val.email,
                     password: val.password
@@ -61,15 +71,30 @@ const AuthLogin = () => {
                 }
             )
             .then((res) => {
-                console.log('1111', res.data);
-
                 localStorage.setItem('TOKEN', res.data.access_token);
+                const user = jwt(res.data.access_token);
+                localStorage.setItem(
+                    'userInfo',
+                    JSON.stringify({
+                        firstname: user?.user?.firstname,
+                        picture: res?.data?.profile_image
+                    })
+                );
+
                 const data = localStorage.getItem('TOKEN');
                 res.data.access_token != null ? navigate('/') : <></>;
             })
 
             .catch((err) => {
-                console.log(err);
+                if (err.response.data.message === 'Incorrect Email or Password.') {
+                    toast.error(' Incorrect Email or Password ', {
+                        position: 'top-center'
+                    });
+                } else if (err.response.data.message === 'Wrong Password') {
+                    toast.error('  Incorrect Password', {
+                        position: 'top-center'
+                    });
+                }
             });
     };
 
@@ -174,7 +199,7 @@ const AuthLogin = () => {
                                         }
                                         label={<Typography variant="h6">Keep me sign in</Typography>}
                                     />
-                                    <Link variant="h6" component={RouterLink} to="" color="text.primary">
+                                 <Link variant="h6" component={RouterLink} to="/forgot-password" color="text.primary">
                                         Forgot Password?
                                     </Link>
                                 </Stack>
@@ -197,6 +222,7 @@ const AuthLogin = () => {
                                     >
                                         Login
                                     </Button>
+                                    <ToastContainer autoClose={1000} />
                                 </AnimateButton>
                             </Grid>
                             <Grid item xs={12}>
