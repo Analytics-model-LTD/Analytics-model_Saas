@@ -21,6 +21,7 @@ import * as yup from 'yup';
 // import toast from 'react-hot-toast';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
+import { googleLogout, useGoogleLogin, hasGrantedAllScopesGoogle } from '@react-oauth/google';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline';
@@ -87,6 +88,36 @@ function Addintegrationsource() {
     // ** Hook
     const navigate = useNavigate();
     const [selectedFile, setselectedFile] = useState();
+
+    const scopes = [
+        'https://www.googleapis.com/auth/cloud-platform.read-only',
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile'
+    ];
+
+    const token = localStorage.getItem('TOKEN');
+    const hasAccess = hasGrantedAllScopesGoogle(token, ...scopes);
+
+    console.log({hasAccess});
+
+    const onSuccess = (response) => {
+        localStorage.setItem('TOKEN', response.access_token);
+
+        const hasAccess = hasGrantedAllScopesGoogle(response.access_token, ...scopes);
+
+        console.log({hasAccess});
+
+        if (!hasAccess) {
+            return;
+        }
+    };
+
+    const grantAccess = useGoogleLogin({
+        onSuccess: (codeResponse) => onSuccess(codeResponse),
+        onError: (error) => console.log('Login Failed:', error),
+        scope: scopes.join(' '),
+    });
+
     const navigateToRoute = (e) => {
         navigate('/integrationsources');
     };
@@ -188,6 +219,11 @@ function Addintegrationsource() {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <Grid container spacing={5}>
                                 <Grid item xs={12}>
+                                    <Button size="large" type="submit" variant="contained" onClick={grantAccess}>
+                                        Authorize BigQuery
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={12}>
                                     <FormControl fullWidth>
                                         <Controller
                                             name="connectionName"
@@ -246,7 +282,7 @@ function Addintegrationsource() {
                                             render={({ field: { value, onChange } }) => (
                                                 <TextField
                                                     value={value}
-                                                    label="Default Dataset ID"
+                                                    label="Dataset ID"
                                                     onChange={onChange}
                                                     // placeholder="Carter"
                                                     error={Boolean(errors.defaultdatasetid)}
@@ -356,7 +392,7 @@ function Addintegrationsource() {
 
                                 <Grid item xs={12}>
                                     <Button size="large" type="submit" variant="contained">
-                                        Test Connection
+                                        Save
                                         <ToastContainer autoClose={1000} />
                                     </Button>
 
