@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useState } from 'react';
 
 // ** MUI Imports
@@ -21,7 +21,7 @@ import * as yup from 'yup';
 // import toast from 'react-hot-toast';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { googleLogout, useGoogleLogin, hasGrantedAllScopesGoogle } from '@react-oauth/google';
+import { googleLogout, useGoogleLogin, hasGrantedAnyScopeGoogle } from '@react-oauth/google';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline';
@@ -88,28 +88,37 @@ function Addintegrationsource() {
     // ** Hook
     const navigate = useNavigate();
     const [selectedFile, setselectedFile] = useState();
+    const [hasAccess, setHasAccess] = useState(null);
 
-    const scopes = [
+    const scopes = useMemo(() => [
         'https://www.googleapis.com/auth/cloud-platform.read-only',
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile'
-    ];
+    ], []);
 
-    const token = localStorage.getItem('TOKEN');
-    const hasAccess = hasGrantedAllScopesGoogle(token, ...scopes);
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('TOKEN_OBJECT');
+    
+            if (token) {
+                const hasAccessResponse = hasGrantedAnyScopeGoogle(JSON.parse(token), ...scopes);
+                setHasAccess(hasAccessResponse);
+            }
+        } catch (error) {
+            localStorage.removeItem('TOKEN_OBJECT');
+            console.log(error);
+        }
+    }, [scopes]);
 
     console.log({hasAccess});
 
     const onSuccess = (response) => {
         localStorage.setItem('TOKEN', response.access_token);
+        localStorage.setItem('TOKEN_OBJECT', JSON.stringify(response));
 
-        const hasAccess = hasGrantedAllScopesGoogle(response.access_token, ...scopes);
+        const hasAccessResponse = hasGrantedAnyScopeGoogle(response, ...scopes);
 
-        console.log({hasAccess});
-
-        if (!hasAccess) {
-            return;
-        }
+        setHasAccess(hasAccessResponse);
     };
 
     const grantAccess = useGoogleLogin({
@@ -218,11 +227,15 @@ function Addintegrationsource() {
                     <CardContent>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <Grid container spacing={5}>
-                                <Grid item xs={12}>
-                                    <Button size="large" type="submit" variant="contained" onClick={grantAccess}>
-                                        Authorize BigQuery
-                                    </Button>
-                                </Grid>
+                            {
+                                hasAccess !== null && !hasAccess && (
+                                    <Grid item xs={12}>
+                                        <Button size="large" type="submit" variant="contained" onClick={grantAccess}>
+                                            Authorize BigQuery
+                                        </Button>
+                                    </Grid>
+                                )
+                            }
                                 <Grid item xs={12}>
                                     <FormControl fullWidth>
                                         <Controller
