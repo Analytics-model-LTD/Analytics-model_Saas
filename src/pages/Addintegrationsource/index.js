@@ -251,31 +251,6 @@ function Addintegrationsource() {
                                 <Grid item xs={12}>
                                     <FormControl fullWidth>
                                         <Controller
-                                            name="dataSourceName"
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={({ field: { value, onChange } }) => (
-                                                <TextField
-                                                    value={value}
-                                                    label="Data Source"
-                                                    onChange={onChange}
-                                                    // placeholder="Carter"
-                                                    error={Boolean(errors.dataSourceName)}
-                                                    aria-describedby="validation-schema-dataSource"
-                                                />
-                                            )}
-                                        />
-                                        {errors.dataSourceName && (
-                                            <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-dataSource">
-                                                {errors.dataSourceName.message}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <Controller
                                             name="defaultdatasetid"
                                             control={control}
                                             rules={{ required: true }}
@@ -341,50 +316,6 @@ function Addintegrationsource() {
                                         {errors.tableid && (
                                             <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-tableid">
                                                 {errors.tableid.message}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <Stack spacing={2}>
-                                            <label htmlFor="upload-image">
-                                                <input
-                                                    id="upload-image"
-                                                    hidden
-                                                    accept="image/*,.pdf,.json"
-                                                    type="file"
-                                                    name="file"
-                                                    onChange={(e) => handleResumeUpload(e)}
-                                                />
-                                                <Button
-                                                    variant="contained"
-                                                    component="span"
-                                                    // startIcon={<CloudUploadIcon />} // You can replace this with an appropriate icon
-                                                    sx={{
-                                                        backgroundColor: 'primary.main', // Customize the background color
-                                                        color: 'white', // Customize the text color
-                                                        '&:hover': {
-                                                            backgroundColor: 'primary.dark' // Customize hover color
-                                                        }
-                                                    }}
-                                                >
-                                                    Upload File
-                                                </Button>
-                                            </label>
-                                            {selectedFile && <Typography variant="body2">Selected File: {selectedFile.name}</Typography>}
-                                        </Stack>
-
-                                        {/* {touched.file && errors.file && (
-                                            <FormHelperText error id="standard-weight-helper-text-file">
-                                                {errors.file}
-                                            </FormHelperText>
-                                        )} */}
-
-                                        {errors.credentialJson && (
-                                            <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-credentialJson">
-                                                {errors.credentialJson.message}
                                             </FormHelperText>
                                         )}
                                     </FormControl>
