@@ -36,6 +36,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import { getuserDetails } from 'Slice/userProfileSlice';
 import { dispatch } from 'store/index';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
@@ -98,6 +99,39 @@ const AuthLogin = () => {
             });
     };
 
+    const handleLoginSuccess = credentialResponse => {
+        console.log(credentialResponse);
+        axios
+                .post(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/google_login`, {credential:credentialResponse.credential},
+                {
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                })
+                .then((res) => {
+                    if (res) {
+                        const gdata = localStorage.getItem('TOKEN');
+                        gdata !== null ? navigate('/') : <></>;
+                    }
+
+                    localStorage.setItem(
+                        'userInfo',
+                        JSON.stringify({
+                            firstname: res?.data?.family_name,
+                            picture: res?.data?.picture,
+                            name: res?.data?.name
+                        })
+                    );
+
+                    // res.status === 200 ? navigate('/') : <></>;
+                    // res.data !== null ? navigate('/') : <></>;
+
+                    // logOut();
+                    // navigate("/RS_Store");
+                });
+        setIsLoggedIn(false); // Reset the flag when login is successful
+      };
+   
     return (
         <>
             <Formik
@@ -231,7 +265,20 @@ const AuthLogin = () => {
                                 </Divider>
                             </Grid>
                             <Grid item xs={12}>
-                                <FirebaseSocial />
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <GoogleOAuthProvider clientId="1707393391-8qee74bq6137hdjb3qb0ntq9megb4cqf.apps.googleusercontent.com">
+                                        <GoogleLogin
+                                          onSuccess={handleLoginSuccess}
+                                            // onSuccess={credentialResponse => {
+                                            //     console.log(credentialResponse);
+                                            //     var decoded = jwt_decode(credentialResponse.credential);
+                                            // }}
+                                            onError={() => {
+                                                console.log('Login Failed');
+                                            }}
+                                        />
+                                    </GoogleOAuthProvider>
+                                </div>
                             </Grid>
                         </Grid>
                     </form>

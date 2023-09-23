@@ -3,15 +3,17 @@ import { useTheme } from '@mui/material/styles';
 import { useMediaQuery, Button, Stack } from '@mui/material';
 
 // assets
-import Google from 'assets/images/icons/google.svg';
+// import Google from 'assets/images/icons/google.svg';
 import Twitter from 'assets/images/icons/twitter.svg';
 import Facebook from 'assets/images/icons/facebook.svg';
-import { GoogleLogin, GoogleOAuthProvider } from '../../../../node_modules/@react-oauth/google/dist/index';
+// import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+// import { GoogleLogin, GoogleOAuthProvider } from '../../../../node_modules/@react-oauth/google/dist/index';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { googleSignIn } from 'Slice/googleLoginSlice';
 import { useNavigate } from '../../../../node_modules/react-router-dom/dist/index';
 import axios from 'axios';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
 // ==============================|| FIREBASE - SOCIAL BUTTON ||============================== //
 
@@ -22,54 +24,47 @@ const FirebaseSocial = () => {
     const navigate = useNavigate();
 
     const onSuccess = (response) => {
-        const payload = {
-            "credential":response.access_token,
-        }
-        
         localStorage.setItem('TOKEN', response.access_token);
-        axios
-        .post("/user/google_login", payload)
-        .then(async res => {
-          console.log("res.data = ",res.data)
-          window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.data.token)
-        }).then(() =>{
+        if (response) {
             axios
-            .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${response.access_token}`, {
-                headers: {
-                    Authorization: `Bearer ${response.access_token}`,
-                    Accept: 'application/json'
-                }
-            })
-            .then((res) => {
-                if (res) {
-                    const gdata = localStorage.getItem('TOKEN');
-                    gdata !== null ? navigate('/') : <></>;
-                }
+                .post(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${response.access_token}`, {
+                    headers: {
+                        Authorization: `Bearer ${response.access_token}`,
+                        Accept: 'application/json'
+                    }
+                })
+                .then((res) => {
+                    if (res) {
+                        const gdata = localStorage.getItem('TOKEN');
+                        gdata !== null ? navigate('/') : <></>;
+                    }
 
-                localStorage.setItem(
-                    'userInfo',
-                    JSON.stringify({
-                        firstname: res?.data?.family_name,
-                        picture: res?.data?.picture,
-                        name: res?.data?.name
-                    })
-                );
+                    localStorage.setItem(
+                        'userInfo',
+                        JSON.stringify({
+                            firstname: res?.data?.family_name,
+                            picture: res?.data?.picture,
+                            name: res?.data?.name
+                        })
+                    );
 
-                // res.status === 200 ? navigate('/') : <></>;
-                // res.data !== null ? navigate('/') : <></>;
+                    // res.status === 200 ? navigate('/') : <></>;
+                    // res.data !== null ? navigate('/') : <></>;
 
-                // logOut();
-                // navigate("/RS_Store");
-            });
-    
-        })
-           
+                    // logOut();
+                    // navigate("/RS_Store");
+                });
+        }
     };
 
-    const googleHandler = useGoogleLogin({
-        onSuccess: (codeResponse) => onSuccess(codeResponse),
-        onError: (error) => console.log('Login Failed:', error)
-    });
+    // const googleHandler = useGoogleLogin({
+    //     onSuccess: (codeResponse) => {
+    //         console.log('Google Login Successful:', codeResponse.access_token);
+    //         onSuccess(codeResponse); // You can also call your custom onSuccess function here if needed
+    //     },
+    //     onError: (error) => console.log('Login Failed:', error)
+    // });
+    
 
     const twitterHandler = async () => {
         // login || singup
@@ -86,7 +81,7 @@ const FirebaseSocial = () => {
             justifyContent={matchDownSM ? 'space-around' : 'space-between'}
             sx={{ '& .MuiButton-startIcon': { mr: matchDownSM ? 0 : 1, ml: matchDownSM ? 0 : -0.5 } }}
         >
-            <Button
+            {/* <Button
                 variant="outlined"
                 color="secondary"
                 fullWidth={!matchDownSM}
@@ -94,7 +89,26 @@ const FirebaseSocial = () => {
                 onClick={() => googleHandler()}
             >
                 {!matchDownSM && 'Google'}
-            </Button>
+            </Button> */}
+            <div style={{
+                display: 'flex',
+                height: '100vh',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <GoogleOAuthProvider clientId="1707393391-8qee74bq6137hdjb3qb0ntq9megb4cqf.apps.googleusercontent.com">
+                    <GoogleLogin
+                        onSuccess={credentialResponse => {
+                            console.log(credentialResponse);
+                            var decoded = jwt_decode(credentialResponse.credential);
+                           
+                        }}
+                        onError={() => {
+                            console.log('Login Failed');
+                        }}
+                    />
+                </GoogleOAuthProvider>
+            </div>
             {/* 
             <Button
                 variant="outlined"
