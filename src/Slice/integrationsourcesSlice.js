@@ -1,6 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const queryApi = axios.create({
+    // baseURL: 'https://tcni0q4q4m.execute-api.us-east-1.amazonaws.com/dev',
+    baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
+    timeout: 10000,
+    headers: {'Authorization': `Bearer ${localStorage.getItem('TOKEN')}`}
+});
+
 const getToken = async () => {
     return localStorage.getItem('TOKEN');
 };
@@ -26,6 +33,48 @@ export const fetchAllintegretionData = createAsyncThunk('integrationsources/inte
     const response = await axios.get(`/analytics/all/${page}`, config);
 
     console.log(response.data);
+    return response.data;
+});
+
+export const getProjects = createAsyncThunk('integrationsources/projects', async () => {
+    console.log('getProjects');
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects`, config);
+
+    return response.data;
+});
+
+export const getDatasets = createAsyncThunk('integrationsources/datasets', async (projectId) => {
+    console.log('getDatasets');
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects/${projectId}/datasets`, config);
+
+    return response.data;
+});
+
+export const getTables = createAsyncThunk('integrationsources/tables', async ({projectId, datasetId}) => {
+    console.log('getTables', projectId, datasetId);
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects/${projectId}/datasets/${datasetId}/tables`, config);
+
     return response.data;
 });
 

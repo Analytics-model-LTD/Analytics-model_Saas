@@ -1,356 +1,468 @@
-import React, { useEffect, useMemo } from 'react';
-import { useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from "react";
+import { useState } from "react";
 
 // ** MUI Imports
-import Card from '@mui/material/Card';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import CardHeader from '@mui/material/CardHeader';
-import InputLabel from '@mui/material/InputLabel';
-import IconButton from '@mui/material/IconButton';
-import CardContent from '@mui/material/CardContent';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputAdornment from '@mui/material/InputAdornment';
-import { Paper, Typography, Stack } from '@mui/material';
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import CardHeader from "@mui/material/CardHeader";
+import IconButton from "@mui/material/IconButton";
+import CardContent from "@mui/material/CardContent";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import FormHelperText from "@mui/material/FormHelperText";
+import InputAdornment from "@mui/material/InputAdornment";
+import { Paper, Typography, Stack } from "@mui/material";
 
 // ** Third Party Imports
-import * as yup from 'yup';
+import * as yup from "yup";
 // import toast from 'react-hot-toast';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { googleLogout, useGoogleLogin, hasGrantedAnyScopeGoogle } from '@react-oauth/google';
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import {
+  googleLogout,
+  useGoogleLogin,
+  hasGrantedAnyScopeGoogle,
+} from "@react-oauth/google";
 
 // ** Icons Imports
-import EyeOutline from 'mdi-material-ui/EyeOutline';
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
-import { useNavigate } from 'react-router-dom';
-import { dispatch } from 'store/index';
-import { newSaveintegretion } from 'Slice/integrationsourcesSlice';
+import EyeOutline from "mdi-material-ui/EyeOutline";
+import EyeOffOutline from "mdi-material-ui/EyeOffOutline";
+import { useNavigate } from "react-router-dom";
+import { dispatch } from "store/index";
+import {
+  newSaveintegretion,
+  getProjects,
+  getDatasets,
+  getTables,
+} from "Slice/integrationsourcesSlice";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { has } from "lodash";
 
 const defaultValues = {
-    credentialJson: '',
-    connectionName: '',
-    dataSourceName: '',
-    defaultdatasetid: '',
-    projectId: '',
-    tableid: ''
+  connectionName: "",
+  defaultdatasetid: "",
+  projectid: "",
+  tableid: "",
 };
 
 const showErrors = (field, valueLen, min) => {
-    if (valueLen === 0) {
-        return `${field} field is required`;
-    } else if (valueLen > 0 && valueLen < min) {
-        return `${field} must be at least ${min} characters`;
-    } else {
-        return '';
-    }
+  if (valueLen === 0) {
+    return `${field} field is required`;
+  } else if (valueLen > 0 && valueLen < min) {
+    return `${field} must be at least ${min} characters`;
+  } else {
+    return "";
+  }
 };
 
 const schema = yup.object().shape({
-    // credentialJson: yup
-    //     .string()
-    //     .min(3, (obj) => showErrors('credentialJson', obj.value.length, obj.min))
-    //     .required(),
-    dataSourceName: yup
-        .string()
-        .min(3, (obj) => showErrors('dataSourceName', obj.value.length, obj.min))
-        .required(),
-    defaultdatasetid: yup
-        .string()
-        .min(3, (obj) => showErrors('defaultdatasetid', obj.value.length, obj.min))
-        .required(),
-    connectionName: yup
-        .string()
-        .min(3, (obj) => showErrors('connectionName', obj.value.length, obj.min))
-        .required(),
-    projectId: yup
-        .string()
-        .min(3, (obj) => showErrors('projectId', obj.value.length, obj.min))
-        .required(),
-    tableid: yup
-        .string()
-        .min(3, (obj) => showErrors('tableid', obj.value.length, obj.min))
-        .required()
+  defaultdatasetid: yup
+    .string()
+    .min(3, (obj) => showErrors("defaultdatasetid", obj.value.length, obj.min))
+    .required(),
+  connectionName: yup
+    .string()
+    .min(3, (obj) => showErrors("connectionName", obj.value.length, obj.min))
+    .required(),
+  projectId: yup
+    .string()
+    .min(3, (obj) => showErrors("projectId", obj.value.length, obj.min))
+    .required(),
+  tableid: yup
+    .string()
+    .min(3, (obj) => showErrors("tableid", obj.value.length, obj.min))
+    .required(),
 });
 
 function Addintegrationsource() {
-    // const [state, setState] = useState({
-    //     password: '',
-    //     showPassword: false
-    //   })
+  // const [state, setState] = useState({
+  //     password: '',
+  //     showPassword: false
+  //   })
 
-    // ** Hook
-    const navigate = useNavigate();
-    const [selectedFile, setselectedFile] = useState();
-    const [hasAccess, setHasAccess] = useState(null);
+  // ** Hook
+  const navigate = useNavigate();
+  const [hasAccess, setHasAccess] = useState(null);
+  const [projects, setProjects] = useState([]);
+  const [datasets, setDatasets] = useState([]);
+  const [tables, setTables] = useState([]);
 
-    const scopes = useMemo(() => [
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile'
-    ], []);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, dirtyFields },
+    getValues,
+  } = useForm({
+    defaultValues,
+    mode: "onChange",
+    resolver: yupResolver(schema),
+  });
 
-    useEffect(() => {
-        try {
-            const token = localStorage.getItem('TOKEN_OBJECT');
-    
-            if (token) {
-                const hasAccessResponse = hasGrantedAnyScopeGoogle(JSON.parse(token), ...scopes);
-                setHasAccess(hasAccessResponse);
-            }
-        } catch (error) {
-            localStorage.removeItem('TOKEN_OBJECT');
-            console.log(error);
-        }
-    }, [scopes]);
+  const formValues = getValues();
 
-    console.log({hasAccess});
+  const allowSubmit = useMemo(
+    () => Object.values(formValues).every((value) => !!value),
+    [formValues]
+  );
 
-    const onSuccess = (response) => {
-        localStorage.setItem('TOKEN', response.access_token);
-        localStorage.setItem('TOKEN_OBJECT', JSON.stringify(response));
+  const scopes = useMemo(
+    () => [
+      "https://www.googleapis.com/auth/cloud-platform.read-only",
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+    ],
+    []
+  );
 
-        const hasAccessResponse = hasGrantedAnyScopeGoogle(response, ...scopes);
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem("TOKEN_OBJECT");
 
+      if (token) {
+        const hasAccessResponse = hasGrantedAnyScopeGoogle(
+          JSON.parse(token),
+          ...scopes
+        );
         setHasAccess(hasAccessResponse);
+      }
+    } catch (error) {
+      localStorage.removeItem("TOKEN_OBJECT");
+      console.error(error);
+    }
+  }, [scopes]);
+
+  const getProjectsAsync = () => {
+    console.log("getProjectsAsync");
+    dispatch(getProjects())
+      .unwrap()
+      .then((res) => {
+        setProjects(res.projects);
+      });
+  };
+
+  const getDatasetsAsync = useCallback((projectId) => {
+    console.log("getDatasetsAsync");
+    dispatch(getDatasets(projectId))
+      .unwrap()
+      .then((res) => {
+        setDatasets(res.datasets);
+      });
+  }, []);
+
+  const getTablesAsync = useCallback((projectId, datasetId) => {
+    console.log("getTablesAsync", projectId, datasetId);
+    dispatch(getTables({ projectId, datasetId }))
+      .unwrap()
+      .then((res) => {
+        setTables(res.tables);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (hasAccess) {
+      getProjectsAsync();
+    }
+  }, [hasAccess]);
+
+  useEffect(() => {
+    if (formValues.projectid) {
+      getDatasetsAsync(formValues.projectid);
+    }
+  }, [formValues.projectid, getDatasetsAsync]);
+
+  useEffect(() => {
+    if (
+      formValues.projectid &&
+      formValues.defaultdatasetid &&
+      !formValues.tableid
+    ) {
+      console.log(
+        "formValues.projectid && formValues.defaultdatasetid",
+        formValues.defaultdatasetid
+      );
+      getTablesAsync(formValues.projectid, formValues.defaultdatasetid);
+    }
+  }, [formValues, getTablesAsync]);
+
+  const onSuccess = (response) => {
+    localStorage.setItem("TOKEN", response.access_token);
+    localStorage.setItem("TOKEN_OBJECT", JSON.stringify(response));
+
+    const hasAccessResponse = hasGrantedAnyScopeGoogle(response, ...scopes);
+
+    setHasAccess(hasAccessResponse);
+  };
+
+  const grantAccess = useGoogleLogin({
+    onSuccess: (codeResponse) => onSuccess(codeResponse),
+    onError: (error) => console.log("Login Failed:", error),
+    scope: scopes.join(" "),
+  });
+
+  const navigateToRoute = (e) => {
+    navigate("/integrationsources");
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
+    const formData = new FormData();
+
+    const formDataToObject = (formData) => {
+      const object = {};
+      formData.forEach((value, key) => {
+        object[key] = value;
+      });
+      return object;
     };
 
-    const grantAccess = useGoogleLogin({
-        onSuccess: (codeResponse) => onSuccess(codeResponse),
-        onError: (error) => console.log('Login Failed:', error),
-        scope: scopes.join(' '),
-    });
+    const formDataObject = formDataToObject(formData);
+    console.log(formDataObject);
 
-    const navigateToRoute = (e) => {
-        navigate('/integrationsources');
+    const fromdata = {
+      connectionName: data.connectionName,
+      datasetId: data.defaultdatasetid,
+      projectId: data.projectId,
+      tableId: data.tableid,
+      connectionSource: "BIG QUERY",
     };
-    const {
-        control,
-        handleSubmit,
-        formState: { errors }
-    } = useForm({
-        defaultValues,
-        mode: 'onChange',
-        resolver: yupResolver(schema)
-    });
 
-    //   const handleClickShowPassword = () => {
-    //     setState({ ...state, showPassword: !state.showPassword })
-    //   }
-
-    //   const handleMouseDownPassword = event => {
-    //     event.preventDefault()
-    //   }
-
-    const handleResumeUpload = (e) => {
-        const reader = new FileReader();
-        const files = e.target.files[0];
-        if (files) {
-            reader.onload = () => {
-                // Update the image display
-                setselectedFile(files, () => {
-                    console.log('After setselectedFile:', selectedFile);
-                }); // Update the selected file
-            };
-            reader.readAsDataURL(files);
+    console.log(fromdata);
+    dispatch(newSaveintegretion(fromdata))
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        if (res.data?.length === 0) {
+          toast.error(res.message, {
+            position: "top-center",
+          });
         }
-        console.log(selectedFile);
-    };
-    const onSubmit = (data) => {
-        const formData = new FormData();
-        formData.append('credentialJson', selectedFile);
 
-        const formDataToObject = (formData) => {
-            const object = {};
-            formData.forEach((value, key) => {
-                object[key] = value;
-            });
-            return object;
-        };
+        if (res.message === "Connection save successfully.") {
+          setTimeout(() => {
+            navigate("/integrationsources/table");
+          }, "1000");
 
-        const formDataObject = formDataToObject(formData);
-        console.log(formDataObject);
+          toast.success("connection successfully .", {
+            position: "top-center",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-        const Filesource = formDataObject.credentialJson;
+  return (
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Paper elevation={0} sx={{ p: 2 }}>
+          <Typography variant="h5">Data source Connection</Typography>
+        </Paper>
+      </Grid>
+      <Grid item xs={12}>
+        <Card>
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={5}>
+                {hasAccess !== null && !hasAccess && (
+                  <Grid item xs={12}>
+                    <Button
+                      size="large"
+                      type="submit"
+                      variant="contained"
+                      onClick={grantAccess}
+                    >
+                      Authorize BigQuery
+                    </Button>
+                  </Grid>
+                )}
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="connectionName"
+                      control={control}
+                      rules={{ required: true }}
+                      disabled={!hasAccess}
+                      render={({ field: { value, onChange } }) => (
+                        <TextField
+                          value={value}
+                          label="Connection Name"
+                          onChange={onChange}
+                          // placeholder="Leonard"
+                          error={Boolean(errors.connectionName)}
+                          aria-describedby="validation-schema-first-name"
+                        />
+                      )}
+                    />
+                    {errors.connectionName && (
+                      <FormHelperText
+                        sx={{ color: "error.main" }}
+                        id="validation-schema-first-name"
+                      >
+                        {errors.connectionName.message}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Grid>
 
-        console.log(Filesource);
-        const fromdata = {
-            credentialJson: Filesource,
-            connectionName: data.connectionName,
-            dataSourceName: data.dataSourceName,
-            datasetId: data.defaultdatasetid,
-            projectId: data.projectId,
-            tableId: data.tableid,
-            connectionSource: 'BIG QUERY'
-        };
+                <Grid item xs={12}>
+                  <FormControl fullWidth disabled={!hasAccess}>
+                    <Controller
+                      name="projectid"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
+                        <>
+                          <InputLabel id="demo-simple-select-label">
+                            Project ID
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={value}
+                            label="Project ID"
+                            onChange={(e) => {
+                              getDatasetsAsync(e.target.value);
+                              onChange(e);
+                            }}
+                          >
+                            {projects.map((project) => (
+                              <MenuItem value={project.id}>
+                                {project.friendlyName}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </>
+                      )}
+                    />
+                    {errors.projectid && (
+                      <FormHelperText
+                        sx={{ color: "error.main" }}
+                        id="validation-schema-projectid"
+                      >
+                        {errors.projectid.message}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Grid>
 
-        console.log(fromdata);
-        dispatch(newSaveintegretion(fromdata))
-            .unwrap()
-            .then((res) => {
-                console.log(res);
-                if (res.data?.length === 0) {
-                    toast.error(res.message, {
-                        position: 'top-center'
-                    });
-                }
+                <Grid item xs={12}>
+                  <FormControl fullWidth disabled={!dirtyFields.projectid}>
+                    <Controller
+                      name="defaultdatasetid"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
+                        <>
+                          <InputLabel id="demo-simple-select-label">
+                            Dataset ID
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={value}
+                            label="Dataset ID"
+                            onChange={onChange}
+                          >
+                            {datasets.map((dataset) => (
+                              <MenuItem
+                                value={dataset.datasetReference?.datasetId}
+                              >
+                                {dataset.datasetReference?.datasetId ||
+                                  dataset.id}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </>
+                      )}
+                    />
+                    {errors.defaultdatasetid && (
+                      <FormHelperText
+                        sx={{ color: "error.main" }}
+                        id="validation-schema-defaultdatasetid"
+                      >
+                        {errors.defaultdatasetid.message}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Grid>
 
-                if (res.message === 'Connection save successfully.') {
-                    setTimeout(() => {
-                        navigate('/integrationsources/table');
-                    }, '1000');
+                <Grid item xs={12}>
+                  <FormControl
+                    fullWidth
+                    disabled={!dirtyFields.defaultdatasetid}
+                  >
+                    <Controller
+                      name="tableid"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
+                        <>
+                          <InputLabel id="demo-simple-select-label">
+                            Table ID
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={value}
+                            label="Table ID"
+                            onChange={onChange}
+                          >
+                            {tables.map((table) => (
+                              <MenuItem value={table.tableReference?.datasetId}>
+                                {table.tableReference?.datasetId || table.id}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </>
+                      )}
+                    />
+                    {errors.tableid && (
+                      <FormHelperText
+                        sx={{ color: "error.main" }}
+                        id="validation-schema-tableid"
+                      >
+                        {errors.tableid.message}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Grid>
 
-                    toast.success('connection successfully .', {
-                        position: 'top-center'
-                    });
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
-    return (
-        <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <Paper elevation={0} sx={{ p: 2 }}>
-                    <Typography variant="h5">Data source Connection</Typography>
-                </Paper>
-            </Grid>
-            <Grid item xs={12}>
-                <Card>
-                    <CardContent>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <Grid container spacing={5}>
-                            {
-                                hasAccess !== null && !hasAccess && (
-                                    <Grid item xs={12}>
-                                        <Button size="large" type="submit" variant="contained" onClick={grantAccess}>
-                                            Authorize BigQuery
-                                        </Button>
-                                    </Grid>
-                                )
-                            }
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <Controller
-                                            name="connectionName"
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={({ field: { value, onChange } }) => (
-                                                <TextField
-                                                    value={value}
-                                                    label="Connection Name"
-                                                    onChange={onChange}
-                                                    // placeholder="Leonard"
-                                                    error={Boolean(errors.connectionName)}
-                                                    aria-describedby="validation-schema-first-name"
-                                                />
-                                            )}
-                                        />
-                                        {errors.connectionName && (
-                                            <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-first-name">
-                                                {errors.connectionName.message}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-                                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    disabled={!allowSubmit}
+                    onClick={onSubmit}
+                  >
+                    Save
+                  </Button>
 
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <Controller
-                                            name="defaultdatasetid"
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={({ field: { value, onChange } }) => (
-                                                <TextField
-                                                    value={value}
-                                                    label="Dataset ID"
-                                                    onChange={onChange}
-                                                    // placeholder="Carter"
-                                                    error={Boolean(errors.defaultdatasetid)}
-                                                    aria-describedby="validation-schema-defaultdatasetid"
-                                                />
-                                            )}
-                                        />
-                                        {errors.defaultdatasetid && (
-                                            <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-defaultdatasetid">
-                                                {errors.defaultdatasetid.message}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <Controller
-                                            name="projectId"
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={({ field: { value, onChange } }) => (
-                                                <TextField
-                                                    value={value}
-                                                    label="Project ID"
-                                                    onChange={onChange}
-                                                    // placeholder="Carter"
-                                                    error={Boolean(errors.projectId)}
-                                                    aria-describedby="validation-schema-projectid"
-                                                />
-                                            )}
-                                        />
-                                        {errors.projectId && (
-                                            <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-projectid">
-                                                {errors.projectId.message}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <Controller
-                                            name="tableid"
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={({ field: { value, onChange } }) => (
-                                                <TextField
-                                                    value={value}
-                                                    label="Table ID"
-                                                    onChange={onChange}
-                                                    // placeholder="Carter"
-                                                    error={Boolean(errors.tableid)}
-                                                    aria-describedby="validation-schema-tableid"
-                                                />
-                                            )}
-                                        />
-                                        {errors.tableid && (
-                                            <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-tableid">
-                                                {errors.tableid.message}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <Button size="large" type="submit" variant="contained">
-                                        Save
-                                        <ToastContainer autoClose={1000} />
-                                    </Button>
-
-                                    <Button size="large" type="submit" variant="contained" sx={{ ml: '2%' }} onClick={navigateToRoute}>
-                                        Back
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </form>
-                    </CardContent>
-                </Card>
-            </Grid>
-        </Grid>
-    );
+                  <Button
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    sx={{ ml: "2%" }}
+                    onClick={navigateToRoute}
+                  >
+                    Back
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+  );
 }
 
 export default Addintegrationsource;
