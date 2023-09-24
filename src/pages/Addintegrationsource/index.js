@@ -71,9 +71,9 @@ const schema = yup.object().shape({
     .string()
     .min(3, (obj) => showErrors("connectionName", obj.value.length, obj.min))
     .required(),
-  projectId: yup
+  projectid: yup
     .string()
-    .min(3, (obj) => showErrors("projectId", obj.value.length, obj.min))
+    .min(3, (obj) => showErrors("projectid", obj.value.length, obj.min))
     .required(),
   tableid: yup
     .string()
@@ -183,16 +183,12 @@ function Addintegrationsource() {
       formValues.defaultdatasetid &&
       !formValues.tableid
     ) {
-      console.log(
-        "formValues.projectid && formValues.defaultdatasetid",
-        formValues.defaultdatasetid
-      );
       getTablesAsync(formValues.projectid, formValues.defaultdatasetid);
     }
   }, [formValues, getTablesAsync]);
 
   const onSuccess = (response) => {
-    localStorage.setItem("TOKEN", response.access_token);
+    localStorage.setItem("GOOGLE_TOKEN", response.access_token);
     localStorage.setItem("TOKEN_OBJECT", JSON.stringify(response));
 
     const hasAccessResponse = hasGrantedAnyScopeGoogle(response, ...scopes);
@@ -228,8 +224,9 @@ function Addintegrationsource() {
     const fromdata = {
       connectionName: data.connectionName,
       datasetId: data.defaultdatasetid,
-      projectId: data.projectId,
+      projectId: data.projectid,
       tableId: data.tableid,
+      credentials: JSON.parse(localStorage.getItem("TOKEN_OBJECT")),
       connectionSource: "BIG QUERY",
     };
 
@@ -269,9 +266,9 @@ function Addintegrationsource() {
       <Grid item xs={12}>
         <Card>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit, console.log)}>
               <Grid container spacing={5}>
-                {hasAccess !== null && !hasAccess && (
+                {!hasAccess && (
                   <Grid item xs={12}>
                     <Button
                       size="large"
@@ -286,6 +283,7 @@ function Addintegrationsource() {
                 <Grid item xs={12}>
                   <FormControl fullWidth>
                     <Controller
+                      key="connectionName"
                       name="connectionName"
                       control={control}
                       rules={{ required: true }}
@@ -315,6 +313,7 @@ function Addintegrationsource() {
                 <Grid item xs={12}>
                   <FormControl fullWidth disabled={!hasAccess}>
                     <Controller
+                      key="projectid"
                       name="projectid"
                       control={control}
                       rules={{ required: true }}
@@ -334,7 +333,7 @@ function Addintegrationsource() {
                             }}
                           >
                             {projects.map((project) => (
-                              <MenuItem value={project.id}>
+                              <MenuItem key={project.id} value={project.id}>
                                 {project.friendlyName}
                               </MenuItem>
                             ))}
@@ -356,6 +355,7 @@ function Addintegrationsource() {
                 <Grid item xs={12}>
                   <FormControl fullWidth disabled={!dirtyFields.projectid}>
                     <Controller
+                      key="defaultdatasetid"
                       name="defaultdatasetid"
                       control={control}
                       rules={{ required: true }}
@@ -371,14 +371,17 @@ function Addintegrationsource() {
                             label="Dataset ID"
                             onChange={onChange}
                           >
-                            {datasets.map((dataset) => (
-                              <MenuItem
-                                value={dataset.datasetReference?.datasetId}
-                              >
-                                {dataset.datasetReference?.datasetId ||
-                                  dataset.id}
-                              </MenuItem>
-                            ))}
+                            {datasets.map((dataset) => {
+                              const id =
+                                dataset.datasetReference?.datasetId ||
+                                dataset.id;
+
+                              return (
+                                <MenuItem key={id} value={id}>
+                                  {id}
+                                </MenuItem>
+                              );
+                            })}
                           </Select>
                         </>
                       )}
@@ -400,6 +403,7 @@ function Addintegrationsource() {
                     disabled={!dirtyFields.defaultdatasetid}
                   >
                     <Controller
+                      key="tableid"
                       name="tableid"
                       control={control}
                       rules={{ required: true }}
@@ -415,11 +419,16 @@ function Addintegrationsource() {
                             label="Table ID"
                             onChange={onChange}
                           >
-                            {tables.map((table) => (
-                              <MenuItem value={table.tableReference?.datasetId}>
-                                {table.tableReference?.datasetId || table.id}
-                              </MenuItem>
-                            ))}
+                            {tables.map((table) => {
+                              const id =
+                                table.tableReference?.tableId || table.id;
+
+                              return (
+                                <MenuItem key={table.id} value={id}>
+                                  {id}
+                                </MenuItem>
+                              );
+                            })}
                           </Select>
                         </>
                       )}
@@ -441,7 +450,6 @@ function Addintegrationsource() {
                     type="submit"
                     variant="contained"
                     disabled={!allowSubmit}
-                    onClick={onSubmit}
                   >
                     Save
                   </Button>
