@@ -145,7 +145,7 @@ const AuthLogin = () => {
                         .matches(/\S+@\S+\.\S+/, 'Please Enter Valid Email')
                         .max(255)
                         .required('Email is required'),
-                    password: Yup.string().max(10, 'Password can only contain 10 Digit').required('Password  is Required')
+                    password: Yup.string().max(16, 'Password can only contain 16 Digit').required('Password  is Required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {

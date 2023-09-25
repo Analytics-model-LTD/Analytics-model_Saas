@@ -6,8 +6,6 @@ import { useMediaQuery, Button, Stack } from '@mui/material';
 // import Google from 'assets/images/icons/google.svg';
 import Twitter from 'assets/images/icons/twitter.svg';
 import Facebook from 'assets/images/icons/facebook.svg';
-// import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-// import { GoogleLogin, GoogleOAuthProvider } from '../../../../node_modules/@react-oauth/google/dist/index';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { googleSignIn } from 'Slice/googleLoginSlice';
