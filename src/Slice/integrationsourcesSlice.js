@@ -1,8 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const queryApi = axios.create({
+    baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
+    timeout: 10000,
+    headers: {'Authorization': `Bearer ${localStorage.getItem('GOOGLE_TOKEN')}`}
+});
+
 const getToken = async () => {
     return localStorage.getItem('TOKEN');
+};
+
+const getGoogleToken = async () => {
+    return localStorage.getItem('GOOGLE_TOKEN');
 };
 
 // let token = localStorage.getItem('TOKEN');
@@ -29,12 +39,54 @@ export const fetchAllintegretionData = createAsyncThunk('integrationsources/inte
     return response.data;
 });
 
+export const getProjects = createAsyncThunk('integrationsources/projects', async () => {
+    console.log('getProjects');
+    const token = await getGoogleToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects`, config);
+
+    return response.data;
+});
+
+export const getDatasets = createAsyncThunk('integrationsources/datasets', async (projectId) => {
+    console.log('getDatasets');
+    const token = await getGoogleToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects/${projectId}/datasets`, config);
+
+    return response.data;
+});
+
+export const getTables = createAsyncThunk('integrationsources/tables', async ({projectId, datasetId}) => {
+    console.log('getTables', projectId, datasetId);
+    const token = await getGoogleToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects/${projectId}/datasets/${datasetId}/tables`, config);
+
+    return response.data;
+});
+
 export const newSaveintegretion = createAsyncThunk('integrationsources/saveintegretion', async (payload) => {
     const token = await getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'application/json'
         }
     };
     const response = await axios.post(`/analytics/create`, payload, config);
