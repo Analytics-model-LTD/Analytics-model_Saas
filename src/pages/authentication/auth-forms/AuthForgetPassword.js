@@ -83,7 +83,7 @@ const AuthForgetPassword = () => {
                                         name="email"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        placeholder="demo@username.com"
+                                        placeholder=""
                                         fullWidth
                                         error={Boolean(touched.email && errors.email)}
                                     />

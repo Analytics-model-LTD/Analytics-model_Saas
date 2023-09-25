@@ -97,7 +97,7 @@ const FirebaseSocial = () => {
                 <GoogleOAuthProvider clientId="1707393391-8qee74bq6137hdjb3qb0ntq9megb4cqf.apps.googleusercontent.com">
                     <GoogleLogin
                         onSuccess={credentialResponse => {
-                            console.log(credentialResponse);
+                            console.log('google cocial',credentialResponse);
                             var decoded = jwt_decode(credentialResponse.credential);
                            
                         }}
