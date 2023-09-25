@@ -100,8 +100,7 @@ const AuthLogin = () => {
     };
 
     const handleLoginSuccess = credentialResponse => {
-        console.log('handleLoginSuccess called')
-        console.log(credentialResponse);
+        
         axios
                 .post(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/google_login`, {credential:credentialResponse.credential},
                 {
@@ -110,9 +109,7 @@ const AuthLogin = () => {
                     }
                 })
                 .then((res) => {
-                    console.log('internal api called');
-
-                    console.log(res);
+                    
                     if (res) {
                        
                    
