@@ -100,6 +100,7 @@ const AuthLogin = () => {
     };
 
     const handleLoginSuccess = credentialResponse => {
+        console.log('handleLoginSuccess called')
         console.log(credentialResponse);
         axios
                 .post(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/google_login`, {credential:credentialResponse.credential},
@@ -109,27 +110,28 @@ const AuthLogin = () => {
                     }
                 })
                 .then((res) => {
-                    if (res) {
-                        const gdata = localStorage.getItem('TOKEN');
-                        gdata !== null ? navigate('/') : <></>;
-                    }
+                    console.log('internal api called');
 
+                    console.log(res);
+                    if (res) {
+                       
+                   
+                    localStorage.setItem('TOKEN', res.data.access_token);
                     localStorage.setItem(
                         'userInfo',
                         JSON.stringify({
-                            firstname: res?.data?.family_name,
-                            picture: res?.data?.picture,
-                            name: res?.data?.name
+                            firstname: res?.user?.firstname,
+                            picture: res?.data?.profile_image
                         })
                     );
-
+                    res.data.access_token != null ? navigate('/') : <></>;
                     // res.status === 200 ? navigate('/') : <></>;
                     // res.data !== null ? navigate('/') : <></>;
-
+                }
                     // logOut();
                     // navigate("/RS_Store");
                 });
-        setIsLoggedIn(false); // Reset the flag when login is successful
+        //setIsLoggedIn(false); // Reset the flag when login is successful
       };
    
     return (

@@ -14,7 +14,7 @@ import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 // ==============================|| NAVIGATION - LIST ITEM ||============================== //
 
 const NavItem = ({ item, level }) => {
-    console.log(item)
+   
     const theme = useTheme();
     const dispatch = useDispatch();
     const menu = useSelector((state) => state.menu.menu);
@@ -35,7 +35,7 @@ const NavItem = ({ item, level }) => {
 
     const Icon = item.icon;
     const itemIcon = item.icon;
-    console.log(itemIcon);
+    
     // const itemIcon = item.icon ? <Icon style={{ fontSize: drawerOpen ? '1rem' : '1.25rem' }} /> : false;
 
     const isSelected = openItem?.findIndex((id) => id === item.id) > -1;
