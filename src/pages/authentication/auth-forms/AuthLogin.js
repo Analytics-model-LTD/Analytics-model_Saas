@@ -100,7 +100,7 @@ const AuthLogin = () => {
     };
 
     const handleLoginSuccess = credentialResponse => {
-        
+        console.log(credentialResponse)
         axios
                 .post(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/google_login`, {credential:credentialResponse.credential},
                 {
@@ -112,12 +112,13 @@ const AuthLogin = () => {
                     
                     if (res) {
                        
-                   
+                   console.log(res?.user?.firstname);
                     localStorage.setItem('TOKEN', res.data.access_token);
+                    const user = jwt(res.data.access_token);
                     localStorage.setItem(
                         'userInfo',
                         JSON.stringify({
-                            firstname: res?.user?.firstname,
+                            firstname: user?.user?.firstname,
                             picture: res?.data?.profile_image
                         })
                     );
