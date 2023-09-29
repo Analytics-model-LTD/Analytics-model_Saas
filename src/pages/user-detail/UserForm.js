@@ -106,7 +106,7 @@ const User = () => {
                 setImgSrc(reader.result); // Update the image display
                 setselectedFile(files, () => {
                     'After setselectedFile:', selectedFile;
-                    console.log;
+                    
                 }); // Update the selected file
             };
             reader.readAsDataURL(files);
@@ -130,7 +130,7 @@ const User = () => {
     });
 
     let data = null;
-
+    
     useEffect(() => {
         setInitValues(null);
         if (data === null) {
@@ -138,7 +138,8 @@ const User = () => {
                 .unwrap()
                 .then((res) => {
                     data = res.data;
-                    let imgs = res.data.profile_image;
+                    const userdata = JSON.parse(localStorage.getItem('userInfo'));
+                    let imgs =res.data.profile_image==null? res.data.profile_image:userdata?.picture;
                     setImgSrc(imgs);
                     // console.log(data);
 
