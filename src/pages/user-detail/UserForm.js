@@ -139,7 +139,8 @@ const User = () => {
                 .then((res) => {
                     data = res.data;
                     const userdata = JSON.parse(localStorage.getItem('userInfo'));
-                    let imgs =res.data.profile_image==null? res.data.profile_image:userdata?.picture;
+                    
+                    let imgs =res.data.profile_image==null? userdata?.picture:res.data.profile_image;
                     setImgSrc(imgs);
                     // console.log(data);
 
