@@ -198,7 +198,6 @@ function Addintegrationsource() {
         },
       }
     );
-    localStorage.setItem("GOOGLE_TOKEN", response.access_token);
     localStorage.setItem("TOKEN_OBJECT", JSON.stringify(response));
 
     const hasAccessResponse = hasGrantedAnyScopeGoogle(response, ...scopes);
