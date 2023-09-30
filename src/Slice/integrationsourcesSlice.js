@@ -11,10 +11,6 @@ const queryApi = axios.create({
     headers: {'Authorization': `Bearer ${getToken()}`}
 });
 
-const getGoogleToken = async () => {
-    return localStorage.getItem('GOOGLE_TOKEN');
-};
-
 export const fetchAllintegretionData = createAsyncThunk('integrationsources/integrationData', async (page) => {
     const token = await getToken();
     const config = {
@@ -32,7 +28,7 @@ export const fetchAllintegretionData = createAsyncThunk('integrationsources/inte
 
 export const getProjects = createAsyncThunk('integrationsources/projects', async () => {
     console.log('getProjects');
-    const token = await getGoogleToken();
+    const token = await getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -46,7 +42,7 @@ export const getProjects = createAsyncThunk('integrationsources/projects', async
 
 export const getDatasets = createAsyncThunk('integrationsources/datasets', async (projectId) => {
     console.log('getDatasets');
-    const token = await getGoogleToken();
+    const token = await getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -60,7 +56,7 @@ export const getDatasets = createAsyncThunk('integrationsources/datasets', async
 
 export const getTables = createAsyncThunk('integrationsources/tables', async ({projectId, datasetId}) => {
     console.log('getTables', projectId, datasetId);
-    const token = await getGoogleToken();
+    const token = await getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
