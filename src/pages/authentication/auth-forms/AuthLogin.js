@@ -18,6 +18,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import GoogleButton from 'react-google-button'
 
 // third party
 import * as Yup from "yup";
@@ -311,16 +312,8 @@ const AuthLogin = () => {
                   }}
                 >
                   <GoogleOAuthProvider clientId="1707393391-8qee74bq6137hdjb3qb0ntq9megb4cqf.apps.googleusercontent.com">
-                    <GoogleLogin
-                      onSuccess={handleLoginSuccess}
-                      flow="auth-code"
-                      // onSuccess={credentialResponse => {
-                      //     console.log(credentialResponse);
-                      //     var decoded = jwt_decode(credentialResponse.credential);
-                      // }}
-                      onError={() => {
-                        console.log("Login Failed");
-                      }}
+                    <GoogleButton
+                      onClick={googleLogin}
                     />
                   </GoogleOAuthProvider>
                 </div>
