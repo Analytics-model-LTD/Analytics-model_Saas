@@ -139,7 +139,8 @@ const AuthLogin = () => {
   };
 
   const googleLogin = useGoogleLogin({
-    onSuccess: handleLoginSuccess,
+    onSuccess: (codeResponse) => handleLoginSuccess(codeResponse),
+    onError: (error) => console.log("Login Failed:", error),
     flow: "auth-code",
   });
 
