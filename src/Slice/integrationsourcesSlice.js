@@ -15,15 +15,6 @@ const getGoogleToken = async () => {
     return localStorage.getItem('GOOGLE_TOKEN');
 };
 
-// let token = localStorage.getItem('TOKEN');
-
-// let config = {
-//     headers: {
-//         Authorization: `Bearer ${token}`,
-//         'Content-Type': 'multipart/form-data'
-//     }
-// };
-
 export const fetchAllintegretionData = createAsyncThunk('integrationsources/integrationData', async (page) => {
     const token = await getToken();
     const config = {
