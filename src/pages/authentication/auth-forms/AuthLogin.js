@@ -37,11 +37,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import { getuserDetails } from "Slice/userProfileSlice";
 import { dispatch } from "store/index";
-import {
-  GoogleLogin,
-  GoogleOAuthProvider,
-  useGoogleLogin,
-} from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
@@ -109,7 +105,7 @@ const AuthLogin = () => {
     axios
       .post(
         `https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/google_login`,
-        { credential: credentialResponse },
+        { credential: credentialResponse.credential },
         {
           headers: {
             "content-type": "application/json",
@@ -137,13 +133,6 @@ const AuthLogin = () => {
       });
     //setIsLoggedIn(false); // Reset the flag when login is successful
   };
-
-  const googleLogin = useGoogleLogin({
-    onSuccess: (codeResponse) => handleLoginSuccess(codeResponse.code),
-    onError: (error) => console.log("Login Failed:", error),
-    scope: "openid profile email",
-    flow: "auth-code",
-  });
 
   return (
     <>
@@ -314,7 +303,14 @@ const AuthLogin = () => {
                   }}
                 >
                   <GoogleOAuthProvider clientId="1707393391-8qee74bq6137hdjb3qb0ntq9megb4cqf.apps.googleusercontent.com">
-                    <GoogleButton onClick={googleLogin} />
+                    <GoogleLogin
+                      onSuccess={(credentialResponse) =>
+                        handleLoginSuccess(credentialResponse)
+                      }
+                      onError={() => {
+                        console.log("Login Failed");
+                      }}
+                    />
                   </GoogleOAuthProvider>
                 </div>
               </Grid>

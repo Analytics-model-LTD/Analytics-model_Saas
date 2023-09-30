@@ -191,7 +191,7 @@ function Addintegrationsource() {
   const onSuccess = async (response) => {
     await axios.post(
       `/user/google_login`,
-      { credential: response.code },
+      { credential: response.code, type: "code" },
       {
         headers: {
           "content-type": "application/json",
