@@ -141,6 +141,7 @@ const AuthLogin = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => handleLoginSuccess(codeResponse.code),
     onError: (error) => console.log("Login Failed:", error),
+    scope: "openid profile email",
     flow: "auth-code",
   });
 
