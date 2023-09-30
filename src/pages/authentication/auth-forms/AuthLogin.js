@@ -109,7 +109,7 @@ const AuthLogin = () => {
     axios
       .post(
         `https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/google_login`,
-        { credential: credentialResponse.credential },
+        { credential: credentialResponse },
         {
           headers: {
             "content-type": "application/json",
