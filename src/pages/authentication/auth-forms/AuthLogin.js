@@ -18,7 +18,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import GoogleButton from 'react-google-button'
+import GoogleButton from "react-google-button";
 
 // third party
 import * as Yup from "yup";
@@ -312,9 +312,7 @@ const AuthLogin = () => {
                   }}
                 >
                   <GoogleOAuthProvider clientId="1707393391-8qee74bq6137hdjb3qb0ntq9megb4cqf.apps.googleusercontent.com">
-                    <GoogleButton
-                      onClick={googleLogin}
-                    />
+                    <GoogleButton onClick={googleLogin} />
                   </GoogleOAuthProvider>
                 </div>
               </Grid>
