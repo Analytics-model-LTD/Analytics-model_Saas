@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const queryApi = axios.create({
-    baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
-    timeout: 10000,
-    headers: {'Authorization': `Bearer ${localStorage.getItem('GOOGLE_TOKEN')}`}
-});
-
 const getToken = async () => {
     return localStorage.getItem('TOKEN');
 };
+
+const queryApi = axios.create({
+    baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
+    timeout: 10000,
+    headers: {'Authorization': `Bearer ${getToken()}`}
+});
 
 const getGoogleToken = async () => {
     return localStorage.getItem('GOOGLE_TOKEN');
