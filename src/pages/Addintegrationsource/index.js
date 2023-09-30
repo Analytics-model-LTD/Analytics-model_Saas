@@ -189,8 +189,7 @@ function Addintegrationsource() {
   }, [formValues, getTablesAsync]);
 
   const onSuccess = async (response) => {
-    console.log("Google Login Successful:", response);
-    const k = await axios.post(
+    await axios.post(
       `/user/google_login`,
       { credential: response.code },
       {
@@ -199,7 +198,6 @@ function Addintegrationsource() {
         },
       }
     );
-    console.log(k);
     localStorage.setItem("GOOGLE_TOKEN", response.access_token);
     localStorage.setItem("TOKEN_OBJECT", JSON.stringify(response));
 
