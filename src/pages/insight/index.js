@@ -76,11 +76,7 @@ function Insight() {
         integrationId: integration,
         instructions: message,
       })
-    )
-      .unwrap()
-      .then((res) => {
-        setProjects(res.projects);
-      });
+    );
   };
 
   const handleSendMessage = (message) => {
@@ -129,6 +125,8 @@ function Insight() {
       );
     }
 
+    console.log(item);
+
     if (item.type === "INSIGHT") {
       return (
         <InsightTableChart
@@ -137,6 +135,9 @@ function Insight() {
           fields={item.query.fields}
           rows={item.query.result}
           chart={JSON.parse(JSON.stringify(item.query.chartConfig))}
+          integrationId={integration}
+          query={item.query.query}
+          instructions={item.instructions}
         />
       );
     }
@@ -318,9 +319,9 @@ function Insight() {
                     },
                   }}
                 >
-                  {integrationsources.map((integration) => (
-                    <MenuItem value={integration.id}>
-                      {integration.connectionName}
+                  {integrationsources.map(({ id, connectionName }) => (
+                    <MenuItem key={`${connectionName}-${id}`} value={id}>
+                      {connectionName}
                     </MenuItem>
                   ))}
                 </Select>

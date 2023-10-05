@@ -52,11 +52,12 @@ const querySlice = createSlice({
       state.loading = "fulfilled";
       state.history.push({
         type: "INSIGHT",
+        instructions: action.meta.arg.instructions,
         query: action.payload,
       });
     });
     builder.addCase(createIntegrationQuery.rejected, (state, action) => {
-      console.log("pending", { state, action });
+      console.log("rejected", { state, action });
       state.loading = "rejected";
       state.history.push({
         type: "TEXT",

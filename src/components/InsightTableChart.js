@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Paper, Grid, Chip, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -7,6 +8,7 @@ import TableViewIcon from "@mui/icons-material/TableView";
 import Typography from "@mui/material/Typography";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AddIcon from "@mui/icons-material/Add";
+import CheckIcon from "@mui/icons-material/Check";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
@@ -18,6 +20,8 @@ import Divider from "@mui/material/Divider";
 import ReactApexChart from "react-apexcharts";
 import logo from "assets/images/icons/Analytics Model Playground/1440px/Feed/download 1.jpg";
 import Send from "assets/images/icons/sendmsg.svg";
+import { createInsight } from "Slice/insightSlice";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const InsightTableChart = ({
   isChartView,
@@ -25,7 +29,31 @@ const InsightTableChart = ({
   rows,
   fields,
   chart,
+  integrationId,
+  query,
+  instructions,
 }) => {
+  const insights = useSelector((state) => state.insights);
+  const dispatch = useDispatch();
+  const [saved, setSaved] = React.useState(false);
+
+  const addToDashboard = () => {
+    if (saved) return;
+
+    dispatch(
+      createInsight({
+        integrationId,
+        query,
+        instructions,
+        insightType: isChartView ? "chart" : "table",
+        data: { rows, fields },
+        chartConfig: chart,
+      })
+    );
+
+    setSaved(true);
+  };
+
   return (
     <Grid container spacing={1} sx={{ my: "2%" }}>
       <Grid
@@ -129,6 +157,7 @@ const InsightTableChart = ({
                 spacing={2}
                 alignItems="center"
                 justifyContent="center"
+                onClick={addToDashboard}
                 sx={{
                   flex: 1,
                   borderRadius: "8px",
@@ -146,14 +175,28 @@ const InsightTableChart = ({
                     cursor: "pointer",
                   }}
                 >
-                  Dashboard
-                  <AddIcon
-                    style={{
-                      height: "20px",
-                      width: "20px",
-                      marginLeft: "4px",
-                    }}
-                  />
+                  {insights.loading === "pending" ? (
+                    <CircularProgress size={16} />
+                  ) : saved ? (
+                    <CheckIcon
+                      style={{
+                        height: "20px",
+                        width: "20px",
+                        marginLeft: "4px",
+                      }}
+                    />
+                  ) : (
+                    <>
+                      Dashboard
+                      <AddIcon
+                        style={{
+                          height: "20px",
+                          width: "20px",
+                          marginLeft: "4px",
+                        }}
+                      />
+                    </>
+                  )}
                 </Typography>
               </Stack>
               <Stack
