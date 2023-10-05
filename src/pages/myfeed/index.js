@@ -47,55 +47,6 @@ function Myfeed() {
       });
   }, [dispatch, page]);
 
-  const options = {
-    series: [
-      {
-        name: "Net Profit",
-        data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-      },
-      {
-        name: "Revenue",
-        data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
-      },
-      {
-        name: "Free Cash Flow",
-        data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
-      },
-    ],
-    chart: {
-      type: "bar",
-      height: 350,
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: "55%",
-        endingShape: "rounded",
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ["transparent"],
-    },
-    xaxis: {
-      categories: ["01", "02", "03", "04", "05", "06", "07", "08", "09"],
-    },
-
-    fill: {
-      opacity: 1,
-    },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return "$ " + val + " thousands";
-        },
-      },
-    },
-  };
   return (
     <>
       <Grid container spacing={3}>
@@ -130,123 +81,155 @@ function Myfeed() {
           </Paper>
           {/* </Paper> */}
         </Grid>
-        {feed.map((item, index) => (
-          <Grid
-            item
-            xs={12}
-            sx={{
-              maxWidth: {
-                xs: "100%",
-                sm: "100%",
-                md: "100%",
+        {feed.map((item, index) => {
+          const options = {
+            plotOptions: {
+              bar: {
+                horizontal: false,
+                columnWidth: "55%",
+                endingShape: "rounded",
               },
-            }}
-          >
-            <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            stroke: {
+              show: true,
+              width: 2,
+              colors: ["transparent"],
+            },
+            fill: {
+              opacity: 1,
+            },
+            tooltip: {
+              y: {
+                formatter: function (val) {
+                  return "$ " + val + " thousands";
+                },
+              },
+            },
+            ...JSON.parse(JSON.stringify(item.ChartCode)),
+            
+          };
+          return (
+            <Grid
+              item
+              key={item.Id}
+              xs={12}
+              sx={{
+                maxWidth: {
+                  xs: "100%",
+                  sm: "100%",
+                  md: "100%",
+                },
+              }}
+            >
+              <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
                 <div
                   style={{
-                    marginRight: "16px",
-                    backgroundColor: "lightblue",
-                    borderRadius: "50%",
-                    width: "56px",
-                    height: "56px",
                     display: "flex",
+                    flexDirection: "row",
                     alignItems: "center",
-                    justifyContent: "center",
                   }}
                 >
-                  <img
-                    src={spike}
-                    alt="spike"
+                  <div
                     style={{
-                      height: "28px",
-                      width: "28px",
+                      marginRight: "16px",
+                      backgroundColor: "lightblue",
                       borderRadius: "50%",
-                    }}
-                  />
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Typography
-                    sx={{
-                      fontFamily: "Inter",
-                      fontSize: "16px",
-                      fontStyle: "normal",
-                      fontWeight: 600,
-                      lineHeight: "100%",
+                      width: "56px",
+                      height: "56px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
-                    Spike
-                  </Typography>
+                    <img
+                      src={spike}
+                      alt="spike"
+                      style={{
+                        height: "28px",
+                        width: "28px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <Typography
+                      sx={{
+                        fontFamily: "Inter",
+                        fontSize: "16px",
+                        fontStyle: "normal",
+                        fontWeight: 600,
+                        lineHeight: "100%",
+                      }}
+                    >
+                      Spike
+                    </Typography>
+                  </div>
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    alignItems="center"
+                    sx={{
+                      borderRadius: "20%",
+                      border: "1px solid lightblue",
+                      p: "8px",
+                      justifyContent: "end",
+                      ml: "70%",
+                    }}
+                  >
+                    <AddIcon style={{ height: "28px", width: "28px" }} />
+                  </Stack>
+
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    alignItems="center"
+                    sx={{
+                      borderRadius: "20%",
+                      border: "1px solid lightblue",
+                      p: "8px",
+                      justifyContent: "end",
+                      ml: "1%",
+                    }}
+                  >
+                    <img
+                      src={spike}
+                      alt="spike"
+                      style={{ height: "28px", width: "28px" }}
+                    />
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    alignItems="center"
+                    sx={{
+                      borderRadius: "20%",
+                      border: "1px solid lightblue",
+                      p: "8px",
+                      justifyContent: "end",
+                      ml: "1%",
+                    }}
+                  >
+                    <MoreVertIcon style={{ height: "28px", width: "28px" }} />
+                  </Stack>
                 </div>
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  alignItems="center"
-                  sx={{
-                    borderRadius: "20%",
-                    border: "1px solid lightblue",
-                    p: "8px",
-                    justifyContent: "end",
-                    ml: "70%",
-                  }}
-                >
-                  <AddIcon style={{ height: "28px", width: "28px" }} />
-                </Stack>
+                <Divider sx={{ mt: "2%" }} />
 
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  alignItems="center"
-                  sx={{
-                    borderRadius: "20%",
-                    border: "1px solid lightblue",
-                    p: "8px",
-                    justifyContent: "end",
-                    ml: "1%",
-                  }}
-                >
-                  <img
-                    src={spike}
-                    alt="spike"
-                    style={{ height: "28px", width: "28px" }}
+                <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
+                  <ReactApexChart
+                    options={options}
+                    series={options.series}
+                    type="bar"
+                    height={250}
                   />
-                </Stack>
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  alignItems="center"
-                  sx={{
-                    borderRadius: "20%",
-                    border: "1px solid lightblue",
-                    p: "8px",
-                    justifyContent: "end",
-                    ml: "1%",
-                  }}
-                >
-                  <MoreVertIcon style={{ height: "28px", width: "28px" }} />
-                </Stack>
-              </div>
-              <Divider sx={{ mt: "2%" }} />
-
-              <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
-                <ReactApexChart
-                  options={item.ChartCode}
-                  series={item.ChartCode.series}
-                  type="bar"
-                  height={250}
-                />
+                </Paper>
               </Paper>
-            </Paper>
-          </Grid>
-        ))}
+            </Grid>
+          );
+        })}
       </Grid>
     </>
   );
