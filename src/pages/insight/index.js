@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import { Paper, Grid, Chip, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import Card from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import logo from "assets/images/icons/Analytics Model Playground/1440px/Feed/download 1.jpg";
+import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Divider from "@mui/material/Divider";
@@ -28,52 +32,64 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import InsightTableChart from "components/InsightTableChart";
 import { createIntegrationQuery } from "Slice/querySlice";
+import {
+  fetchAllintegretionData,
+  getAllintegretionData,
+} from "Slice/integrationsourcesSlice";
 
-const createData = (name, calories, fat, carbs, protein) => {
-  return { name, calories, fat, carbs, protein };
-};
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
 function Insight() {
   const [isChecked, setIsChecked] = useState(false);
   const [isdatachecked, setDataischecked] = useState(false);
   const [isChartView, setIsChartView] = useState(false);
   const [instructions, setInstructions] = useState("");
+  const [integration, setIntegration] = useState();
   const query = useSelector((state) => state.query);
-  console.log(query);
+  const integrationsources = useSelector(getAllintegretionData);
   const dispatch = useDispatch();
   const cardBackgroundColor = isChecked ? "lightblue" : "";
   const cardcolor = isdatachecked ? "lightblue" : "";
+
+  useEffect(() => {
+    dispatch(fetchAllintegretionData(0));
+  }, [dispatch]);
+
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
   };
+
   const handleCheckboxChangedata = (event) => {
     setDataischecked(event.target.checked);
   };
+
   const toggleView = () => {
     setIsChartView(!isChartView);
   };
+
   const sendMessage = (message) => {
+    if (!integration) {
+      alert("Please select an integration");
+      return;
+    }
+
     dispatch(
-      createIntegrationQuery({ integrationId: 24, instructions: message })
+      createIntegrationQuery({
+        integrationId: integration,
+        instructions: message,
+      })
     )
       .unwrap()
       .then((res) => {
         setProjects(res.projects);
       });
   };
+
   const handleSendMessage = (message) => {
     if (!message) return;
 
     sendMessage(message);
     setInstructions("");
   };
+
   const onEnter = (e) => {
     if (e.keyCode == 13) {
       handleSendMessage(e.target.value);
@@ -81,9 +97,15 @@ function Insight() {
   };
 
   const mapQueryToComponent = (item, index) => {
+    console.log(item);
     if (item.type === "TEXT") {
       return (
-        <Grid container spacing={6} sx={{ mt: "2%" }}>
+        <Grid
+          container
+          spacing={6}
+          sx={{ mt: "2%" }}
+          key={`${item.instructions}-${index}`}
+        >
           <Grid
             item
             xs={12}
@@ -108,8 +130,6 @@ function Insight() {
     }
 
     if (item.type === "INSIGHT") {
-      console.log("item", item);
-      console.log("rows", rows);
       return (
         <InsightTableChart
           isChartView={isChartView}
@@ -231,46 +251,82 @@ function Insight() {
       >
         {/* Footer with fixed input field and Send button */}
         <Paper elevation={0} sx={{ p: 2 }}>
-          <TextField
-            size="small"
-            placeholder="Type your message here…"
-            onChange={(e) => setInstructions(e.target.value)}
-            onKeyDown={onEnter}
-            value={instructions}
-            disabled={query.loading === "pending"}
-            sx={{
-              width: "75%",
-              borderRadius: "8px",
-              border: "1px solid #EBEBEB",
-              background: "#FAFAFA",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px",
-                "& fieldset": {
-                  border: "0 !important",
-                },
-              },
-              "& .MuiOutlinedInput-input": {
-                paddingLeft: 0,
-              },
-            }}
-            InputProps={{
-              endAdornment:
-                query.loading === "pending" ? (
-                  <CircularProgress size={16} />
-                ) : (
-                  <InputAdornment
-                    style={{ cursor: "pointer" }}
-                    position="end"
-                    onClick={() => handleSendMessage(instructions)}
-                  >
-                    <img src={Send} alt="Send" />
-                  </InputAdornment>
-                ),
-            }}
-            style={{
-              marginLeft: "8px", // Add some left margin to the text field
-            }}
-          />
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={9} sm={9} md={9}>
+              <TextField
+                size="small"
+                placeholder="Type your message here…"
+                onChange={(e) => setInstructions(e.target.value)}
+                onKeyDown={onEnter}
+                value={instructions}
+                disabled={!integration || query.loading === "pending"}
+                sx={{
+                  width: "100%",
+                  borderRadius: "8px",
+                  border: "1px solid #EBEBEB",
+                  background: "#FAFAFA",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "8px",
+                    "& fieldset": {
+                      border: "0 !important",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    paddingRight: 0,
+                  },
+                }}
+                InputProps={{
+                  endAdornment:
+                    query.loading === "pending" ? (
+                      <CircularProgress size={16} />
+                    ) : (
+                      <InputAdornment
+                        style={{ cursor: "pointer" }}
+                        position="end"
+                        onClick={() => handleSendMessage(instructions)}
+                      >
+                        <img src={Send} alt="Send" />
+                      </InputAdornment>
+                    ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={3} sm={3} md={3}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Integration
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={integration}
+                  label="Integration"
+                  onChange={(e) => setIntegration(e.target.value)}
+                  sx={{
+                    width: "100%",
+                    borderRadius: "8px",
+                    border: "1px solid #EBEBEB",
+                    background: "#FAFAFA",
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "8px",
+                      "& fieldset": {
+                        border: "0 !important",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      paddingRight: 0,
+                    },
+                  }}
+                >
+                  {integrationsources.map((integration) => (
+                    <MenuItem value={integration.id}>
+                      {integration.connectionName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
         </Paper>
       </div>
     </Grid>

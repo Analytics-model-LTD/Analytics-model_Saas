@@ -55,6 +55,14 @@ const querySlice = createSlice({
         query: action.payload,
       });
     });
+    builder.addCase(createIntegrationQuery.rejected, (state, action) => {
+      console.log("pending", { state, action });
+      state.loading = "rejected";
+      state.history.push({
+        type: "TEXT",
+        instructions: "FAILED",
+      });
+    });
   },
 });
 
