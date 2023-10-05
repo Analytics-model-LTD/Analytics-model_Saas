@@ -108,7 +108,7 @@ function Myfeed() {
                 },
               },
             },
-            ...JSON.parse(JSON.stringify(item.ChartCode)),
+            ...JSON.parse(item.ChartCode),
             
           };
           return (
