@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Card, Paper, Grid, Chip, Typography, Stack } from "@mui/material";
 import logo from "assets/images/icons/Analytics Model Playground/1440px/Feed/download 1.jpg";
 import spike from "assets/images/icons/spike.svg";
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 function Myfeed() {
   const getdata = useSelector(getAllFeedData);
   const dispatch = useDispatch();
+  const [feed, setFeed] = useState([]);
   const [page, setPage] = useState(0);
   const navigate = useNavigate();
   // const [rows, setrows] = useState();
@@ -42,14 +43,9 @@ function Myfeed() {
     dispatch(fetchAllFeedData(page))
       .unwrap()
       .then((res) => {
-        console.log(res.data);
-        // setrows(res.data.count);
+        setFeed(res.feed);
       });
   }, [dispatch, page]);
-
-  useEffect(() => {
-    console.log(getdata);
-  }, [getdata]);
 
   const options = {
     series: [
@@ -101,222 +97,158 @@ function Myfeed() {
     },
   };
   return (
-    <Grid container spacing={3}>
-      <Grid
-        item
-        xs={12}
-        sx={{
-          maxWidth: {
-            xs: "100%",
-            sm: "100%",
-            md: "100%",
-          },
-        }}
-      >
-        <Paper
-          elevation={0}
+    <>
+      <Grid container spacing={3}>
+        <Grid
+          item
+          xs={12}
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            p: 2,
+            maxWidth: {
+              xs: "100%",
+              sm: "100%",
+              md: "100%",
+            },
           }}
         >
-          <img src={logo} alt="logo" style={{ marginRight: "16px" }} />
-          {/* <Paper elevation={0} sx={{ p: 2 }}> */}
-          <Typography variant="h6" color="text.primary">
-            Good Morning: TLmedia has recently been sending less quality traffic
-            than before, resulting in lower engagement and conversion rates.
-            Please take this into consideration when evaluating your marketing
-            strategies.
-          </Typography>
-        </Paper>
-        {/* </Paper> */}
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        sx={{
-          maxWidth: {
-            xs: "100%",
-            sm: "100%",
-            md: "100%",
-          },
-        }}
-      >
-        <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
-          <div
-            style={{
+          <Paper
+            elevation={0}
+            sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              p: 2,
             }}
           >
-            <div
-              style={{
-                marginRight: "16px",
-                backgroundColor: "lightblue",
-                borderRadius: "50%",
-                width: "56px",
-                height: "56px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <img
-                src={spike}
-                alt="spike"
-                style={{ height: "28px", width: "28px", borderRadius: "50%" }}
-              />
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <Typography
-                sx={{
-                  fontFamily: "Inter",
-                  fontSize: "16px",
-                  fontStyle: "normal",
-                  fontWeight: 600,
-                  lineHeight: "100%",
-                }}
-              >
-                Spike
-              </Typography>
-            </div>
-            <Stack
-              direction="row"
-              spacing={2}
-              alignItems="center"
-              sx={{
-                borderRadius: "20%",
-                border: "1px solid lightblue",
-                p: "8px",
-                justifyContent: "end",
-                ml: "70%",
-              }}
-            >
-              <AddIcon style={{ height: "28px", width: "28px" }} />
-            </Stack>
-
-            <Stack
-              direction="row"
-              spacing={2}
-              alignItems="center"
-              sx={{
-                borderRadius: "20%",
-                border: "1px solid lightblue",
-                p: "8px",
-                justifyContent: "end",
-                ml: "1%",
-              }}
-            >
-              <img
-                src={spike}
-                alt="spike"
-                style={{ height: "28px", width: "28px" }}
-              />
-            </Stack>
-            <Stack
-              direction="row"
-              spacing={2}
-              alignItems="center"
-              sx={{
-                borderRadius: "20%",
-                border: "1px solid lightblue",
-                p: "8px",
-                justifyContent: "end",
-                ml: "1%",
-              }}
-            >
-              <MoreVertIcon style={{ height: "28px", width: "28px" }} />
-            </Stack>
-          </div>
-          <Divider sx={{ mt: "2%" }} />
-
-          <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
-            <ReactApexChart
-              options={options}
-              series={options.series}
-              type="bar"
-              height={250}
-            />
+            <img src={logo} alt="logo" style={{ marginRight: "16px" }} />
+            {/* <Paper elevation={0} sx={{ p: 2 }}> */}
+            <Typography variant="h6" color="text.primary">
+              Good Morning: TLmedia has recently been sending less quality
+              traffic than before, resulting in lower engagement and conversion
+              rates. Please take this into consideration when evaluating your
+              marketing strategies. {feed.length}
+            </Typography>
           </Paper>
-
-          {/* <Divider sx={{ mt: "2%" }} />
-          <div style={{ display: "flex" }}>
-            <Stack
-              direction="row"
-              spacing={2}
-              alignItems="center"
-              sx={{
-                display: "flex",
-                width: "36px",
-                height: "36px",
-                padding: "11.7px 0px 11.3px 0px",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: "6.75px",
-                border: "1px solid #1F1F1F", // You can use the color directly here
-                mt: "2%",
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#1F1F1F", // You can use the color directly here
-                  textAlign: "center",
-                  fontFamily: "Work Sans",
-                  fontSize: "12.6px",
-                  fontStyle: "normal",
-                  fontWeight: 600,
-                  lineHeight: "12.6px",
-                  letterSpacing: "0.504px",
-                  textTransform: "capitalize",
-                }}
-              >
-                IM
-              </Typography>
-            </Stack>
-              <Box
-                sx={{
-                  flexGrow: 1,
+          {/* </Paper> */}
+        </Grid>
+        {feed.map((item, index) => (
+          <Grid
+            item
+            xs={12}
+            sx={{
+              maxWidth: {
+                xs: "100%",
+                sm: "100%",
+                md: "100%",
+              },
+            }}
+          >
+            <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
+              <div
+                style={{
                   display: "flex",
+                  flexDirection: "row",
                   alignItems: "center",
-                  mt: "2%",
-                  ml: "2%",
                 }}
               >
-                <TextField
-                  fullWidth
-                  size="small"
-                  placeholder="Type your message here…"
+                <div
+                  style={{
+                    marginRight: "16px",
+                    backgroundColor: "lightblue",
+                    borderRadius: "50%",
+                    width: "56px",
+                    height: "56px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src={spike}
+                    alt="spike"
+                    style={{
+                      height: "28px",
+                      width: "28px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Typography
+                    sx={{
+                      fontFamily: "Inter",
+                      fontSize: "16px",
+                      fontStyle: "normal",
+                      fontWeight: 600,
+                      lineHeight: "100%",
+                    }}
+                  >
+                    Spike
+                  </Typography>
+                </div>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
                   sx={{
-                    borderRadius: "8px",
-                    border: "1px solid #EBEBEB",
-                    background: "#FAFAFA", // You can use the color directly here
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "8px",
-                      "& fieldset": {
-                        border: "0 !important",
-                      },
-                    },
-                    "& .MuiOutlinedInput-input": {
-                      paddingLeft: 0,
-                    },
+                    borderRadius: "20%",
+                    border: "1px solid lightblue",
+                    p: "8px",
+                    justifyContent: "end",
+                    ml: "70%",
                   }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <img src={Send} alt="Send" />
-                      </InputAdornment>
-                    ),
+                >
+                  <AddIcon style={{ height: "28px", width: "28px" }} />
+                </Stack>
+
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  sx={{
+                    borderRadius: "20%",
+                    border: "1px solid lightblue",
+                    p: "8px",
+                    justifyContent: "end",
+                    ml: "1%",
                   }}
+                >
+                  <img
+                    src={spike}
+                    alt="spike"
+                    style={{ height: "28px", width: "28px" }}
+                  />
+                </Stack>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  sx={{
+                    borderRadius: "20%",
+                    border: "1px solid lightblue",
+                    p: "8px",
+                    justifyContent: "end",
+                    ml: "1%",
+                  }}
+                >
+                  <MoreVertIcon style={{ height: "28px", width: "28px" }} />
+                </Stack>
+              </div>
+              <Divider sx={{ mt: "2%" }} />
+
+              <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
+                <ReactApexChart
+                  options={item.ChartCode}
+                  series={item.ChartCode.series}
+                  type="bar"
+                  height={250}
                 />
-              </Box>
-          </div> */}
-        </Paper>
+              </Paper>
+            </Paper>
+          </Grid>
+        ))}
       </Grid>
-    </Grid>
+    </>
   );
 }
 
