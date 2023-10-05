@@ -19,7 +19,13 @@ import ReactApexChart from "react-apexcharts";
 import logo from "assets/images/icons/Analytics Model Playground/1440px/Feed/download 1.jpg";
 import Send from "assets/images/icons/sendmsg.svg";
 
-const InsightTableChart = ({ isChartView, toggleView, rows, fields, chart }) => {
+const InsightTableChart = ({
+  isChartView,
+  toggleView,
+  rows,
+  fields,
+  chart,
+}) => {
   return (
     <Grid container spacing={1} sx={{ my: "2%" }}>
       <Grid
@@ -86,6 +92,7 @@ const InsightTableChart = ({ isChartView, toggleView, rows, fields, chart }) => 
                 alignItems="center"
                 justifyContent="center"
                 sx={{
+                  flex: 1,
                   borderRadius: "8px",
                   border: "1px solid lightblue",
                   p: "8px",
@@ -123,6 +130,7 @@ const InsightTableChart = ({ isChartView, toggleView, rows, fields, chart }) => 
                 alignItems="center"
                 justifyContent="center"
                 sx={{
+                  flex: 1,
                   borderRadius: "8px",
                   border: "1px solid lightblue",
                   p: "8px",
@@ -132,7 +140,11 @@ const InsightTableChart = ({ isChartView, toggleView, rows, fields, chart }) => 
               >
                 <Typography
                   variant="subtitle1"
-                  sx={{ display: "flex", alignItems: "center" }}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
                 >
                   Dashboard
                   <AddIcon
@@ -148,15 +160,24 @@ const InsightTableChart = ({ isChartView, toggleView, rows, fields, chart }) => 
                 direction="row"
                 spacing={2}
                 alignItems="center"
+                justifyContent="end"
                 sx={{
-                  borderRadius: "20%",
-                  border: "1px solid lightblue",
-                  p: "8px",
-                  justifyContent: "end",
-                  ml: "10%",
+                  flex: 1,
+                  display: "flex",
                 }}
               >
-                <MoreVertIcon style={{ height: "28px", width: "28px" }} />
+                <div
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    borderRadius: "20%",
+                    border: "1px solid lightblue",
+                    padding: "8px",
+                    alignItems: "center",
+                  }}
+                >
+                  <MoreVertIcon style={{ height: "28px", width: "28px" }} />
+                </div>
               </Stack>
             </div>
             {isChartView ? (
