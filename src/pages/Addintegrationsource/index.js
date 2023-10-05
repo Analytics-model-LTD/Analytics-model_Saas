@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useState } from "react";
+import axios from "axios";
 
 // ** MUI Imports
 import Card from "@mui/material/Card";
@@ -187,8 +188,16 @@ function Addintegrationsource() {
     }
   }, [formValues, getTablesAsync]);
 
-  const onSuccess = (response) => {
-    localStorage.setItem("GOOGLE_TOKEN", response.access_token);
+  const onSuccess = async (response) => {
+    await axios.post(
+      `/user/google_login`,
+      { credential: response.code, type: "code" },
+      {
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
     localStorage.setItem("TOKEN_OBJECT", JSON.stringify(response));
 
     const hasAccessResponse = hasGrantedAnyScopeGoogle(response, ...scopes);
@@ -200,6 +209,7 @@ function Addintegrationsource() {
     onSuccess: (codeResponse) => onSuccess(codeResponse),
     onError: (error) => console.log("Login Failed:", error),
     scope: scopes.join(" "),
+    flow: "auth-code",
   });
 
   const navigateToRoute = (e) => {

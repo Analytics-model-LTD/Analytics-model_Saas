@@ -1,28 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const queryApi = axios.create({
-    baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
-    timeout: 10000,
-    headers: {'Authorization': `Bearer ${localStorage.getItem('GOOGLE_TOKEN')}`}
-});
-
 const getToken = async () => {
     return localStorage.getItem('TOKEN');
 };
 
-const getGoogleToken = async () => {
-    return localStorage.getItem('GOOGLE_TOKEN');
-};
-
-// let token = localStorage.getItem('TOKEN');
-
-// let config = {
-//     headers: {
-//         Authorization: `Bearer ${token}`,
-//         'Content-Type': 'multipart/form-data'
-//     }
-// };
+const queryApi = axios.create({
+    baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
+    timeout: 10000,
+    headers: {'Authorization': `Bearer ${getToken()}`}
+});
 
 export const fetchAllintegretionData = createAsyncThunk('integrationsources/integrationData', async (page) => {
     const token = await getToken();
@@ -41,7 +28,7 @@ export const fetchAllintegretionData = createAsyncThunk('integrationsources/inte
 
 export const getProjects = createAsyncThunk('integrationsources/projects', async () => {
     console.log('getProjects');
-    const token = await getGoogleToken();
+    const token = await getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -55,7 +42,7 @@ export const getProjects = createAsyncThunk('integrationsources/projects', async
 
 export const getDatasets = createAsyncThunk('integrationsources/datasets', async (projectId) => {
     console.log('getDatasets');
-    const token = await getGoogleToken();
+    const token = await getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -69,7 +56,7 @@ export const getDatasets = createAsyncThunk('integrationsources/datasets', async
 
 export const getTables = createAsyncThunk('integrationsources/tables', async ({projectId, datasetId}) => {
     console.log('getTables', projectId, datasetId);
-    const token = await getGoogleToken();
+    const token = await getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
