@@ -7,6 +7,7 @@ import reducers from './reducers';
 import userProfileReducer from 'Slice/userProfileSlice';
 import integrationsourcesReducer from 'Slice/integrationsourcesSlice';
 import feedReducer from 'Slice/feedSlice';
+import queryReducer from 'Slice/querySlice';
 
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 
@@ -16,7 +17,8 @@ const store = configureStore({
         googleLogin: googleLoginReducer,
         userProfile: userProfileReducer,
         integrationsources: integrationsourcesReducer,
-        feed: feedReducer
+        feed: feedReducer,
+        query: queryReducer
     }
 });
 
