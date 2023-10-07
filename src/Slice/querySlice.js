@@ -31,6 +31,26 @@ export const createIntegrationQuery = createAsyncThunk(
   }
 );
 
+export const tuneIntegrationQuery = createAsyncThunk(
+  "query/tuneIntegrationQuery",
+  async ({ integrationId, instructions, query }) => {
+    const token = await getToken();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await queryApi.put(
+      `/integrations/${integrationId}/query`,
+      { instructions, query },
+      config
+    );
+
+    return response.data;
+  }
+);
+
 const querySlice = createSlice({
   name: "query",
   initialState: {
@@ -63,6 +83,28 @@ const querySlice = createSlice({
         type: "TEXT",
         instructions: "FAILED",
       });
+    });
+    builder.addCase(tuneIntegrationQuery.pending, (state, action) => {
+      console.log("pending", { state, action });
+      state.history[action.meta.arg.index] = {
+        ...state.history[action.meta.arg.index],
+        type: "LOADING",
+      };
+    });
+    builder.addCase(tuneIntegrationQuery.fulfilled, (state, action) => {
+      console.log("fulfilled", { state, action });
+      state.history[action.meta.arg.index] = {
+        type: "INSIGHT",
+        instructions: action.meta.arg.instructions,
+        query: action.payload,
+      };
+    });
+    builder.addCase(tuneIntegrationQuery.rejected, (state, action) => {
+      console.log("rejected", { state, action });
+      state.history[action.meta.arg.index] = {
+        ...state.history[action.meta.arg.index],
+        type: "INSIGHT",
+      };
     });
   },
 });

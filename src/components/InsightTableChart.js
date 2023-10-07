@@ -2,14 +2,30 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Paper, Grid, Chip, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Input from "@mui/material/Input";
+import FormHelperText from "@mui/material/FormHelperText";
 import TableViewIcon from "@mui/icons-material/TableView";
+import ContentCut from "@mui/icons-material/ContentCut";
+import ContentCopy from "@mui/icons-material/ContentCopy";
+import ContentPaste from "@mui/icons-material/ContentPaste";
+import Cloud from "@mui/icons-material/Cloud";
 import Typography from "@mui/material/Typography";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import TuneIcon from "@mui/icons-material/Tune";
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
@@ -22,8 +38,10 @@ import logo from "assets/images/icons/Analytics Model Playground/1440px/Feed/dow
 import Send from "assets/images/icons/sendmsg.svg";
 import { createInsight } from "Slice/insightSlice";
 import CircularProgress from "@mui/material/CircularProgress";
+import { tuneIntegrationQuery } from "Slice/querySlice";
 
 const InsightTableChart = ({
+  index,
   isChartView,
   toggleView,
   rows,
@@ -36,6 +54,21 @@ const InsightTableChart = ({
   const insights = useSelector((state) => state.insights);
   const dispatch = useDispatch();
   const [saved, setSaved] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+  const [tuneQuery, setTuneQuery] = React.useState(query);
+  const [tuneInstructions, setTuneInstructions] = React.useState("");
+
+  const menuOpen = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const addToDashboard = () => {
     if (saved) return;
@@ -52,6 +85,22 @@ const InsightTableChart = ({
     );
 
     setSaved(true);
+  };
+
+  const handleTuneSubmit = (event) => {
+    event.preventDefault();
+    if (!tuneQuery || !tuneInstructions || !integrationId) return;
+
+    dispatch(
+      tuneIntegrationQuery({
+        index,
+        query: tuneQuery,
+        instructions: tuneInstructions,
+        integrationId,
+      })
+    );
+    setTuneInstructions("");
+    handleModalClose();
   };
 
   return (
@@ -219,7 +268,24 @@ const InsightTableChart = ({
                     alignItems: "center",
                   }}
                 >
-                  <MoreVertIcon style={{ height: "28px", width: "28px" }} />
+                  <MoreVertIcon
+                    style={{ height: "28px", width: "28px" }}
+                    onClick={handleClick}
+                  />
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={menuOpen}
+                    onClose={handleClose}
+                  >
+                    <MenuList>
+                      <MenuItem onClick={handleModalOpen}>
+                        <ListItemIcon>
+                          <TuneIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Tune it</ListItemText>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </div>
               </Stack>
             </div>
@@ -345,6 +411,59 @@ const InsightTableChart = ({
           </Paper>
         </Grid>
       </Grid>
+      <Modal open={modalOpen} onClose={handleModalClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <form onSubmit={handleTuneSubmit}>
+            <Stack spacing={4}>
+              <FormControl>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="SQL"
+                  multiline
+                  rows={6}
+                  onChange={(e) => setTuneQuery(e.target.value)}
+                  value={tuneQuery}
+                  defaultValue={query}
+                />
+                <FormHelperText id="sql-query-input-helper-text">
+                  sql query to select data
+                </FormHelperText>
+              </FormControl>
+              <FormControl>
+                <TextField
+                  id="Instructions"
+                  label="Instructions"
+                  value={tuneInstructions}
+                  onChange={(e) => setTuneInstructions(e.target.value)}
+                  multiline
+                  rows={2}
+                />
+                <FormHelperText id="instructions-helper-text">
+                  Instructions for fine tuning the visualization.
+                  <br />
+                  For example, "Convert the chart to line chart and change the
+                  colors to green and red according to the data"
+                </FormHelperText>
+              </FormControl>
+              <Button type="submit" variant="contained">
+                Tune
+              </Button>
+            </Stack>
+          </form>
+        </Box>
+      </Modal>
     </Grid>
   );
 };

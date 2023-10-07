@@ -43,7 +43,8 @@ function Insight() {
   const [isChartView, setIsChartView] = useState(false);
   const [instructions, setInstructions] = useState("");
   const [integration, setIntegration] = useState();
-  const query = useSelector((state) => state.query);
+  const queryLoading = useSelector((state) => state.query.loading);
+  const queryHistory = useSelector((state) => state.query.history);
   const integrationsources = useSelector(getAllintegretionData);
   const dispatch = useDispatch();
   const cardBackgroundColor = isChecked ? "lightblue" : "";
@@ -125,11 +126,10 @@ function Insight() {
       );
     }
 
-    console.log(item);
-
     if (item.type === "INSIGHT") {
       return (
         <InsightTableChart
+          index={index}
           isChartView={isChartView}
           toggleView={toggleView}
           fields={item.query.fields}
@@ -139,6 +139,37 @@ function Insight() {
           query={item.query.query}
           instructions={item.instructions}
         />
+      );
+    }
+
+    if (item.type === "LOADING") {
+      return (
+        <Grid
+          container
+          spacing={6}
+          sx={{ mt: "2%" }}
+          key={`${item.type}-${index}`}
+        >
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "flex-start",
+            }}
+          >
+            <img src={logo} alt="logo" style={{ marginRight: "16px" }} />
+
+            <Grid item xs={12} sx={{ alignItems: "center" }}>
+              <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
+                <Stack alignItems="center">
+                  <CircularProgress size={128} />
+                </Stack>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Grid>
       );
     }
 
@@ -237,7 +268,7 @@ function Insight() {
               </Card>
             </Grid>
           </Grid>
-          {query.history.map(mapQueryToComponent)}
+          {queryHistory.map(mapQueryToComponent)}
         </div>
       </div>
       <div
@@ -260,7 +291,7 @@ function Insight() {
                 onChange={(e) => setInstructions(e.target.value)}
                 onKeyDown={onEnter}
                 value={instructions}
-                disabled={!integration || query.loading === "pending"}
+                disabled={!integration || queryLoading === "pending"}
                 sx={{
                   width: "100%",
                   borderRadius: "8px",
@@ -278,7 +309,7 @@ function Insight() {
                 }}
                 InputProps={{
                   endAdornment:
-                    query.loading === "pending" ? (
+                    queryLoading === "pending" ? (
                       <CircularProgress size={16} />
                     ) : (
                       <InputAdornment

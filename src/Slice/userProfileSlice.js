@@ -16,7 +16,6 @@ const getToken = async () => {
 
 export const getuserDetails = createAsyncThunk('userProfile/userDeatils', async () => {
     const token = await getToken();
-    console.log(token);
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -54,7 +53,6 @@ const userProfileSlice = createSlice({
     reducers: {
         updatedprofile: (state, action) => {
             state.userData = action.payload;
-            console.log(action.payload);
         }
     },
     extraReducers: (builder) => {
@@ -78,8 +76,6 @@ const userProfileSlice = createSlice({
 
 export const getAlluserDetails = (state) => {
     return state.userProfile?.profileData?.data;
-
-    console.log(state.userProfile?.profileData?.data);
 };
 export const { updatedprofile } = userProfileSlice.actions;
 
