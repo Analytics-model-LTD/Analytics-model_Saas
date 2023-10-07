@@ -40,7 +40,6 @@ import {
 function Insight() {
   const [isChecked, setIsChecked] = useState(false);
   const [isdatachecked, setDataischecked] = useState(false);
-  const [isChartView, setIsChartView] = useState(false);
   const [instructions, setInstructions] = useState("");
   const [integration, setIntegration] = useState();
   const queryLoading = useSelector((state) => state.query.loading);
@@ -60,10 +59,6 @@ function Insight() {
 
   const handleCheckboxChangedata = (event) => {
     setDataischecked(event.target.checked);
-  };
-
-  const toggleView = () => {
-    setIsChartView(!isChartView);
   };
 
   const sendMessage = (message) => {
@@ -130,8 +125,6 @@ function Insight() {
       return (
         <InsightTableChart
           index={index}
-          isChartView={isChartView}
-          toggleView={toggleView}
           fields={item.query.fields}
           rows={item.query.result}
           chart={JSON.parse(JSON.stringify(item.query.chartConfig))}

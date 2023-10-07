@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Paper, Grid, Chip, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -42,8 +42,6 @@ import { tuneIntegrationQuery } from "Slice/querySlice";
 
 const InsightTableChart = ({
   index,
-  isChartView,
-  toggleView,
   rows,
   fields,
   chart,
@@ -58,6 +56,11 @@ const InsightTableChart = ({
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const [isChartView, setIsChartView] = useState(false);
+  const toggleView = () => {
+    setIsChartView(!isChartView);
+  };
 
   const [tuneQuery, setTuneQuery] = React.useState(query);
   const [tuneInstructions, setTuneInstructions] = React.useState("");
@@ -296,7 +299,7 @@ const InsightTableChart = ({
                   <ReactApexChart
                     options={chart}
                     series={chart.series}
-                    type="bar"
+                    type={chart.chart.type}
                     height={250}
                   />
                 </Paper>{" "}
