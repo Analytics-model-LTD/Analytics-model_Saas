@@ -23,7 +23,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Switch from '@mui/material/Switch';
 import { useNavigate } from 'react-router-dom';
-
+// import DeleteIcon from '@mui/icons-material/Delete';
 const columns = [
     { id: 'connectionName', label: 'Connection name', minWidth: 170, align: 'center' },
 
@@ -46,6 +46,13 @@ const columns = [
     {
         id: 'autoscan',
         label: 'Auto Scan',
+        minWidth: 170,
+        align: 'center',
+        format: (value) => value.toLocaleString('en-US')
+    },
+    {
+        id: 'action',
+        label: 'Action',
         minWidth: 170,
         align: 'center',
         format: (value) => value.toLocaleString('en-US')
@@ -137,6 +144,7 @@ function Integrationsourcestable() {
                                 <TableCell style={{ textAlign: 'center' }}>{row.projectId}</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>{row.tableId}</TableCell>
                                 <TableCell style={{ textAlign: 'center' }}>  <Switch defaultChecked color="primary" /></TableCell>
+                                <TableCell style={{ textAlign: 'center' }}>  <DeleteIcon/></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

@@ -59,6 +59,8 @@ function Myfeed() {
               sm: "100%",
               md: "100%",
             },
+            ml: 4, 
+            mr: 4, 
           }}
         >
           <Paper

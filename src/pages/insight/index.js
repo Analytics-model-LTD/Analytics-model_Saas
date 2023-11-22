@@ -176,6 +176,8 @@ function Insight() {
           overflowY: "auto",
           // height: '100%', // Set the height to 100% to fill the entire viewport
           // padding: '16px',
+          margin: "32px 34px ",
+          marginLeft: "52px"
         }}
       >
         <div style={{ padding: "16px" }}>
@@ -271,13 +273,13 @@ function Insight() {
           backgroundColor: "white",
           width: "100%",
           borderRadius: "8px",
-          borderTop: "1px solid #EBEBEB", // Add a border at the top of the footer
+          borderTop: "1px solid #EBEBEB", 
         }}
       >
         {/* Footer with fixed input field and Send button */}
-        <Paper elevation={0} sx={{ p: 2 }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={9} sm={9} md={9}>
+        <Paper elevation={0} sx={{ p: 2, margin: 0, maxWidth: '100%' }}>
+        <Grid container >
+        <Grid item xs={8} sm={9} md={9}>
               <TextField
                 size="small"
                 placeholder="Type your message here…"
@@ -286,7 +288,8 @@ function Insight() {
                 value={instructions}
                 disabled={!integration || queryLoading === "pending"}
                 sx={{
-                  width: "100%",
+                  flex: 1,
+                  width: "90%",
                   borderRadius: "8px",
                   border: "1px solid #EBEBEB",
                   background: "#FAFAFA",
@@ -316,18 +319,19 @@ function Insight() {
                 }}
               />
             </Grid>
-            <Grid item xs={3} sm={3} md={3}>
-              <FormControl fullWidth>
+            <Grid item xs={4} sm={3} md={3} style={{ margin: 0, marginLeft: "-80px", }}>
+            <FormControl sx={{  minWidth: "120px" }} >
                 <InputLabel id="demo-simple-select-label">
-                  Integration
+                Connection
                 </InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
                   value={integration}
-                  label="Integration"
+                  label="Connection"
                   onChange={(e) => setIntegration(e.target.value)}
                   sx={{
+                    
                     width: "100%",
                     borderRadius: "8px",
                     border: "1px solid #EBEBEB",
@@ -351,7 +355,7 @@ function Insight() {
                 </Select>
               </FormControl>
             </Grid>
-          </Grid>
+            </Grid>
         </Paper>
       </div>
     </Grid>
