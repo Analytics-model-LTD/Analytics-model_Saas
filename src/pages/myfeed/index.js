@@ -17,7 +17,7 @@ import SendIcon from "@mui/icons-material/Send";
 import InputAdornment from "@mui/material/InputAdornment";
 import Send from "assets/images/icons/sendmsg.svg";
 import { fetchAllFeedData, getAllFeedData } from "Slice/feedSlice";
-
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 const useStyles = makeStyles((theme) => ({
   chartContainer: {
     width: "100%", // By default, occupy full width
@@ -49,7 +49,7 @@ function Myfeed() {
 
   return (
     <>
-      <Grid container spacing={3}>
+      <Grid container spacing={6}>
         <Grid
           item
           xs={12}
@@ -63,7 +63,7 @@ function Myfeed() {
             mr: 4, 
           }}
         >
-          <Paper
+          {/* <Paper
             elevation={0}
             sx={{
               display: "flex",
@@ -73,15 +73,15 @@ function Myfeed() {
             }}
           >
             <img src={logo} alt="logo" style={{ marginRight: "16px" }} />
-            {/* <Paper elevation={0} sx={{ p: 2 }}> */}
+          
             <Typography variant="h6" color="text.primary">
               Good Morning: TLmedia has recently been sending less quality
               traffic than before, resulting in lower engagement and conversion
               rates. Please take this into consideration when evaluating your
               marketing strategies. {feed.length}
             </Typography>
-          </Paper>
-          {/* </Paper> */}
+          </Paper> */}
+          
         </Grid>
         {feed.map((item, index) => {
           const options = {
@@ -197,11 +197,12 @@ function Myfeed() {
                       ml: "1%",
                     }}
                   >
-                    <img
+                    {/* <img
                       src={spike}
                       alt="spike"
                       style={{ height: "28px", width: "28px" }}
-                    />
+                    /> */}
+                    <ContentCopyIcon style={{ height: "28px", width: "28px" }}/>
                   </Stack>
                   <Stack
                     direction="row"

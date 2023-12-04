@@ -48,18 +48,16 @@ function Insight() {
   const dispatch = useDispatch();
   const cardBackgroundColor = isChecked ? "lightblue" : "";
   const cardcolor = isdatachecked ? "lightblue" : "";
-
+ 
+  const [typographyContent, setTypographyContent] = useState('');
+  const [typography, setTypography] = useState('');
   useEffect(() => {
     dispatch(fetchAllintegretionData(0));
   }, [dispatch]);
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-  };
+ 
 
-  const handleCheckboxChangedata = (event) => {
-    setDataischecked(event.target.checked);
-  };
+
 
   const sendMessage = (message) => {
     if (!integration) {
@@ -87,7 +85,32 @@ function Insight() {
       handleSendMessage(e.target.value);
     }
   };
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+    if (!isChecked) {
+      setTypographyContent(
+        'Display the revenue from the top three categories over the past three days'
+      );
+    } else {
+      
+      setTypographyContent('');
+    }
+  };
+  // const handleCheckboxChangedata = (event) => {
+  //   setDataischecked(event.target.checked);
+  // };
 
+  const handleCheckboxChangedata = () => {
+    setDataischecked(!isdatachecked);
+    if (!isdatachecked) {
+      setTypography(
+        'Display the revenue from the top three categories over the past three days'
+      );
+    } else {
+      
+      setTypography('');
+    }
+  };
   const mapQueryToComponent = (item, index) => {
     console.log(item);
     if (item.type === "TEXT") {
@@ -285,7 +308,7 @@ function Insight() {
                 placeholder="Type your message here…"
                 onChange={(e) => setInstructions(e.target.value)}
                 onKeyDown={onEnter}
-                value={instructions}
+                value={instructions ||typographyContent ||typography}
                 disabled={!integration || queryLoading === "pending"}
                 sx={{
                   flex: 1,
