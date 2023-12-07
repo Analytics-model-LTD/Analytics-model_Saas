@@ -300,19 +300,18 @@ function Insight() {
         }}
       >
         {/* Footer with fixed input field and Send button */}
-        <Paper elevation={0} sx={{ p: 2, margin: 0, maxWidth: '100%' }}>
-        <Grid container >
-        <Grid item xs={8} sm={9} md={9}>
+        <Paper elevation={0} sx={{ p: 2, maxWidth: '100%' }}>
+        <Grid container sx={{display:"flex"}}>
+        <Grid item  xs={6} >
               <TextField
-                size="small"
+               
                 placeholder="Type your message here…"
                 onChange={(e) => setInstructions(e.target.value)}
                 onKeyDown={onEnter}
                 value={instructions ||typographyContent ||typography}
                 disabled={!integration || queryLoading === "pending"}
                 sx={{
-                  flex: 1,
-                  width: "90%",
+                  width:"90%",
                   borderRadius: "8px",
                   border: "1px solid #EBEBEB",
                   background: "#FAFAFA",
@@ -342,8 +341,8 @@ function Insight() {
                 }}
               />
             </Grid>
-            <Grid item xs={4} sm={3} md={3} style={{ margin: 0, marginLeft: "-80px", }}>
-            <FormControl sx={{  minWidth: "120px" }} >
+            <Grid item xs={6}   >
+            <FormControl fullWidth >
                 <InputLabel id="demo-simple-select-label">
                 Connection
                 </InputLabel>
@@ -355,7 +354,7 @@ function Insight() {
                   onChange={(e) => setIntegration(e.target.value)}
                   sx={{
                     
-                    width: "100%",
+                   
                     borderRadius: "8px",
                     border: "1px solid #EBEBEB",
                     background: "#FAFAFA",
