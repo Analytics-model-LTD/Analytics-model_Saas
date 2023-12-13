@@ -273,9 +273,9 @@ const InsightTableChart = ({
                 >
                   <MoreVertIcon
                     style={{ height: "28px", width: "28px" }}
-                    onClick={handleClick}
+                    onClick={handleModalOpen}
                   />
-                  <Menu
+                  {/* <Menu
                     anchorEl={anchorEl}
                     open={menuOpen}
                     onClose={handleClose}
@@ -288,7 +288,7 @@ const InsightTableChart = ({
                         <ListItemText>Tune it</ListItemText>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
               </Stack>
             </div>

@@ -88,11 +88,11 @@ function Insight() {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
     if (!isChecked) {
+      setDataischecked(false); 
       setTypographyContent(
         'Display the revenue from the top three categories over the past three days'
       );
     } else {
-      
       setTypographyContent('');
     }
   };
@@ -103,6 +103,7 @@ function Insight() {
   const handleCheckboxChangedata = () => {
     setDataischecked(!isdatachecked);
     if (!isdatachecked) {
+      setIsChecked(false);
       setTypography(
         'Display the revenue from the top three categories over the past three days'
       );
@@ -302,7 +303,7 @@ function Insight() {
         {/* Footer with fixed input field and Send button */}
         <Paper elevation={0} sx={{ p: 2, maxWidth: '100%' }}>
         <Grid container sx={{display:"flex"}}>
-        <Grid item  xs={6} >
+        <Grid item  xs={8} >
               <TextField
                
                 placeholder="Type your message here…"
@@ -311,7 +312,7 @@ function Insight() {
                 value={instructions ||typographyContent ||typography}
                 disabled={!integration || queryLoading === "pending"}
                 sx={{
-                  width:"90%",
+                  width:"98%",
                   borderRadius: "8px",
                   border: "1px solid #EBEBEB",
                   background: "#FAFAFA",
@@ -341,7 +342,7 @@ function Insight() {
                 }}
               />
             </Grid>
-            <Grid item xs={6}   >
+            <Grid item xs={4}   >
             <FormControl fullWidth >
                 <InputLabel id="demo-simple-select-label">
                 Connection

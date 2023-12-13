@@ -18,6 +18,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Send from "assets/images/icons/sendmsg.svg";
 import { fetchAllFeedData, getAllFeedData } from "Slice/feedSlice";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import Avatar from '@mui/material/Avatar';
 const useStyles = makeStyles((theme) => ({
   chartContainer: {
     width: "100%", // By default, occupy full width
@@ -34,6 +35,8 @@ function Myfeed() {
   const getdata = useSelector(getAllFeedData);
   const dispatch = useDispatch();
   const [feed, setFeed] = useState([]);
+
+
   const [page, setPage] = useState(0);
   const navigate = useNavigate();
   // const [rows, setrows] = useState();
@@ -44,26 +47,28 @@ function Myfeed() {
       .unwrap()
       .then((res) => {
         setFeed(res.feed);
+        console.log(feed)
       });
-  }, [dispatch, page]);
+  }, [dispatch]);
 
   return (
     <>
-      <Grid container spacing={6}>
-        <Grid
+      <Grid container sx={{display:"flex",justifyContent:"center"}}>
+        {/* <Grid
           item
           xs={12}
+        
           sx={{
-            maxWidth: {
+            minWidth: {
               xs: "100%",
               sm: "100%",
               md: "100%",
             },
-            // ml: 4,
-            // mr: 4,
+            ml: 4,
+            mr: 4,
           }}
-        >
-          {/* <Paper
+        > */}
+        {/* <Paper
             elevation={0}
             sx={{
               display: "flex",
@@ -82,7 +87,7 @@ function Myfeed() {
             </Typography>
           </Paper> */}
 
-        </Grid>
+        {/* </Grid> */}
         {feed.map((item, index) => {
           const options = {
             plotOptions: {
@@ -117,105 +122,94 @@ function Myfeed() {
             <Grid
               item
               key={item.Id}
-              
-              sx={{
-                minWidth: {
-                  xs: "100%",
-                  sm: "100%",
-                  md: "100%",
-                },
-              }}
+              xs={11}
+
+            // sx={{
+            //   minWidth: {
+            //     xs: "100%",
+            //     sm: "100%",
+            //     md: "100%",
+            //   },
+            // }}
             >
               <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
                 <Grid container xs={12} >
-                  <Grid item xs={12}  sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
-                    <Grid item xs={6} sx={{display:"flex",alignItems:"center"}}>
-                      <Box sx={{display:'flex', backgroundColor: "lightblue",   borderRadius: "50%",
-                        width:"50px",
-                        height:"50px",
-                      justifyContent:"center"}}>
-                      <img
+                    <Grid item xs={6} sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+
+                      <Avatar
+                        sx={{ bgcolor: "lightblue" }}
+                        alt=""
                         src={spike}
-                        alt="spike"
-                        style={{
-                          height: "100%",
-                          width: "100%",
-                          borderRadius: "50%",
-                          display:"flex",
-                          alignItems:"center"
-                        }}
-                      />
-                      </Box>
-                      <Box sx={{display:'flex'}}>
-                      <Typography
-                        sx={{
-                          fontFamily: "Inter",
-                          fontSize: "16px",
-                          fontStyle: "normal",
-                          fontWeight: 600,
-                        
-                        }}
                       >
-                        Spike
-                      </Typography>
+                      </Avatar>
+                      <Box sx={{ display: 'flex' }}>
+                        <Typography
+                          sx={{
+                            fontFamily: "Inter",
+                            fontSize: "16px",
+                            fontStyle: "normal",
+                            fontWeight: 600,
+
+                          }}
+                        >
+                          {item.insightText}
+                        </Typography>
                       </Box>
-                    
+                    </Grid>
 
-                      
-                      </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ display: 'flex', gap: '5px', justifyContent: "flex-end" }} >
+                        <Stack
+                          direction="row"
+                          spacing={2}
+                          alignItems="center"
+                          sx={{
+                            borderRadius: "20%",
+                            border: "1px solid lightblue",
+                            p: "8px",
+                            justifyContent: "end",
+                            // ml: "70%",
+                          }}
+                        >
+                          <AddIcon style={{ height: "28px", width: "28px" }} />
+                        </Stack>
 
-                      <Grid item xs={6}>
-                   <Box sx={{display:'flex',gap:'5px',justifyContent:"flex-end"}} >
-                   <Stack
-                    direction="row"
-                    spacing={2}
-                    alignItems="center"
-                    sx={{
-                      borderRadius: "20%",
-                      border: "1px solid lightblue",
-                      p: "8px",
-                      justifyContent: "end",
-                      // ml: "70%",
-                    }}
-                  >
-                    <AddIcon style={{ height: "28px", width: "28px" }} />
-                  </Stack>
-
-                  <Stack
-                    direction="row"
-                    spacing={2}
-                    alignItems="center"
-                    sx={{
-                      borderRadius: "20%",
-                      border: "1px solid lightblue",
-                      p: "8px",
-                      justifyContent: "end",
-                      // ml: "1%",
-                    }}
-                  >
-                    {/* <img
+                        <Stack
+                          direction="row"
+                          spacing={2}
+                          alignItems="center"
+                          sx={{
+                            borderRadius: "20%",
+                            border: "1px solid lightblue",
+                            p: "8px",
+                            justifyContent: "end",
+                            // ml: "1%",
+                          }}
+                        >
+                          {/* <img
                       src={spike}
                       alt="spike"
                       style={{ height: "28px", width: "28px" }}
                     /> */}
-                    <ContentCopyIcon style={{ height: "28px", width: "28px" }} />
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    spacing={2}
-                    alignItems="center"
-                    sx={{
-                      borderRadius: "20%",
-                      border: "1px solid lightblue",
-                      p: "8px",
-                      justifyContent: "end",
-                      // ml: "1%",
-                    }}
-                  >
-                    <MoreVertIcon style={{ height: "28px", width: "28px" }} />
-                  </Stack>
-                   </Box>
+                          <ContentCopyIcon style={{ height: "28px", width: "28px" }} />
+                        </Stack>
+                        <Stack
+                          direction="row"
+                          spacing={2}
+                          alignItems="center"
+                          sx={{
+                            borderRadius: "20%",
+                            border: "1px solid lightblue",
+                            p: "8px",
+                            justifyContent: "end",
+                            // ml: "1%",
+                          }}
+                        >
+                          <MoreVertIcon style={{ height: "28px", width: "28px" }} />
+                        </Stack>
+                      </Box>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -277,7 +271,7 @@ function Myfeed() {
                     <AddIcon style={{ height: "28px", width: "28px" }} />
                   </Stack> */}
 
-                  <Stack
+                  {/* <Stack
                     direction="row"
                     spacing={2}
                     alignItems="center"
@@ -289,13 +283,13 @@ function Myfeed() {
                       ml: "1%",
                     }}
                   >
-                    {/* <img
+                    <img
                       src={spike}
                       alt="spike"
                       style={{ height: "28px", width: "28px" }}
-                    /> */}
+                    />
                     <ContentCopyIcon style={{ height: "28px", width: "28px" }} />
-                  </Stack>
+                  </Stack> */}
                   {/* <Stack
                     direction="row"
                     spacing={2}
