@@ -8,7 +8,7 @@ const getToken = () => {
 const queryApi = axios.create({
    baseURL: "https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev",
   //baseURL: "http://localhost:3000/dev",
-  timeout: 10000,
+  timeout: 100000,
   headers: { Authorization: `Bearer ${getToken()}` },
 });
 
