@@ -85,7 +85,14 @@ function Insight() {
       handleSendMessage(e.target.value);
     }
   };
+  const textchange = (e) =>{
+    setTypographyContent('');
+    setTypography('');
+    // setIsChecked(false);
+    setInstructions(e.target.value)
+  }
   const handleCheckboxChange = () => {
+    setTypography('');
     setIsChecked(!isChecked);
     if (!isChecked) {
       setDataischecked(false); 
@@ -101,11 +108,12 @@ function Insight() {
   // };
 
   const handleCheckboxChangedata = () => {
+    setTypographyContent('');
     setDataischecked(!isdatachecked);
     if (!isdatachecked) {
       setIsChecked(false);
       setTypography(
-        'Display the revenue from the top three categories over the past three days'
+        'Display the revenue from the top three'
       );
     } else {
       
@@ -307,7 +315,8 @@ function Insight() {
               <TextField
                
                 placeholder="Type your message here…"
-                onChange={(e) => setInstructions(e.target.value)}
+                onChange={textchange}
+                // onChange={(e) => setInstructions(e.target.value)}
                 onKeyDown={onEnter}
                 value={instructions ||typographyContent ||typography}
                 disabled={!integration || queryLoading === "pending"}
