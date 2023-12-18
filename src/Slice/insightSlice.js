@@ -6,8 +6,7 @@ const getToken = () => {
 };
 
 const insightsApi = axios.create({
-  baseURL:
-    "https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/insights",
+  baseURL:"https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/insights",
   timeout: 10000,
   headers: { Authorization: `Bearer ${getToken()}` },
 });
