@@ -89,6 +89,7 @@ function Insight() {
     setTypographyContent('');
     setTypography('');
     // setIsChecked(false);
+    
     setInstructions(e.target.value)
   }
   const handleCheckboxChange = () => {
