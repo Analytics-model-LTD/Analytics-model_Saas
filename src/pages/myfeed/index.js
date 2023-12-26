@@ -115,7 +115,7 @@ function Myfeed() {
                 },
               },
             },
-            ...JSON.parse(item.ChartCode),
+            // ...JSON.parse(item.ChartCode),
 
           };
           return (

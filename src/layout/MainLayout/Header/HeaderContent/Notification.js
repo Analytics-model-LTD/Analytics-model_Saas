@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-
+import { useRef, useState, useEffect } from 'react';
+import axios from 'axios';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -49,9 +49,10 @@ const actionSX = {
 const Notification = () => {
     const theme = useTheme();
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
-
+    const [Notification, setNotification] = useState([])
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -62,6 +63,37 @@ const Notification = () => {
         }
         setOpen(false);
     };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (open) {
+                    // Retrieve token from local storage
+                    const token = localStorage.getItem('TOKEN');
+                    setLoading(true);
+
+                    // Make the GET request with the token in the headers
+                    const response = await axios.get('/insights/getNotificationSummery', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            // Add other headers if needed
+                        },
+                    });
+
+                    // Handle the response data
+                    setNotification(response.data.data.rows)
+                }
+            } catch (error) {
+                // Handle errors
+                // setError('Error fetching data');
+                console.error('Error fetching data:', error);
+            } finally {
+                // Set loading to false after request completes (whether success or error)
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [open]); // useEffect will run whenever the 'open' state changes
 
     const iconBackColorOpen = 'grey.300';
     const iconBackColor = 'grey.100';
@@ -79,7 +111,7 @@ const Notification = () => {
                 onClick={handleToggle}
             >
                 {/* <Badge badgeContent={4} color="primary"> */}
-                    {/* <BellOutlined /> */}
+                {/* <BellOutlined /> */}
                 {/* </Badge> */}
                 <img src={Bell} alt="Bell" />
             </IconButton>
@@ -126,7 +158,30 @@ const Notification = () => {
                                         </IconButton>
                                     }
                                 >
-                                    <List
+                                    <List>
+                                        {Notification.map((item) => (
+                                            <ListItemButton key={item.Id}>
+                                                <ListItemText
+                                                    primary={
+                                                        <Typography variant="h6">
+                                                            It's{' '}
+                                                            <Typography component="span" variant="subtitle1">
+                                                                {item.insightText}
+                                                            </Typography>{' '}
+                                                            {/* You can customize the text as needed */}
+                                                        </Typography>
+                                                    }
+                                                    secondary="2 min ago" // You can replace this with the actual time from the item
+                                                />
+                                                <ListItemSecondaryAction>
+                                                    <Typography variant="caption" noWrap>
+                                                        {new Date(item.createdAt).toLocaleTimeString()} {/* Format the time as needed */}
+                                                    </Typography>
+                                                </ListItemSecondaryAction>
+                                            </ListItemButton>
+                                        ))}
+                                    </List>
+                                    {/* <List
                                         component="nav"
                                         sx={{
                                             p: 0,
@@ -266,7 +321,7 @@ const Notification = () => {
                                                 }
                                             />
                                         </ListItemButton>
-                                    </List>
+                                    </List> */}
                                 </MainCard>
                             </ClickAwayListener>
                         </Paper>

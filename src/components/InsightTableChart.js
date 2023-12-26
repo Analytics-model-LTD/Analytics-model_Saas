@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Paper, Grid, Chip, Stack } from "@mui/material";
+import Select from '@mui/material/Select';
+
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -39,7 +41,9 @@ import Send from "assets/images/icons/sendmsg.svg";
 import { createInsight } from "Slice/insightSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { tuneIntegrationQuery } from "Slice/querySlice";
-
+// import InputLabel from '@mui/material/InputLabel';
+// import MenuItem from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
 const InsightTableChart = ({
   index,
   rows,
@@ -444,21 +448,23 @@ const InsightTableChart = ({
                   sql query to select data
                 </FormHelperText>
               </FormControl>
-              <FormControl>
-                <TextField
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <InputLabel id="demo-select-small-label">Instructions</InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
                   id="Instructions"
                   label="Instructions"
-                  value={tuneInstructions}
-                  onChange={(e) => setTuneInstructions(e.target.value)}
-                  multiline
-                  rows={2}
-                />
-                <FormHelperText id="instructions-helper-text">
-                  Instructions for fine tuning the visualization.
-                  <br />
-                  For example, "Convert the chart to line chart and change the
-                  colors to green and red according to the data"
-                </FormHelperText>
+                  // value={age}
+                  // label="Age"
+                  // onChange={handleChange}
+                >
+                  <MenuItem value="">
+                    {/* <em>None</em> */}
+                  </MenuItem>
+                  <MenuItem value={10}>Chart</MenuItem>
+                  <MenuItem value={20}>Table</MenuItem>
+                  
+                </Select>
               </FormControl>
               <Button type="submit" variant="contained">
                 Tune

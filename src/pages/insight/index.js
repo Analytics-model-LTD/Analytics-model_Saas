@@ -32,6 +32,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import InsightTableChart from "components/InsightTableChart";
 import { createIntegrationQuery } from "Slice/querySlice";
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 import {
   fetchAllintegretionData,
   getAllintegretionData,
@@ -48,17 +51,17 @@ function Insight() {
   const dispatch = useDispatch();
   const cardBackgroundColor = isChecked ? "lightblue" : "";
   const cardcolor = isdatachecked ? "lightblue" : "";
- 
+  const navigate = useNavigate();
   const [typographyContent, setTypographyContent] = useState('');
   const [typography, setTypography] = useState('');
   useEffect(() => {
     dispatch(fetchAllintegretionData(0));
   }, [dispatch]);
 
- 
 
 
 
+  console.log("integrationsources", integrationsources.length > 0);
   const sendMessage = (message) => {
     if (!integration) {
       alert("Please select an integration");
@@ -85,18 +88,18 @@ function Insight() {
       handleSendMessage(e.target.value);
     }
   };
-  const textchange = (e) =>{
+  const textchange = (e) => {
     setTypographyContent('');
     setTypography('');
     // setIsChecked(false);
-    
+
     setInstructions(e.target.value)
   }
   const handleCheckboxChange = () => {
     setTypography('');
     setIsChecked(!isChecked);
     if (!isChecked) {
-      setDataischecked(false); 
+      setDataischecked(false);
       setTypographyContent(
         'Display the revenue from the top three categories over the past three days'
       );
@@ -107,7 +110,9 @@ function Insight() {
   // const handleCheckboxChangedata = (event) => {
   //   setDataischecked(event.target.checked);
   // };
-
+  const handleClicked = () => {
+    navigate('/integrationsources');
+  }
   const handleCheckboxChangedata = () => {
     setTypographyContent('');
     setDataischecked(!isdatachecked);
@@ -117,7 +122,7 @@ function Insight() {
         'Display the revenue from the top three'
       );
     } else {
-      
+
       setTypography('');
     }
   };
@@ -214,7 +219,7 @@ function Insight() {
         }}
       >
         <div style={{ padding: "16px" }}>
-          <Grid container spacing={6}>
+          {integrationsources?.length > 0 ? <> <Grid container spacing={6}>
             <Grid item xs={12}>
               <Paper
                 elevation={0}
@@ -295,7 +300,21 @@ function Insight() {
                 </CardContent>
               </Card>
             </Grid>
-          </Grid>
+          </Grid></> : <>
+
+            <Card sx={{ minWidth: 275 }}>
+              <CardContent>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                  You do not have tracking metrics enabled yet.<br />
+                  Please select your data connection first.
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={handleClicked}>connection</Button>
+              </CardActions>
+            </Card>
+          </>}
+
           {queryHistory.map(mapQueryToComponent)}
         </div>
       </div>
@@ -306,23 +325,23 @@ function Insight() {
           backgroundColor: "white",
           width: "100%",
           borderRadius: "8px",
-          borderTop: "1px solid #EBEBEB", 
+          borderTop: "1px solid #EBEBEB",
         }}
       >
         {/* Footer with fixed input field and Send button */}
         <Paper elevation={0} sx={{ p: 2, maxWidth: '100%' }}>
-        <Grid container sx={{display:"flex"}}>
-        <Grid item  xs={8} >
+          <Grid container sx={{ display: "flex" }}>
+            <Grid item xs={8} >
               <TextField
-               
+
                 placeholder="Type your message here…"
                 onChange={textchange}
                 // onChange={(e) => setInstructions(e.target.value)}
                 onKeyDown={onEnter}
-                value={instructions ||typographyContent ||typography}
+                value={instructions || typographyContent || typography}
                 disabled={!integration || queryLoading === "pending"}
                 sx={{
-                  width:"98%",
+                  width: "98%",
                   borderRadius: "8px",
                   border: "1px solid #EBEBEB",
                   background: "#FAFAFA",
@@ -353,19 +372,19 @@ function Insight() {
               />
             </Grid>
             <Grid item xs={4}   >
-            <FormControl fullWidth >
+              <FormControl fullWidth >
                 <InputLabel id="demo-simple-select-label">
-                Connection
+                  Connection
                 </InputLabel>
                 <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
                   value={integration}
                   label="Connection"
                   onChange={(e) => setIntegration(e.target.value)}
                   sx={{
-                    
-                   
+
+
                     borderRadius: "8px",
                     border: "1px solid #EBEBEB",
                     background: "#FAFAFA",
@@ -388,7 +407,7 @@ function Insight() {
                 </Select>
               </FormControl>
             </Grid>
-            </Grid>
+          </Grid>
         </Paper>
       </div>
     </Grid>
