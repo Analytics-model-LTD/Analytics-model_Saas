@@ -310,7 +310,7 @@ function Insight() {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={handleClicked}>connection</Button>
+                <Button size="small" onClick={handleClicked}>click here for add new connection</Button>
               </CardActions>
             </Card>
           </>}
