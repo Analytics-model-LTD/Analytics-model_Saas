@@ -27,6 +27,21 @@ export const fetchAllintegretionData = createAsyncThunk('integrationsources/inte
     return response.data;
 });
 
+export const deleteIntegretionData = createAsyncThunk('integrationsources/deleteintegretion', async (payload) => {
+    console.log("payload",payload);
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    };
+console.log(config);
+    const response = await axios.post(`/analytics/delete`, payload, config);
+
+    return response.data;
+});
+
 export const getProjects = createAsyncThunk('integrationsources/projects', async () => {
     console.log('getProjects');
     const token = await getToken();
@@ -102,6 +117,14 @@ const integrationsourcesSlice = createSlice({
             state.loading = 'pending';
         });
         builder.addCase(newSaveintegretion.fulfilled, (state, action) => {
+            state.loading = 'pending';
+            state.integretionData = [];
+        });
+
+        builder.addCase(deleteIntegretionData.pending, (state, action) => {
+            state.loading = 'pending';
+        });
+        builder.addCase(deleteIntegretionData.fulfilled, (state, action) => {
             state.loading = 'pending';
             state.integretionData = [];
         });

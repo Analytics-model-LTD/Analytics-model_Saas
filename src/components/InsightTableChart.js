@@ -44,6 +44,8 @@ import { tuneIntegrationQuery } from "Slice/querySlice";
 // import InputLabel from '@mui/material/InputLabel';
 // import MenuItem from '@mui/material/MenuItem';
 // import FormControl from '@mui/material/FormControl';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 const InsightTableChart = ({
   index,
   rows,
@@ -60,7 +62,11 @@ const InsightTableChart = ({
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+  const [selectedTab, setSelectedTab] = useState(0);
 
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
   const [isChartView, setIsChartView] = useState(false);
   const toggleView = () => {
     setIsChartView(!isChartView);
@@ -109,7 +115,25 @@ const InsightTableChart = ({
     setTuneInstructions("");
     handleModalClose();
   };
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
 
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            {children}
+          </Box>
+        )}
+      </div>
+    );
+  }
   return (
     <Grid container spacing={1} sx={{ my: "2%" }}>
       <Grid
@@ -432,45 +456,89 @@ const InsightTableChart = ({
             p: 4,
           }}
         >
-          <form onSubmit={handleTuneSubmit}>
-            <Stack spacing={4}>
-              <FormControl>
-                <TextField
-                  id="outlined-multiline-static"
-                  label="SQL"
-                  multiline
-                  rows={6}
-                  onChange={(e) => setTuneQuery(e.target.value)}
-                  value={tuneQuery}
-                  defaultValue={query}
-                />
-                <FormHelperText id="sql-query-input-helper-text">
-                  sql query to select data
-                </FormHelperText>
-              </FormControl>
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="demo-select-small-label">Instructions</InputLabel>
-                <Select
-                  labelId="demo-select-small-label"
-                  id="Instructions"
-                  label="Instructions"
-                  // value={age}
-                  // label="Age"
-                  // onChange={handleChange}
-                >
-                  <MenuItem value="">
-                    {/* <em>None</em> */}
-                  </MenuItem>
-                  <MenuItem value={10}>Chart</MenuItem>
-                  <MenuItem value={20}>Table</MenuItem>
-                  
-                </Select>
-              </FormControl>
-              <Button type="submit" variant="contained">
-                Tune
-              </Button>
-            </Stack>
-          </form>
+          {/* Add Tabs and TabPanels for Chart and Table */}
+          <Tabs value={selectedTab} onChange={handleTabChange}>
+            <Tab label="Table" />
+            <Tab label="Chart" />
+          </Tabs>
+
+          <TabPanel value={selectedTab} index={0}>
+            <form onSubmit={handleTuneSubmit}>
+              <Stack spacing={4}>
+                <FormControl>
+                  <TextField
+                    label="SQL"
+                    multiline
+                    rows={6}
+                    onChange={(e) => setTuneQuery(e.target.value)}
+                    value={tuneQuery}
+                    defaultValue={query}
+                  />
+                  <FormHelperText id="sql-query-input-helper-text">
+                    SQL query to select data
+                  </FormHelperText>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <TextField
+                    id="outlined-disabled"
+                    label="instruction"
+                  //  defaultValue="instruction"
+                  />
+                  <FormHelperText id="sql-query-input-helper-text">
+                    instruction for fine tuning the visualization.
+                    For example,"Convert the chart to line chart and
+                    change the colors to green and red according to the
+                    data"
+                  </FormHelperText>
+                </FormControl>
+
+
+                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }}>
+                  Save Changes
+                </Button>
+              </Stack>
+            </form>
+          </TabPanel>
+
+          <TabPanel value={selectedTab} index={1}>
+            <form onSubmit={handleTuneSubmit}>
+              <Stack spacing={4}>
+                <FormControl>
+                  <TextField
+                    label="SQL"
+                    multiline
+                    rows={6}
+                    onChange={(e) => setTuneQuery(e.target.value)}
+                    value={tuneQuery}
+                    defaultValue={query}
+                  />
+                  <FormHelperText id="sql-query-input-helper-text">
+                    SQL query to select data
+                  </FormHelperText>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <TextField
+                    id="outlined-disabled"
+                    label="instruction"
+                  //  defaultValue="instruction"
+                  />
+                  <FormHelperText id="sql-query-input-helper-text">
+                    instruction for fine tuning the visualization.
+                    For example,"Convert the chart to line chart and
+                    change the colors to green and red according to the
+                    data"
+                  </FormHelperText>
+                </FormControl>
+
+
+                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }}>
+                  Save Changes
+                </Button>
+              </Stack>
+            </form>
+          </TabPanel>
+
+
         </Box>
       </Modal>
     </Grid>

@@ -89,6 +89,8 @@ function Myfeed() {
 
         {/* </Grid> */}
         {feed.map((item, index) => {
+          console.log(item.ChartCode)
+          
           const options = {
             plotOptions: {
               bar: {
@@ -115,7 +117,8 @@ function Myfeed() {
                 },
               },
             },
-            // ...JSON.parse(item.ChartCode),
+            ...!!item?.ChartCode
+        
 
           };
           return (
