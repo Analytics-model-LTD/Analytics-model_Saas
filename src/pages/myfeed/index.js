@@ -19,6 +19,7 @@ import Send from "assets/images/icons/sendmsg.svg";
 import { fetchAllFeedData, getAllFeedData } from "Slice/feedSlice";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Avatar from '@mui/material/Avatar';
+import axios from "../../../node_modules/axios/index";
 const useStyles = makeStyles((theme) => ({
   chartContainer: {
     width: "100%", // By default, occupy full width
@@ -31,11 +32,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 function Myfeed() {
   const getdata = useSelector(getAllFeedData);
   const dispatch = useDispatch();
   const [feed, setFeed] = useState([]);
-
+  const [allFeed, setAllFeed] = useState([]);
+  const [chartData, setChartData] = useState([]);
 
   const [page, setPage] = useState(0);
   const navigate = useNavigate();
@@ -47,13 +50,62 @@ function Myfeed() {
       .unwrap()
       .then((res) => {
         setFeed(res.feed);
-        console.log(feed)
+        setChartData(res);
+        console.log(res.feed);
+        // console.log(feed.series)
       });
+    getAllFeed();
   }, [dispatch]);
 
+  const getAllFeed = () => {
+    const apiUrl = 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev/feed';
+    const token = localStorage.getItem('TOKEN');
+    // Define headers
+    const headers = {
+      "content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    // Make an API call using Axios with headers
+    axios.get(apiUrl, {
+      headers: headers
+    })
+      .then(response => {
+        setAllFeed(response.data)
+        console.log(allFeed);
+      })
+      .catch(error => {
+        // Handle errors here
+        console.error('Error item', error);
+      });
+  };
+  const demoChart = {
+    series: [{
+      data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+    }],
+    options: {
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          horizontal: true,
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
+          'United States', 'China', 'Germany'
+        ],
+      }
+    }
+  }
   return (
     <>
-      <Grid container sx={{display:"flex",justifyContent:"center"}}>
+      <Grid container sx={{ display: "flex", justifyContent: "center" }}>
         {/* <Grid
           item
           xs={12}
@@ -88,39 +140,36 @@ function Myfeed() {
           </Paper> */}
 
         {/* </Grid> */}
-        {feed.map((item, index) => {
-          console.log(item.ChartCode)
-          
-          const options = {
-            plotOptions: {
-              bar: {
-                horizontal: false,
-                columnWidth: "55%",
-                endingShape: "rounded",
-              },
-            },
-            dataLabels: {
-              enabled: false,
-            },
-            stroke: {
-              show: true,
-              width: 2,
-              colors: ["transparent"],
-            },
-            fill: {
-              opacity: 1,
-            },
-            tooltip: {
-              y: {
-                formatter: function (val) {
-                  return "$ " + val + " thousands";
-                },
-              },
-            },
-            ...!!item?.ChartCode
-        
 
-          };
+        {feed.map((item, index) => {
+          // const options = {
+          //   plotOptions: {
+          //     bar: {
+          //       horizontal: false,
+          //       columnWidth: "55%",
+          //       endingShape: "rounded",
+          //     },
+          //   },
+          //   dataLabels: {
+          //     enabled: false,
+          //   },
+          //   stroke: {
+          //     show: true,
+          //     width: 2,
+          //     colors: ["transparent"],
+          //   },
+          //   fill: {
+          //     opacity: 1,
+          //   },
+          //   tooltip: {
+          //     y: {
+          //       formatter: function (val) {
+          //         return "$ " + val + " thousands";
+          //       },
+          //     },
+          //   },
+          //   ...!!item?.ChartCode
+          // };
           return (
             <Grid
               item
@@ -311,12 +360,41 @@ function Myfeed() {
                 <Divider sx={{ mt: "2%" }} />
 
                 <Paper elevation={0} sx={{ p: 2, borderRadius: "10px" }}>
-                  <ReactApexChart
+                  {/* <ReactApexChart
                     options={options}
                     series={options.series}
                     type="bar"
                     height={250}
+                  /> */}
+                  {/* {feed.map((item, index) => { */}
+                  <ReactApexChart
+                    options={{
+                      chart: {
+                        type: item?.ChartCode?.chart?.type,
+                        height: 350
+                      },
+                      plotOptions: {
+                        bar: {
+                          borderRadius: 4,
+                          horizontal: true,
+                        }
+                      },
+                      dataLabels: {
+                        enabled: false
+                      },
+                      xaxis: {
+                        categories: item?.ChartCode?.xaxis && item?.ChartCode?.xaxis?.categories ? item?.ChartCode?.xaxis?.categories : []
+                      }
+                    }}
+                    series={
+                      [{
+                        data: item?.ChartCode?.series && item?.ChartCode?.series.length ? item?.ChartCode?.series[0]?.data : []
+                      }]
+                    }
+                    type="bar"
+                    height={250}
                   />
+                  {/* })} */}
                 </Paper>
               </Paper>
             </Grid>

@@ -23,6 +23,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Switch from '@mui/material/Switch';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import DeleteIcon from '@mui/icons-material/Delete';
 const columns = [
     { id: 'connectionName', label: 'Connection name', minWidth: 170, align: 'center' },
@@ -60,7 +62,6 @@ const columns = [
 ];
 function createData(connectionName, connectionSource, status, projectId, tableId) {
     const scanallvertical = projectId / tableId;
-
     return { connectionName, connectionSource, status, projectId, tableId };
 }
 
@@ -100,18 +101,17 @@ function Integrationsourcestable() {
             });
     }, [dispatch, page, rows, rowsPerPage]);
 
+
     useEffect(() => {
         console.log(getdata);
     }, [getdata]);
 
     const handleChangePage = (event, newPage) => {
-        console.log(newPage);
         setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
-
         setPage(0);
     };
     const handleNavigation = () => {
@@ -119,78 +119,77 @@ function Integrationsourcestable() {
     };
 
     const onDeleteItem = (value) => {
-        console.log(value);
         const apiUrl = 'https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/analytics/delete';
         const token = localStorage.getItem('TOKEN');
         // Define headers
         const headers = {
-            // 'Content-Type': 'application/json',
             "content-type": "application/json",
             Authorization: `Bearer ${token}`,
-            // Add any other headers as needed
         };
-
         // Make an API call using Axios with headers
-        axios.delete(apiUrl, {
-            data: { id: value.id },
-            headers: headers,
+        axios.post(apiUrl, { id: value.id }, {
+            headers: headers
         })
             .then(response => {
-                // Handle the API response here
+                toast.success('Deleted successfully .', {
+                    position: 'top-center'
+                })
+                dispatch(fetchAllintegretionData(page));
                 console.log('Item deleted successfully', response);
             })
             .catch(error => {
                 // Handle errors here
                 console.error('Error deleting item', error);
             });
-
     };
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12} sx={{ display: 'flex' }} onClick={handleNavigation}>
-                <AddIcon />
-                <Typography variant="h5">NEW METRIC</Typography>
-            </Grid>
-            <Paper sx={{ width: '100%', overflow: 'hidden', mt: '2%' }}>
-                <TableContainer sx={{ maxHeight: 440, }}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell key={column.id} align={column.align}>
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {getdata.map((row) => (
-                                <TableRow key={row.id} hover role="checkbox">
-                                    <TableCell style={{ textAlign: 'center' }}>{row.connectionName}</TableCell>
-                                    <TableCell style={{ textAlign: 'center' }}>{row.status}</TableCell>
-                                    <TableCell style={{ textAlign: 'center' }}>{row.connectionSource}</TableCell>
-                                    <TableCell style={{ textAlign: 'center' }}>{row.projectId}</TableCell>
-                                    <TableCell style={{ textAlign: 'center' }}>{row.tableId}</TableCell>
-                                    <TableCell style={{ textAlign: 'center' }}>  <Switch defaultChecked color="primary" /></TableCell>
-                                    <TableCell style={{ textAlign: 'center' }} onClick={() => onDeleteItem(row)}>  <DeleteIcon /></TableCell>
+        <><ToastContainer autoClose={1000} />
+            <Grid container spacing={2}>
+                <Grid item xs={12} sx={{ display: 'flex' }} onClick={handleNavigation}>
+                    <AddIcon />
+                    <Typography variant="h5">NEW METRIC</Typography>
+                </Grid>
+                <Paper sx={{ width: '100%', overflow: 'hidden', mt: '2%' }}>
+                    <TableContainer sx={{ maxHeight: 440, }}>
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell key={column.id} align={column.align}>
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {getdata.map((row) => (
+                                    <TableRow key={row.id} hover role="checkbox">
+                                        <TableCell style={{ textAlign: 'center' }}>{row.connectionName}</TableCell>
+                                        <TableCell style={{ textAlign: 'center' }}>{row.status}</TableCell>
+                                        <TableCell style={{ textAlign: 'center' }}>{row.connectionSource}</TableCell>
+                                        <TableCell style={{ textAlign: 'center' }}>{row.projectId}</TableCell>
+                                        <TableCell style={{ textAlign: 'center' }}>{row.tableId}</TableCell>
+                                        <TableCell style={{ textAlign: 'center' }}>  <Switch defaultChecked color="primary" /></TableCell>
+                                        <TableCell style={{ textAlign: 'center' }} onClick={() => onDeleteItem(row)}>  <DeleteIcon /></TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
 
-                <TablePagination
-                    sx={{ mt: '-2%' }}
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={rows ? rows : 0}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
-        </Grid>
+                    <TablePagination
+                        sx={{ mt: '-2%' }}
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={rows ? rows : 0}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+            </Grid>
+        </>
     );
 }
 
