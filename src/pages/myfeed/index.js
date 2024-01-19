@@ -49,16 +49,17 @@ function Myfeed() {
     dispatch(fetchAllFeedData(page))
       .unwrap()
       .then((res) => {
-        setFeed(res.feed);
+        setFeed(res.data);
         setChartData(res);
-        console.log(res.feed);
+        console.log(res.data);
         // console.log(feed.series)
       });
     getAllFeed();
   }, [dispatch]);
 
   const getAllFeed = () => {
-    const apiUrl = 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev/feed';
+    // const apiUrl = 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev/feed';
+    const apiUrl = 'https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/feed/all/0/0';
     const token = localStorage.getItem('TOKEN');
     // Define headers
     const headers = {
