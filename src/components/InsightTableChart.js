@@ -40,7 +40,7 @@ import logo from "assets/images/icons/Analytics Model Playground/1440px/Feed/dow
 import Send from "assets/images/icons/sendmsg.svg";
 import { createInsight } from "Slice/insightSlice";
 import CircularProgress from "@mui/material/CircularProgress";
-import { tuneIntegrationQuery } from "Slice/querySlice";
+import { createIntegrationQuery, tuneIntegrationQuery } from "Slice/querySlice";
 // import InputLabel from '@mui/material/InputLabel';
 // import MenuItem from '@mui/material/MenuItem';
 // import FormControl from '@mui/material/FormControl';
@@ -63,7 +63,7 @@ const InsightTableChart = ({
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const [selectedTab, setSelectedTab] = useState(0);
-
+  const [instructionValue, setInstructionValue] = useState('');
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -134,6 +134,29 @@ const InsightTableChart = ({
       </div>
     );
   }
+  const handleSendMessage = (message) => {
+
+    console.log(document.getElementById('outlined-disabled').value);
+    if (!document.getElementById('outlined-disabled').value) return;
+
+    sendMessage(document.getElementById('outlined-disabled').value);
+  };
+  const sendMessage = (message) => {
+    if (!document.getElementById('outlined-disabled').value) {
+      alert("Please insert an integration");
+      return;
+    }
+
+    dispatch(
+      createIntegrationQuery({
+        integrationId: 40,
+        instructions: message,
+      })
+    );
+    setTimeout(() => {
+      handleModalClose();
+    }, 5400);
+  };
   return (
     <Grid container spacing={1} sx={{ my: "2%" }}>
       <Grid
@@ -483,6 +506,7 @@ const InsightTableChart = ({
                     id="outlined-disabled"
                     label="instruction"
                   //  defaultValue="instruction"
+                  // onChange={textchange}
                   />
                   <FormHelperText id="sql-query-input-helper-text">
                     instruction for fine tuning the visualization.
@@ -493,7 +517,7 @@ const InsightTableChart = ({
                 </FormControl>
 
 
-                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }}>
+                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }} onClick={() => handleSendMessage(instructionValue)}>
                   Save Changes
                 </Button>
               </Stack>
@@ -520,6 +544,7 @@ const InsightTableChart = ({
                   <TextField
                     id="outlined-disabled"
                     label="instruction"
+
                   //  defaultValue="instruction"
                   />
                   <FormHelperText id="sql-query-input-helper-text">
@@ -531,7 +556,7 @@ const InsightTableChart = ({
                 </FormControl>
 
 
-                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }}>
+                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }} >
                   Save Changes
                 </Button>
               </Stack>
