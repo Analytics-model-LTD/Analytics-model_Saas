@@ -49,9 +49,9 @@ function Myfeed() {
     dispatch(fetchAllFeedData(page))
       .unwrap()
       .then((res) => {
-        setFeed(res.feed);
+        setFeed(res.data);
         setChartData(res);
-        console.log(res.feed);
+        console.log(res.data);
         // console.log(feed.series)
       });
     getAllFeed();

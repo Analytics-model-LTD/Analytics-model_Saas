@@ -153,7 +153,9 @@ const InsightTableChart = ({
         instructions: message,
       })
     );
-    handleModalClose();
+    setTimeout(() => {
+      handleModalClose();
+    }, 5400);
   };
   return (
     <Grid container spacing={1} sx={{ my: "2%" }}>

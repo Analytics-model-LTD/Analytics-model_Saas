@@ -6,7 +6,8 @@ const getToken = () => {
 };
 
 const queryApi = axios.create({
-   baseURL: "https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev",
+  //  baseURL: "https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev",
+  baseURL: "https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev",
  // baseURL: "http://localhost:3000/dev",
   timeout: 10000,
   headers: { Authorization: `Bearer ${getToken()}` },
@@ -16,7 +17,7 @@ export const fetchAllFeedData = createAsyncThunk(
   "feed/feedData",
   async (page) => {
     // const response = await queryApi.get(`/feed/${page}`, config);
-    const response = await queryApi.get(`/feed`);
+    const response = await queryApi.get(`/api/feed/all/0/0`);
 
     console.log(response.data);
     return response.data;
