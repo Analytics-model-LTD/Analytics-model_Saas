@@ -369,19 +369,44 @@ function Myfeed() {
                   {/* {feed.map((item, index) => { */}
                   <ReactApexChart
                     options={{
+                      plotOptions: {
+                        bar: {
+                          horizontal: false,
+                          columnWidth: "55%",
+                          endingShape: "rounded",
+                        },
+                      },
+                      dataLabels: {
+                        enabled: false,
+                      },
+                      stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ["transparent"],
+                      },
+                      fill: {
+                        opacity: 1,
+                      },
+                      tooltip: {
+                        y: {
+                          formatter: function (val) {
+                            return "$ " + val + " thousands";
+                          },
+                        },
+                      },
                       chart: {
                         type: item?.ChartCode?.chart?.type,
                         height: 350
                       },
-                      plotOptions: {
-                        bar: {
-                          borderRadius: 4,
-                          horizontal: true,
-                        }
-                      },
-                      dataLabels: {
-                        enabled: false
-                      },
+                      // plotOptions: {
+                      //   bar: {
+                      //     borderRadius: 4,
+                      //     horizontal: true,
+                      //   }
+                      // },
+                      // dataLabels: {
+                      //   enabled: false
+                      // },
                       xaxis: {
                         categories: item?.ChartCode?.xaxis && item?.ChartCode?.xaxis?.categories ? item?.ChartCode?.xaxis?.categories : []
                       }
