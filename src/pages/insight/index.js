@@ -44,7 +44,7 @@ function Insight() {
   const [isChecked, setIsChecked] = useState(false);
   const [isdatachecked, setDataischecked] = useState(false);
   const [instructions, setInstructions] = useState("");
-  const [integration, setIntegration] = useState();
+  const [integration, setIntegration] = useState("");
   const queryLoading = useSelector((state) => state.query.loading);
   const queryHistory = useSelector((state) => state.query.history);
   const integrationsources = useSelector(getAllintegretionData);
@@ -379,12 +379,10 @@ function Insight() {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={integration}
+                  value={integration || (integrationsources.length > 0 ? integrationsources[0].id : '')}
                   label="Connection"
                   onChange={(e) => setIntegration(e.target.value)}
                   sx={{
-
-
                     borderRadius: "8px",
                     border: "1px solid #EBEBEB",
                     background: "#FAFAFA",

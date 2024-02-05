@@ -94,7 +94,7 @@ const FirebaseSocial = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
-                <GoogleOAuthProvider clientId="1707393391-8qee74bq6137hdjb3qb0ntq9megb4cqf.apps.googleusercontent.com">
+                <GoogleOAuthProvider clientId="442914944524-87tme4kji7i7l29tu8q7r2aqpomn3c1l.apps.googleusercontent.com">
                     <GoogleLogin
                         onSuccess={credentialResponse => {
                             console.log('google cocial',credentialResponse);

@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 // material-ui
+import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import {
     Avatar,
@@ -47,9 +48,10 @@ const actionSX = {
 // ==============================|| HEADER CONTENT - NOTIFICATION ||============================== //
 
 const Notification = () => {
+
     const theme = useTheme();
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
-    const [Notification, setNotification] = useState([])
+    const [notification, setNotification] = useState([])
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -97,7 +99,21 @@ const Notification = () => {
 
     const iconBackColorOpen = 'grey.300';
     const iconBackColor = 'grey.100';
+    const calculateTimeDifference = (createdAt) => {
+        const createdTime = new Date(createdAt);
+        const currentTime = new Date();
+        const timeDifference = currentTime - createdTime;
 
+        const minutes = Math.floor(timeDifference / (1000 * 60) % 60);
+        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+
+        if (hours > 0) {
+            return `${hours} ${hours === 1 ? 'hour' : 'hours'} ${minutes} ${minutes === 1 ? 'minute' : ''
+                }`;
+        } else {
+            return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
+        }
+    };
     return (
         <Box sx={{ flexShrink: 0, ml: 0.75, }}>
             <IconButton
@@ -159,8 +175,8 @@ const Notification = () => {
                                     }
                                 >
                                     <List>
-                                        {Notification.map((item) => (
-                                            <ListItemButton key={item.Id}>
+                                        {notification.map((item) => (
+                                            <ListItemButton key={item.Id} component={Link} to="/myfeed">
                                                 <ListItemText
                                                     primary={
                                                         <Typography variant="h6">
@@ -168,14 +184,13 @@ const Notification = () => {
                                                             <Typography component="span" variant="subtitle1">
                                                                 {item.insightText}
                                                             </Typography>{' '}
-                                                            {/* You can customize the text as needed */}
                                                         </Typography>
                                                     }
-                                                    secondary="2 min ago" // You can replace this with the actual time from the item
+                                                    secondary={`${calculateTimeDifference(item.createdAt)} min ago`}
                                                 />
                                                 <ListItemSecondaryAction>
                                                     <Typography variant="caption" noWrap>
-                                                        {new Date(item.createdAt).toLocaleTimeString()} {/* Format the time as needed */}
+                                                        {new Date(item.createdAt).toLocaleTimeString()}
                                                     </Typography>
                                                 </ListItemSecondaryAction>
                                             </ListItemButton>

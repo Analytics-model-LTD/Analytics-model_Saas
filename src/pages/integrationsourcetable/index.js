@@ -90,7 +90,7 @@ function Integrationsourcestable() {
     const [rows, setrows] = useState();
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
 
     useEffect(() => {
         dispatch(fetchAllintegretionData(page))
