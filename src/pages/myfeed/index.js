@@ -70,7 +70,7 @@ function Myfeed() {
       headers: headers
     })
       .then(response => {
-        setAllFeed(response.data)
+        setAllFeed(response.feed ? response.feed : response.data)
         console.log(allFeed);
       })
       .catch(error => {
