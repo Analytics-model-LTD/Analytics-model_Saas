@@ -63,7 +63,7 @@ const InsightTableChart = ({
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const [selectedTab, setSelectedTab] = useState(0);
-  const [instructionValue, setInstructionValue] = useState('');
+ 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -74,7 +74,7 @@ const InsightTableChart = ({
 
   const [tuneQuery, setTuneQuery] = React.useState(query);
   const [tuneInstructions, setTuneInstructions] = React.useState("");
-
+const [instruction,setInstructionValue] = React.useState("");
   const menuOpen = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -101,6 +101,7 @@ const InsightTableChart = ({
   };
 
   const handleTuneSubmit = (event) => {
+    console.log("event", event)
     event.preventDefault();
     if (!tuneQuery || !tuneInstructions || !integrationId) return;
 
@@ -134,6 +135,9 @@ const InsightTableChart = ({
       </div>
     );
   }
+  const textchange = (e) => {
+    setInstructionValue(e.target.value)
+  }
   const handleSendMessage = (message) => {
 
     console.log(document.getElementById('outlined-disabled').value);
@@ -142,6 +146,7 @@ const InsightTableChart = ({
     sendMessage(document.getElementById('outlined-disabled').value);
   };
   const sendMessage = (message) => {
+    console.log("message", message);
     if (!document.getElementById('outlined-disabled').value) {
       alert("Please insert an integration");
       return;
@@ -156,6 +161,23 @@ const InsightTableChart = ({
     setTimeout(() => {
       handleModalClose();
     }, 5400);
+  };
+  const handlesubmit = () => {
+
+    axios
+      .put(
+        `https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev/integration/50/query`,
+        { instruction: instruction, query: query },
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
+    //setIsLoggedIn(false); // Reset the flag when login is successful
   };
   return (
     <Grid container spacing={1} sx={{ my: "2%" }}>
@@ -505,8 +527,9 @@ const InsightTableChart = ({
                   <TextField
                     id="outlined-disabled"
                     label="instruction"
-                  //  defaultValue="instruction"
-                  // onChange={textchange}
+                    value={instruction}
+                    //  defaultValue="instruction"
+                    onChange={textchange}
                   />
                   <FormHelperText id="sql-query-input-helper-text">
                     instruction for fine tuning the visualization.
@@ -517,7 +540,7 @@ const InsightTableChart = ({
                 </FormControl>
 
 
-                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }} onClick={() => handleSendMessage(instructionValue)}>
+                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }} onSubmit={handlesubmit} >
                   Save Changes
                 </Button>
               </Stack>

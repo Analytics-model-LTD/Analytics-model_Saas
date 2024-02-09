@@ -15,6 +15,7 @@ const queryApi = axios.create({
 export const createIntegrationQuery = createAsyncThunk(
   "query/createIntegrationQuery",
   async ({ integrationId, instructions }) => {
+    console.log("insteuction",instructions);
     const token = await getToken();
     const config = {
       headers: {
