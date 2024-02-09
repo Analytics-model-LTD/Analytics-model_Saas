@@ -101,16 +101,15 @@ const [instruction,setInstructionValue] = React.useState("");
   };
 
   const handleTuneSubmit = (event) => {
-    console.log("event", event)
     event.preventDefault();
-    if (!tuneQuery || !tuneInstructions || !integrationId) return;
-
+    // if (!tuneQuery || !tuneInstructions ) return;
+console.log('sdsdds');
     dispatch(
       tuneIntegrationQuery({
         index,
         query: tuneQuery,
-        instructions: tuneInstructions,
-        integrationId,
+        instructions: instruction,
+        integrationId: 50,
       })
     );
     setTuneInstructions("");
