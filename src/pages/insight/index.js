@@ -58,10 +58,6 @@ function Insight() {
     dispatch(fetchAllintegretionData(0));
   }, [dispatch]);
 
-
-
-
-  console.log("integrationsources", integrationsources.length > 0);
   const sendMessage = (message) => {
     if (!integration) {
       alert("Please select an integration");
@@ -84,6 +80,10 @@ function Insight() {
   };
 
   const onEnter = (e) => {
+    console.log(integrationsources);
+    if (integrationsources.length && !integration) {
+      setIntegration(integrationsources[0]?.connectionName);
+    }
     if (e.keyCode == 13) {
       handleSendMessage(e.target.value);
     }
@@ -339,7 +339,7 @@ function Insight() {
                 // onChange={(e) => setInstructions(e.target.value)}
                 onKeyDown={onEnter}
                 value={instructions || typographyContent || typography}
-                disabled={!integration || queryLoading === "pending"}
+                // disabled={!integration || queryLoading === "pending"}
                 sx={{
                   width: "98%",
                   borderRadius: "8px",
