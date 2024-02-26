@@ -80,7 +80,6 @@ function Insight() {
   };
 
   const onEnter = (e) => {
-    console.log(integrationsources);
     if (integrationsources.length && !integration) {
       setIntegration(integrationsources[0]?.connectionName);
     }
@@ -127,7 +126,6 @@ function Insight() {
     }
   };
   const mapQueryToComponent = (item, index) => {
-    console.log(item);
     if (item.type === "TEXT") {
       return (
         <Grid

@@ -6,7 +6,7 @@ const getToken = () => {
 };
 
 const insightsApi = axios.create({
-  baseURL:"https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/insights",
+  baseURL:"https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/feed/addtofeed",
   timeout: 10000,
   headers: { Authorization: `Bearer ${getToken()}` },
 });
@@ -29,9 +29,10 @@ export const createInsight = createAsyncThunk(
         "Content-Type": "application/json",
       },
     };
+    const id = localStorage.getItem('insightId');
     const response = await insightsApi.post(
       "/",
-      { integrationId, query, instructions, insightType, data, chartConfig },
+      { integrationId, query, instructions, insightType, data, chartConfig, id },
       config
     );
 

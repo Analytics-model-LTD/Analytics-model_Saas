@@ -15,7 +15,6 @@ const queryApi = axios.create({
 export const createIntegrationQuery = createAsyncThunk(
   "query/createIntegrationQuery",
   async ({ integrationId, instructions }) => {
-    console.log("insteuction",instructions);
     const token = await getToken();
     const config = {
       headers: {
@@ -28,7 +27,7 @@ export const createIntegrationQuery = createAsyncThunk(
       { instructions },
       config
     );
-
+    localStorage.setItem('insightId', response.data.id);
     return response.data;
   }
 );

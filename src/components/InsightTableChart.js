@@ -54,6 +54,7 @@ const InsightTableChart = ({
   integrationId,
   query,
   instructions,
+  id
 }) => {
   const insights = useSelector((state) => state.insights);
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ const InsightTableChart = ({
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
   const [selectedTab, setSelectedTab] = useState(0);
- 
+
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -71,10 +72,9 @@ const InsightTableChart = ({
   const toggleView = () => {
     setIsChartView(!isChartView);
   };
-
   const [tuneQuery, setTuneQuery] = React.useState(query);
   const [tuneInstructions, setTuneInstructions] = React.useState("");
-const [instruction,setInstructionValue] = React.useState("");
+  const [instruction, setInstructionValue] = React.useState("");
   const menuOpen = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -102,14 +102,13 @@ const [instruction,setInstructionValue] = React.useState("");
 
   const handleTuneSubmit = (event) => {
     event.preventDefault();
-    // if (!tuneQuery || !tuneInstructions ) return;
-console.log('sdsdds');
+    if (!tuneQuery || !document.getElementById('outlined-disabled').value) return;
     dispatch(
       tuneIntegrationQuery({
         index,
         query: tuneQuery,
-        instructions: instruction,
-        integrationId: 50,
+        instructions: document.getElementById('outlined-disabled').value,
+        integrationId: integrationId,
       })
     );
     setTuneInstructions("");
@@ -137,15 +136,15 @@ console.log('sdsdds');
   const textchange = (e) => {
     setInstructionValue(e.target.value)
   }
+  const textChangeChart = (e) => {
+    console.log(e.target.value);
+    setTuneInstructions(e.target.value)
+  }
   const handleSendMessage = (message) => {
-
-    console.log(document.getElementById('outlined-disabled').value);
     if (!document.getElementById('outlined-disabled').value) return;
-
     sendMessage(document.getElementById('outlined-disabled').value);
   };
   const sendMessage = (message) => {
-    console.log("message", message);
     if (!document.getElementById('outlined-disabled').value) {
       alert("Please insert an integration");
       return;
@@ -153,7 +152,7 @@ console.log('sdsdds');
 
     dispatch(
       createIntegrationQuery({
-        integrationId: 40,
+        integrationId: integrationId,
         instructions: message,
       })
     );
@@ -162,10 +161,9 @@ console.log('sdsdds');
     }, 5400);
   };
   const handlesubmit = () => {
-
     axios
       .put(
-        `https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev/integration/50/query`,
+        'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev/integration/' + integrationId + '/query',
         { instruction: instruction, query: query },
         {
           headers: {
@@ -566,7 +564,8 @@ console.log('sdsdds');
                   <TextField
                     id="outlined-disabled"
                     label="instruction"
-
+                    onChange={(e) => setTuneInstructions(e.target.value)}
+                  // onChange={textChangeChart}
                   //  defaultValue="instruction"
                   />
                   <FormHelperText id="sql-query-input-helper-text">
