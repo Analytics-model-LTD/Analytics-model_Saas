@@ -75,6 +75,7 @@ const InsightTableChart = ({
   const [tuneQuery, setTuneQuery] = React.useState(query);
   const [tuneInstructions, setTuneInstructions] = React.useState("");
   const [instruction, setInstructionValue] = React.useState("");
+  const [name, setName] = React.useState('');
   const menuOpen = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -134,7 +135,9 @@ const InsightTableChart = ({
     );
   }
   const textchange = (e) => {
-    setInstructionValue(e.target.value)
+    console.log(e.target.value);
+    const { name, value } = e.target.value
+    setInstructionValue(...value)
   }
   const textChangeChart = (e) => {
     console.log(e.target.value);
@@ -504,85 +507,86 @@ const InsightTableChart = ({
             <Tab label="Chart" />
           </Tabs>
 
-          <TabPanel value={selectedTab} index={0}>
-            <form onSubmit={handleTuneSubmit}>
-              <Stack spacing={4}>
-                <FormControl>
-                  <TextField
-                    label="SQL"
-                    multiline
-                    rows={6}
-                    onChange={(e) => setTuneQuery(e.target.value)}
-                    value={tuneQuery}
-                    defaultValue={query}
-                  />
-                  <FormHelperText id="sql-query-input-helper-text">
-                    SQL query to select data
-                  </FormHelperText>
-                </FormControl>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <TextField
-                    id="outlined-disabled"
-                    label="instruction"
-                    value={instruction}
-                    //  defaultValue="instruction"
-                    onChange={textchange}
-                  />
-                  <FormHelperText id="sql-query-input-helper-text">
-                    instruction for fine tuning the visualization.
-                    For example,"Convert the chart to line chart and
-                    change the colors to green and red according to the
-                    data"
-                  </FormHelperText>
-                </FormControl>
+          {/* <TabPanel value={selectedTab} index={0}> */}
+          {selectedTab == 0 ? <form onSubmit={handleTuneSubmit}>
+            <Stack spacing={4}>
+              <FormControl>
+                <TextField
+                  label="SQL"
+                  multiline
+                  rows={6}
+                  onChange={(e) => setTuneQuery(e.target.value)}
+                  value={tuneQuery}
+                  defaultValue={query}
+                />
+                <FormHelperText id="sql-query-input-helper-text">
+                  SQL query to select data
+                </FormHelperText>
+              </FormControl>
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <TextField
+                  id="outlined-disabled"
+                  label="instruction"
+                  value={instruction}
+                  name="instruction"
+                  // defaultValue="instruction"
+                  onChange={(e) => setInstructionValue(e.target.value)}
+                />
+                <FormHelperText id="sql-query-input-helper-text">
+                  instruction for fine tuning the visualization.
+                  For example,"Convert the chart to line chart and
+                  change the colors to green and red according to the
+                  data"
+                </FormHelperText>
+              </FormControl>
 
 
-                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }} onSubmit={handlesubmit} >
-                  Save Changes
-                </Button>
-              </Stack>
-            </form>
-          </TabPanel>
+              <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }} onSubmit={handlesubmit} >
+                Save Changes
+              </Button>
+            </Stack>
+          </form> : <></>}
+          {/* </TabPanel> */}
 
-          <TabPanel value={selectedTab} index={1}>
-            <form onSubmit={handleTuneSubmit}>
-              <Stack spacing={4}>
-                <FormControl>
-                  <TextField
-                    label="SQL"
-                    multiline
-                    rows={6}
-                    onChange={(e) => setTuneQuery(e.target.value)}
-                    value={tuneQuery}
-                    defaultValue={query}
-                  />
-                  <FormHelperText id="sql-query-input-helper-text">
-                    SQL query to select data
-                  </FormHelperText>
-                </FormControl>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <TextField
-                    id="outlined-disabled"
-                    label="instruction"
-                    onChange={(e) => setTuneInstructions(e.target.value)}
-                  // onChange={textChangeChart}
-                  //  defaultValue="instruction"
-                  />
-                  <FormHelperText id="sql-query-input-helper-text">
-                    instruction for fine tuning the visualization.
-                    For example,"Convert the chart to line chart and
-                    change the colors to green and red according to the
-                    data"
-                  </FormHelperText>
-                </FormControl>
+          {/* <TabPanel value={selectedTab} index={1}> */}
+          {selectedTab == 1 ? <form onSubmit={handleTuneSubmit}>
+            <Stack spacing={4}>
+              <FormControl>
+                <TextField
+                  label="SQL"
+                  multiline
+                  rows={6}
+                  onChange={(e) => setTuneQuery(e.target.value)}
+                  value={tuneQuery}
+                  defaultValue={query}
+                />
+                <FormHelperText id="sql-query-input-helper-text">
+                  SQL query to select data
+                </FormHelperText>
+              </FormControl>
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <TextField
+                  id="outlined-disabled"
+                  label="instruction"
+                  onChange={(e) => setTuneInstructions(e.target.value)}
+                // onChange={textChangeChart}
+                //  defaultValue="instruction"
+                />
+                <FormHelperText id="sql-query-input-helper-text">
+                  instruction for fine tuning the visualization.
+                  For example,"Convert the chart to line chart and
+                  change the colors to green and red according to the
+                  data"
+                </FormHelperText>
+              </FormControl>
 
 
-                <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }} >
-                  Save Changes
-                </Button>
-              </Stack>
-            </form>
-          </TabPanel>
+              <Button type="submit" variant="contained" style={{ backgroundColor: 'black', color: 'white' }} >
+                Save Changes
+              </Button>
+            </Stack>
+          </form> : <></>}
+          {/* </TabPanel> */}
 
 
         </Box>

@@ -39,6 +39,7 @@ import {
   fetchAllintegretionData,
   getAllintegretionData,
 } from "Slice/integrationsourcesSlice";
+import axios from "../../../node_modules/axios/index";
 
 function Insight() {
   const [isChecked, setIsChecked] = useState(false);
@@ -63,13 +64,32 @@ function Insight() {
       alert("Please select an integration");
       return;
     }
-
-    dispatch(
-      createIntegrationQuery({
-        integrationId: integration,
-        instructions: message,
-      })
-    );
+    const token = localStorage.getItem('TOKEN');
+    // Define headers
+    const headers = {
+      "content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    axios
+      .get(
+        'https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/feed/requestcount',
+        {
+          headers: headers
+        }
+      )
+      .then((res) => {
+        if (res.data && +res.data.data > 0) {
+          dispatch(
+            createIntegrationQuery({
+              integrationId: integration,
+              instructions: message,
+            })
+          );
+        } else {
+          alert("Your request limit is exceeded");
+          return;
+        }
+      });
   };
 
   const handleSendMessage = (message) => {
@@ -81,7 +101,7 @@ function Insight() {
 
   const onEnter = (e) => {
     if (integrationsources.length && !integration) {
-      setIntegration(integrationsources[0]?.connectionName);
+      setIntegration(integrationsources[0]?.id);
     }
     if (e.keyCode == 13) {
       handleSendMessage(e.target.value);
@@ -377,7 +397,7 @@ function Insight() {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={integration || (integrationsources.length > 0 ? integrationsources[0].id : '')}
+                  value={!integration ? (integrationsources.length > 0 ? integrationsources[0].id : '') : integration}
                   label="Connection"
                   onChange={(e) => setIntegration(e.target.value)}
                   sx={{
