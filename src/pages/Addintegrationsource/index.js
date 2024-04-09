@@ -189,7 +189,7 @@ function Addintegrationsource() {
   }, [formValues, getTablesAsync]);
 
   const onSuccess = async (response) => {
-    await axios.post(
+    const result = await axios.post(
       `/user/google_login`,
       { credential: response.code, type: "code" },
       {
@@ -198,11 +198,12 @@ function Addintegrationsource() {
         },
       }
     );
+    console.log('result', result);
     localStorage.setItem("TOKEN_OBJECT", JSON.stringify(response));
 
     const hasAccessResponse = hasGrantedAnyScopeGoogle(response, ...scopes);
     console.log('hasAccessResponse', hasAccessResponse);
-    localStorage.setItem("googleToken", hasAccessResponse?.access_token);
+    localStorage.setItem("googleToken", result?.data?.access_token);
 
     setHasAccess(hasAccessResponse);
   };
