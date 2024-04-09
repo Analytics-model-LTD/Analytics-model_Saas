@@ -6,10 +6,10 @@ const getToken = async () => {
 };
 
 const queryApi = axios.create({
-     baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
+    baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
     // baseURL: "http://localhost:3000/dev",
     timeout: 10000,
-    headers: {'Authorization': `Bearer ${getToken()}`}
+    headers: { 'Authorization': `Bearer ${getToken()}` }
 });
 
 export const fetchAllintegretionData = createAsyncThunk('integrationsources/integrationData', async (page) => {
@@ -28,7 +28,7 @@ export const fetchAllintegretionData = createAsyncThunk('integrationsources/inte
 });
 
 export const deleteIntegretionData = createAsyncThunk('integrationsources/deleteintegretion', async (payload) => {
-    console.log("payload",payload);
+    console.log("payload", payload);
     const token = await getToken();
     const config = {
         headers: {
@@ -36,7 +36,7 @@ export const deleteIntegretionData = createAsyncThunk('integrationsources/delete
             'Content-Type': 'multipart/form-data'
         }
     };
-console.log(config);
+    console.log(config);
     const response = await axios.post(`/analytics/delete`, payload, config);
 
     return response.data;
@@ -70,12 +70,12 @@ export const getDatasets = createAsyncThunk('integrationsources/datasets', async
     return response.data;
 });
 
-export const getTables = createAsyncThunk('integrationsources/tables', async ({projectId, datasetId}) => {
+export const getTables = createAsyncThunk('integrationsources/tables', async ({ projectId, datasetId }) => {
     console.log('getTables', projectId, datasetId);
     const token = await getToken();
     const config = {
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem('googleToken')}`
         }
     };
 
