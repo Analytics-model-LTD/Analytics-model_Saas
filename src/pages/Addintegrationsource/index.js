@@ -201,6 +201,8 @@ function Addintegrationsource() {
     localStorage.setItem("TOKEN_OBJECT", JSON.stringify(response));
 
     const hasAccessResponse = hasGrantedAnyScopeGoogle(response, ...scopes);
+    console.log(hasAccessResponse);
+    localStorage.setItem("googleToken", hasAccessResponse?.access_token);
 
     setHasAccess(hasAccessResponse);
   };
