@@ -47,7 +47,7 @@ export const getProjects = createAsyncThunk('integrationsources/projects', async
     const token = await getToken();
     const config = {
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem('googleToken')}`
         }
     };
 

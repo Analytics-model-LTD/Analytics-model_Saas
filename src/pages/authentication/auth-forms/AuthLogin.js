@@ -114,7 +114,9 @@ const AuthLogin = () => {
       )
       .then((res) => {
         if (res) {
-          console.log(res?.user?.firstname);
+          console.log(res?.data);
+          localStorage.setItem("googleToken", res.data.access_token);
+
           localStorage.setItem("TOKEN", res.data.access_token);
           const user = jwt(res.data.access_token);
           localStorage.setItem(

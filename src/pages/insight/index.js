@@ -55,6 +55,8 @@ function Insight() {
   const navigate = useNavigate();
   const [typographyContent, setTypographyContent] = useState('');
   const [typography, setTypography] = useState('');
+  const [filteredSuggestions, setFilteredSuggestions] = useState(['total revenue']);
+
   useEffect(() => {
     dispatch(fetchAllintegretionData(0));
   }, [dispatch]);
@@ -64,6 +66,7 @@ function Insight() {
       alert("Please select an integration");
       return;
     }
+    setFilteredSuggestions(prevSuggestions => [...prevSuggestions, instructions]);
     const token = localStorage.getItem('TOKEN');
     // Define headers
     const headers = {
@@ -113,7 +116,18 @@ function Insight() {
     // setIsChecked(false);
 
     setInstructions(e.target.value)
+
+    const filteredSuggestions = suggestions.filter(suggestion =>
+      suggestion.toLowerCase().includes(instructions.toLowerCase())
+    );
+    setFilteredSuggestions(filteredSuggestions);
   }
+
+  const handleSuggestionClick = (suggestion) => {
+    setInputValue(suggestion);
+    setFilteredSuggestions([]);
+  };
+
   const handleCheckboxChange = () => {
     setTypography('');
     setIsChecked(!isChecked);
@@ -388,6 +402,14 @@ function Insight() {
                     ),
                 }}
               />
+              {/* <ul>
+                {filteredSuggestions.map((suggestion, index) => (
+                  <div>{suggestion}</div>
+                  // <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
+                  //   {suggestion}
+                  // </li>
+                ))}
+              </ul> */}
             </Grid>
             <Grid item xs={4}   >
               <FormControl fullWidth >
