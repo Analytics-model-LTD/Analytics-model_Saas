@@ -2,7 +2,6 @@
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
-import SvgIcon from '@material-ui/core/SvgIcon';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import FeedIcon from '@mui/icons-material/Feed';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
