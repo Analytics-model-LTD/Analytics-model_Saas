@@ -90,9 +90,10 @@ const FirebaseSocial = () => {
             </Button> */}
             <div style={{
                 display: 'flex',
-                height: '100vh',
+                height: '5vh',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                width: '100%'
             }}>
                 <GoogleOAuthProvider clientId="442914944524-87tme4kji7i7l29tu8q7r2aqpomn3c1l.apps.googleusercontent.com">
                     <GoogleLogin
