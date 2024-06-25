@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { googleSignIn } from 'Slice/googleLoginSlice';
 import { useNavigate } from '../../../../node_modules/react-router-dom/dist/index';
 import axios from 'axios';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
 // ==============================|| FIREBASE - SOCIAL BUTTON ||============================== //
 
@@ -53,14 +54,6 @@ const FirebaseSocial = () => {
                 });
         }
     };
-
-    // const googleHandler = useGoogleLogin({
-    //     onSuccess: (codeResponse) => {
-    //         console.log('Google Login Successful:', codeResponse.access_token);
-    //         onSuccess(codeResponse); // You can also call your custom onSuccess function here if needed
-    //     },
-    //     onError: (error) => console.log('Login Failed:', error)
-    // });
     
     // const googleHandler = useGoogleLogin({
     //     onSuccess: (codeResponse) => {
@@ -87,7 +80,6 @@ const FirebaseSocial = () => {
             sx={{ '& .MuiButton-startIcon': { mr: matchDownSM ? 0 : 1, ml: matchDownSM ? 0 : -0.5 } }}
         >
             {/* <Button
-            {/* <Button
                 variant="outlined"
                 color="secondary"
                 fullWidth={!matchDownSM}
@@ -95,8 +87,26 @@ const FirebaseSocial = () => {
                 onClick={() => googleHandler()}
             >
                 {!matchDownSM && 'Google'}
-            </Button>
-            {/* 
+            </Button> */}
+            <div style={{
+                display: 'flex',
+                height: '100vh',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <GoogleOAuthProvider clientId="442914944524-87tme4kji7i7l29tu8q7r2aqpomn3c1l.apps.googleusercontent.com">
+                    <GoogleLogin
+                        onSuccess={credentialResponse => {
+                            console.log('google cocial',credentialResponse);
+                            var decoded = jwt_decode(credentialResponse.credential);
+
+                        }}
+                        onError={() => {
+                            console.log('Login Failed');
+                        }}
+                    />
+                </GoogleOAuthProvider>
+            </div>
             <Button
                 variant="outlined"
                 color="secondary"
