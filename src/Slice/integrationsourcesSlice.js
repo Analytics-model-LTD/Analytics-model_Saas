@@ -1,24 +1,98 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-let token = localStorage.getItem('TOKEN');
-
-let config = {
-    headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data'
-    }
+const getToken = async () => {
+    return localStorage.getItem('TOKEN');
 };
 
+const queryApi = axios.create({
+    baseURL: 'https://kh0fjnpaqc.execute-api.eu-north-1.amazonaws.com/dev',
+    // baseURL: "http://localhost:3000/dev",
+    timeout: 10000,
+    headers: { 'Authorization': `Bearer ${getToken()}` }
+});
+
 export const fetchAllintegretionData = createAsyncThunk('integrationsources/integrationData', async (page) => {
-    const response = await axios.get(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/analytics/all/${page}`, config);
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    };
+
+    const response = await axios.get(`/analytics/all/${page}`, config);
 
     console.log(response.data);
     return response.data;
 });
 
+export const deleteIntegretionData = createAsyncThunk('integrationsources/deleteintegretion', async (payload) => {
+    console.log("payload", payload);
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    };
+    console.log(config);
+    const response = await axios.post(`/analytics/delete`, payload, config);
+
+    return response.data;
+});
+
+export const getProjects = createAsyncThunk('integrationsources/projects', async () => {
+    console.log('getProjects');
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('googleToken')}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects`, config);
+
+    return response.data;
+});
+
+export const getDatasets = createAsyncThunk('integrationsources/datasets', async (projectId) => {
+    console.log('getDatasets');
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('googleToken')}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects/${projectId}/datasets`, config);
+
+    return response.data;
+});
+
+export const getTables = createAsyncThunk('integrationsources/tables', async ({ projectId, datasetId }) => {
+    console.log('getTables', projectId, datasetId);
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('googleToken')}`
+        }
+    };
+
+    const response = await queryApi.get(`/projects/${projectId}/datasets/${datasetId}/tables`, config);
+
+    return response.data;
+});
+
 export const newSaveintegretion = createAsyncThunk('integrationsources/saveintegretion', async (payload) => {
-    const response = await axios.post(`https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/analytics/create`, payload, config);
+    const token = await getToken();
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    };
+    const response = await axios.post(`/analytics/create`, payload, config);
 
     return response.data;
 });
@@ -43,6 +117,14 @@ const integrationsourcesSlice = createSlice({
             state.loading = 'pending';
         });
         builder.addCase(newSaveintegretion.fulfilled, (state, action) => {
+            state.loading = 'pending';
+            state.integretionData = [];
+        });
+
+        builder.addCase(deleteIntegretionData.pending, (state, action) => {
+            state.loading = 'pending';
+        });
+        builder.addCase(deleteIntegretionData.fulfilled, (state, action) => {
             state.loading = 'pending';
             state.integretionData = [];
         });

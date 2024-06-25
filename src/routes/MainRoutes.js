@@ -10,6 +10,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const Plans = Loadable(lazy(() => import('pages/plans')));
 const Billing = Loadable(lazy(() => import('pages/billing')));
 const Myfeed = Loadable(lazy(() => import('pages/myfeed')));
+const Insight = Loadable(lazy(()=> import('pages/insight')))
 const Integrationsources = Loadable(lazy(() => import('pages/integrationsource')));
 const Integrationsourcestable = Loadable(lazy(() => import('pages/integrationsourcetable')));
 const Addintegrationsource = Loadable(lazy(() => import('pages/Addintegrationsource')));
@@ -113,6 +114,10 @@ const MainRoutes = {
         {
             path: 'myfeed',
             element: <AuthGuard component={<Myfeed />} />
+        },
+        {
+            path: 'insight',
+            element: <AuthGuard component={<Insight />} />
         }
     ]
 };

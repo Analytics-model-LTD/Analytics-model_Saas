@@ -1,6 +1,7 @@
-import { useRef, useState } from 'react';
-
+import { useRef, useState, useEffect } from 'react';
+import axios from 'axios';
 // material-ui
+import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import {
     Avatar,
@@ -47,11 +48,13 @@ const actionSX = {
 // ==============================|| HEADER CONTENT - NOTIFICATION ||============================== //
 
 const Notification = () => {
+
     const theme = useTheme();
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
-
+    const [notification, setNotification] = useState([])
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -62,10 +65,55 @@ const Notification = () => {
         }
         setOpen(false);
     };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (open) {
+                    // Retrieve token from local storage
+                    const token = localStorage.getItem('TOKEN');
+                    setLoading(true);
+
+                    // Make the GET request with the token in the headers
+                    const response = await axios.get('/insights/getNotificationSummery', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            // Add other headers if needed
+                        },
+                    });
+
+                    // Handle the response data
+                    setNotification(response.data.data.rows)
+                }
+            } catch (error) {
+                // Handle errors
+                // setError('Error fetching data');
+                console.error('Error fetching data:', error);
+            } finally {
+                // Set loading to false after request completes (whether success or error)
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [open]); // useEffect will run whenever the 'open' state changes
 
     const iconBackColorOpen = 'grey.300';
     const iconBackColor = 'grey.100';
+    const calculateTimeDifference = (createdAt) => {
+        const createdTime = new Date(createdAt);
+        const currentTime = new Date();
+        const timeDifference = currentTime - createdTime;
 
+        const minutes = Math.floor(timeDifference / (1000 * 60) % 60);
+        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+
+        if (hours > 0) {
+            return `${hours} ${hours === 1 ? 'hour' : 'hours'} ${minutes} ${minutes === 1 ? 'minute' : ''
+                }`;
+        } else {
+            return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
+        }
+    };
     return (
         <Box sx={{ flexShrink: 0, ml: 0.75, }}>
             <IconButton
@@ -79,7 +127,7 @@ const Notification = () => {
                 onClick={handleToggle}
             >
                 {/* <Badge badgeContent={4} color="primary"> */}
-                    {/* <BellOutlined /> */}
+                {/* <BellOutlined /> */}
                 {/* </Badge> */}
                 <img src={Bell} alt="Bell" />
             </IconButton>
@@ -126,7 +174,29 @@ const Notification = () => {
                                         </IconButton>
                                     }
                                 >
-                                    <List
+                                    <List>
+                                        {notification.map((item) => (
+                                            <ListItemButton key={item.Id} component={Link} to="/myfeed">
+                                                <ListItemText
+                                                    primary={
+                                                        <Typography variant="h6">
+                                                            It's{' '}
+                                                            <Typography component="span" variant="subtitle1">
+                                                                {item.insightText}
+                                                            </Typography>{' '}
+                                                        </Typography>
+                                                    }
+                                                    secondary={`${calculateTimeDifference(item.createdAt)} min ago`}
+                                                />
+                                                <ListItemSecondaryAction>
+                                                    <Typography variant="caption" noWrap>
+                                                        {new Date(item.createdAt).toLocaleTimeString()}
+                                                    </Typography>
+                                                </ListItemSecondaryAction>
+                                            </ListItemButton>
+                                        ))}
+                                    </List>
+                                    {/* <List
                                         component="nav"
                                         sx={{
                                             p: 0,
@@ -266,7 +336,7 @@ const Notification = () => {
                                                 }
                                             />
                                         </ListItemButton>
-                                    </List>
+                                    </List> */}
                                 </MainCard>
                             </ClickAwayListener>
                         </Paper>

@@ -66,7 +66,7 @@ const AuthRegister = () => {
 
         axios
             .post(
-                'https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/register',
+                '/user/register',
                 {
                     email: val.email,
                     password: val.password,
@@ -111,6 +111,14 @@ const AuthRegister = () => {
                 ) : (
                     <></>
                 );
+
+                err.response.data.message === 'password length must be at least 4 characters long' ? (
+                    toast.error('password length must be at least 4 characters long .', {
+                        position: 'top-center'
+                    })
+                ) : (
+                    <></>
+                );
             });
     };
 
@@ -132,7 +140,7 @@ const AuthRegister = () => {
                         .matches(/\S+@\S+\.\S+/, 'Please Enter Valid Email')
                         .max(255)
                         .required('Email is required'),
-                    password: Yup.string().required('Password is Required')
+                    password: Yup.string().max(16, 'Password can only contain 16 Digit').required('Password is Required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -268,15 +276,26 @@ const AuthRegister = () => {
                             <Grid item xs={12}>
                                 <Typography variant="body2">
                                     By Signing up, you agree to our &nbsp;
-                                    <Link variant="subtitle2" component={Link}  target="_blank"underline="hover" href="https://www.analytics-model.com/terms-and-conditions">
+                                    <Link
+                                        variant="subtitle2"
+                                        component={Link}
+                                        target="_blank"
+                                        underline="hover"
+                                        href="https://www.analytics-model.com/terms-and-conditions"
+                                    >
                                         Terms of Service
                                     </Link>
                                     &nbsp; and &nbsp;
-                                    <Link variant="subtitle2" component={Link} target="_blank"underline="hover" href="https://www.analytics-model.com/privacypolicy">
+                                    <Link
+                                        variant="subtitle2"
+                                        component={Link}
+                                        target="_blank"
+                                        underline="hover"
+                                        href="https://www.analytics-model.com/privacypolicy"
+                                    >
                                         Privacy Policy
                                     </Link>
                                 </Typography>
-                  
                             </Grid>
                             {errors.submit && (
                                 <Grid item xs={12}>

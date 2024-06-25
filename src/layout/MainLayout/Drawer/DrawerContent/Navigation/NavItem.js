@@ -9,10 +9,12 @@ import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography } 
 
 // project import
 import { activeItem } from 'store/reducers/menu';
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 
 // ==============================|| NAVIGATION - LIST ITEM ||============================== //
 
 const NavItem = ({ item, level }) => {
+   
     const theme = useTheme();
     const dispatch = useDispatch();
     const menu = useSelector((state) => state.menu.menu);
@@ -32,7 +34,9 @@ const NavItem = ({ item, level }) => {
     };
 
     const Icon = item.icon;
-    const itemIcon = item.icon ? <Icon style={{ fontSize: drawerOpen ? '1rem' : '1.25rem' }} /> : false;
+    const itemIcon = item.icon;
+    
+    // const itemIcon = item.icon ? <Icon style={{ fontSize: drawerOpen ? '1rem' : '1.25rem' }} /> : false;
 
     const isSelected = openItem?.findIndex((id) => id === item.id) > -1;
 
@@ -88,6 +92,7 @@ const NavItem = ({ item, level }) => {
                 })
             }}
         >
+            
             {itemIcon && (
                 <ListItemIcon
                     sx={{
@@ -112,8 +117,10 @@ const NavItem = ({ item, level }) => {
                             })
                     }}
                 >
-                    {itemIcon}
+                <img src={itemIcon} alt="" height="20" width="20" />
+               
                 </ListItemIcon>
+                
             )}
             {(drawerOpen || (!drawerOpen && level !== 1)) && (
                 <ListItemText

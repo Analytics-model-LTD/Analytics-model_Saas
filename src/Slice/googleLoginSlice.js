@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-export const googleSignIn = createAsyncThunk('googleLogin/signIn', async () => {
+export const googleSignIn = createAsyncThunk('googleLogin/signIn', async () => {t 
     try {
         // Load the Google SDK
         await new Promise((resolve) => {
@@ -8,7 +7,8 @@ export const googleSignIn = createAsyncThunk('googleLogin/signIn', async () => {
         });
 
         const auth2 = await window.gapi.auth2.init({
-            client_id: '529194712210-st50mcevrkq97s51kpdf1lhse606tsep.apps.googleusercontent.com' // Replace with your actual Client ID
+          //  client_id: '529194712210-st50mcevrkq97s51kpdf1lhse606tsep.apps.googleusercontent.com' // Replace with your actual Client ID
+            client_id: '442914944524-87tme4kji7i7l29tu8q7r2aqpomn3c1l.apps.googleusercontent.com' // Replace with your actual Client ID
         });
         //commit
 

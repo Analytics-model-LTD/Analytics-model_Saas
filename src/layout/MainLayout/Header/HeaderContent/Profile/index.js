@@ -29,6 +29,7 @@ import SettingTab from './SettingTab';
 import avatar1 from 'assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from '../../../../../../node_modules/react-router-dom/dist/index';
+import { useSelector } from 'react-redux';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -58,6 +59,9 @@ const Profile = () => {
     const navigate = useNavigate();
     const theme = useTheme();
     const avatar1 = '/broken-image.jpg';
+    const userDeatils = useSelector((state) => {
+        return state.userProfile.userData;
+    });
 
     //logout fuctionality
 
@@ -87,10 +91,9 @@ const Profile = () => {
         setValue(newValue);
     };
 
-    // useEffect(() => {
-    //     const username = JSON.parse(localStorage.getItem('userInfo'));
-    //     setuserdata(username || []);
-    // }, [userdata]);
+    useEffect(() => {
+        console.log(userDeatils);
+    }, []);
 
     const username = JSON.parse(localStorage.getItem('userInfo'));
     const iconBackColorOpen = 'grey.300';
@@ -109,8 +112,12 @@ const Profile = () => {
                 onClick={handleToggle}
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-                    <Typography variant="subtitle1"> {username?.firstname}</Typography>
-                    <Avatar alt="profile user" src={username?.picture} sx={{ width: 32, height: 32 }} />
+                    <Typography variant="subtitle1"> {userDeatils ? userDeatils?.firstname : username?.firstname}</Typography>
+                    <Avatar
+                        alt="profile user"
+                        src={userDeatils ? userDeatils?.picture : username?.picture}
+                        sx={{ width: 32, height: 32 }}
+                    />
                 </Stack>
             </Box>
             <Popper
@@ -199,7 +206,6 @@ const Profile = () => {
                                                             icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
                                                             label="Setting"
                                                             {...a11yProps(1)} */}
-                                                        />
                                                     </Tabs>
                                                 </Box>
                                                 <TabPanel value={value} index={0} dir={theme.direction}>

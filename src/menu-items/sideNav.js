@@ -5,6 +5,12 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import FeedIcon from '@mui/icons-material/Feed';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import Myconnection  from '../assets/images/icons/myconnectionimg.svg';
+import newinsight from '../assets/images/icons/newinsight.svg'
+import myfeed from '../assets/images/icons/myfeed.svg';
+import intigrationtable from '../assets/images/icons/integrationtable.svg';
+import setting from '../assets/images/icons/setting.svg';
+import billing from '../assets/images/icons/biling.svg'
 // icons
 const icons = {
     ConfirmationNumberOutlinedIcon,
@@ -23,35 +29,36 @@ const requests = {
     type: 'group',
     children: [
         {
-            id: 'myinsight',
-            title: 'My insight',
+            id: 'newInsight',
+            title: 'New Insight',
             type: 'item',
-            url: '/myfeed',
-            icon: icons.ConfirmationNumberOutlinedIcon,
+            url: '/insight',
+            icon: newinsight,
             breadcrumbs: false
         },
         {
             id: 'myfeed',
-            title: 'My Feed',
+            title: 'Feed',
             type: 'item',
             url: '/myfeed',
-            icon: icons.FeedIcon,
+            icon: myfeed,
             breadcrumbs: false
         },
+
         {
             id: 'integrationsourcestable',
-            title: 'Integrationsourcestable',
+            title: 'Connections',
             type: 'item',
             url: '/integrationsources',
-            icon: icons.AttachFileIcon,
+            icon: Myconnection,
             breadcrumbs: false
         },
         {
             id: 'integrationsources',
-            title: 'My Connections',
+            title: 'Tracking Metrics',
             type: 'item',
             url: '/integrationsources/table',
-            icon: icons.ConfirmationNumberOutlinedIcon,
+            icon: intigrationtable,
             breadcrumbs: false
         },
         {
@@ -59,7 +66,9 @@ const requests = {
             title: 'Plans',
             type: 'item',
             url: '/plans',
-            icon: icons.ConfirmationNumberOutlinedIcon,
+            icon: intigrationtable,
+            //url: '/plans',
+            // icon: intigrationtable,
             breadcrumbs: false
         },
         // {
@@ -70,9 +79,6 @@ const requests = {
         //     icon: icons.ConfirmationNumberOutlinedIcon,
         //     breadcrumbs: false
         // },
-       
-   
-     
         // {
         //     id: 'myinsight',
         //     title: 'My insight',
@@ -85,7 +91,8 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            // url: '/myfeed',
+           // url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -93,7 +100,8 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            // url: '/myfeed',
+          //  url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -101,7 +109,98 @@ const requests = {
             id: 'myinsight',
             // title: 'My insight',
             type: 'item',
-            url: '/myfeed',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
+            // icon: icons.ConfirmationNumberOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'myinsight',
+            // title: 'My insight',
+            type: 'item',
+            // url: '/myfeed',
+            //url: '/myfeed',
             // icon: icons.ConfirmationNumberOutlinedIcon,
             breadcrumbs: false
         },
@@ -109,9 +208,8 @@ const requests = {
             id: 'setting',
             title: 'Setting',
             type: 'item',
-            url: '/myfeed',
-            icon: icons.SettingsIcon
-            ,
+            url: '/users/user-detail/',
+            icon: setting,
             breadcrumbs: false
         },
         {
@@ -119,7 +217,7 @@ const requests = {
             title: 'Billing',
             type: 'item',
             url: '/billing',
-            icon: icons.CreditCardIcon,
+            icon: billing,
             breadcrumbs: false
         },
         // {

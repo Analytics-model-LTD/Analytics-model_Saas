@@ -8,7 +8,8 @@ import Verification from 'pages/verfication/index';
 // render - login
 const AuthLogin = Loadable(lazy(() => import('pages/authentication/Login')));
 const AuthRegister = Loadable(lazy(() => import('pages/authentication/Register')));
-
+const AuthForgetPassword = Loadable(lazy(()=> import('pages/authentication/forgetpassword')));
+const AuthResetPassword = Loadable(lazy(()=> import('pages/authentication/ResetPassword')))
 // ==============================|| AUTH ROUTING ||============================== //
 
 const LoginRoutes = {
@@ -31,7 +32,16 @@ const LoginRoutes = {
         {
             path: 'register',
             element: <AuthRegister />
-        }
+        },
+        {
+            path: 'forgot-password',
+            element: <AuthForgetPassword />
+        },
+          
+        {
+            path: 'reset-password',
+            element: <AuthResetPassword />
+        },
     ]
 };
 
