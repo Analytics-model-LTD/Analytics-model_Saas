@@ -54,7 +54,7 @@ const FirebaseSocial = () => {
                 });
         }
     };
-    
+        
     // const googleHandler = useGoogleLogin({
     //     onSuccess: (codeResponse) => {
     //         console.log('Google Login Successful:', codeResponse.access_token);
@@ -99,7 +99,7 @@ const FirebaseSocial = () => {
                         onSuccess={credentialResponse => {
                             console.log('google cocial',credentialResponse);
                             var decoded = jwt_decode(credentialResponse.credential);
-
+                           
                         }}
                         onError={() => {
                             console.log('Login Failed');
@@ -107,6 +107,7 @@ const FirebaseSocial = () => {
                     />
                 </GoogleOAuthProvider>
             </div>
+            {/* 
             <Button
                 variant="outlined"
                 color="secondary"
