@@ -31,6 +31,8 @@ import AnimateButton from 'components/@extended/AnimateButton';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -47,25 +49,31 @@ const AuthForgetPassword = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-   
+
 
     return (
-        
+
         <>
             <Formik
                 initialValues={{
                     email: ''
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().max(255).required('Email is required'),
+                    email: Yup.string().email('Invalid email').max(255).required('Email is required'),
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                    console.log(values, setErrors, setStatus, setSubmitting);
                     try {
-                        handleLogin(values, { setErrors, setStatus, setSubmitting })
+                        const response = await axios.post('https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/mail-forget-password', {
+                            email: values.email
+                        });
+                        toast.success(response.message, {
+                            position: 'top-center'
+                        });
+                        setStatus({ success: true });
                     } catch (err) {
                         setStatus({ success: false });
                         setErrors({ submit: err.message });
+                    } finally {
                         setSubmitting(false);
                     }
                 }}
@@ -79,19 +87,19 @@ const AuthForgetPassword = () => {
                                     <OutlinedInput
                                         id="email-login"
                                         type="email"
-                                        // value={values.email}
+                                        value={values.email}
                                         name="email"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        placeholder=""
+                                        placeholder="Enter your email"
                                         fullWidth
                                         error={Boolean(touched.email && errors.email)}
                                     />
-                                    {/* {touched.email && errors.email && (
+                                    {touched.email && errors.email && (
                                         <FormHelperText error id="standard-weight-helper-text-email-login">
                                             {errors.email}
                                         </FormHelperText>
-                                    )} */}
+                                    )}
                                 </Stack>
                             </Grid>
                             {/* <Grid item xs={12} sx={{ mt: -1 }}>
@@ -131,6 +139,7 @@ const AuthForgetPassword = () => {
                                     >
                                         Submit
                                     </Button>
+                                    <ToastContainer autoClose={1000} />
                                 </AnimateButton>
                             </Grid>
                         </Grid>
