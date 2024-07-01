@@ -70,6 +70,10 @@ const AuthResetPassword = () => {
                     setTimeout(() => {
                         navigate('/login');
                     }, 2500);
+                } else {
+                    toast.error("User Not Found", {
+                        position: "top-center",
+                    });
                 }
                 // setStatus({ success: false });
                 // setSubmitting(false);
@@ -87,6 +91,8 @@ const AuthResetPassword = () => {
     };
 
     const validationSchema = Yup.object({
+        email: Yup.string()
+            .required('New Password is required'),
         new_password: Yup.string()
             .required('New Password is required')
             .min(6, 'Password should be at least 6 characters long'),
@@ -96,7 +102,7 @@ const AuthResetPassword = () => {
     });
     const formik = useFormik({
         initialValues: {
-            email: 'sagarkpatel1719@gmail.com',
+            email: '',
             new_password: '',
             confirm_password: ''
         },
@@ -111,7 +117,7 @@ const AuthResetPassword = () => {
         <>
             <Formik
             // initialValues={{
-            //     email: 'sagarkpatel1719@gmail.com',
+            //     email: '',
             //     // otp: '',
             //     new_password: '',
             //     confirm_password: ''
@@ -143,25 +149,25 @@ const AuthResetPassword = () => {
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <Stack spacing={1}>
-                                    {/* <InputLabel htmlFor="email-login">Email</InputLabel> */}
-                                    <InputLabel htmlFor="email-login"><b>sagarkpatel1719@gmail.com</b></InputLabel>
+                                    <InputLabel htmlFor="email-login">Email</InputLabel>
+                                    {/* <InputLabel htmlFor="email-login"><b></b></InputLabel> */}
 
-                                    {/* <OutlinedInput
-                                        id="email-login"
+                                    <OutlinedInput
+                                        id="email"
                                         type="email"
-                                        // value={values.email}
                                         name="email"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        placeholder="demo@username.com"
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        value={formik.values.email}
+                                        placeholder="Enter Your Email"
                                         fullWidth
-                                        error={Boolean(touched.email && errors.email)}
-                                    /> */}
-                                    {/* {touched.email && errors.email && (
-                                        <FormHelperText error id="standard-weight-helper-text-email-login">
-                                            {errors.email}
+                                        error={Boolean(formik.touched.email && formik.errors.email)}
+                                    />
+                                    {formik.touched.email && formik.errors.email && (
+                                        <FormHelperText error>
+                                            {formik.errors.email}
                                         </FormHelperText>
-                                    )} */}
+                                    )}
                                 </Stack>
                             </Grid>
                             {/* <Grid item xs={12}>
