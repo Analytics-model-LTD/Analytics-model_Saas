@@ -54,7 +54,7 @@ const FirebaseSocial = () => {
                 });
         }
     };
-
+        
     // const googleHandler = useGoogleLogin({
     //     onSuccess: (codeResponse) => {
     //         console.log('Google Login Successful:', codeResponse.access_token);
