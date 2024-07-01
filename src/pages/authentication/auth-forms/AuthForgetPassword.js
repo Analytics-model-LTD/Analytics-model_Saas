@@ -58,15 +58,15 @@ const AuthForgetPassword = () => {
                 initialValues={{
                     email: ''
                 }}
+                
                 validationSchema={Yup.object().shape({
                     email: Yup.string().email('Invalid email').max(255).required('Email is required'),
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                    try {
-                        const response = await axios.post('https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/mail-forget-password', {
+                    try {const response = await axios.post('https://2m2rc19wr6.execute-api.eu-north-1.amazonaws.com/dev/api/user/mail-forget-password', {
                             email: values.email
                         });
-                        toast.success(response.message, {
+                        toast.success(response?.data?.message, {
                             position: 'top-center'
                         });
                         setStatus({ success: true });
