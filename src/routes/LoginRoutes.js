@@ -42,6 +42,7 @@ const LoginRoutes = {
             path: 'reset-password',
             element: <AuthResetPassword />
         },
+        
     ]
 };
 
